@@ -3,11 +3,19 @@ import assets from "../../assets";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setTokenNameBarcode } from "../../Redux/State/LoginUserSlice";
+import { ConstantContactSearchEmailKey, RMAUserStorageKey } from "../../Constants/APINames";
 
 const LoggedOut = () => {
   document.title = "Logged Out Page";
   const dispatch = useDispatch();
   useEffect(() => {
+
+  localStorage.removeItem(ConstantContactSearchEmailKey);
+  localStorage.removeItem(RMAUserStorageKey);
+
+
+
+
     dispatch(
       setTokenNameBarcode({
         token: "",
