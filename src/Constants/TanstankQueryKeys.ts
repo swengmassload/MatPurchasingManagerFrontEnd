@@ -14,6 +14,9 @@ useGetContactByContactIdKey: {
     subKeys: (params: { data: useGetContactByContactIdProps }) => [params.data.ContactId],
   },
 
+  useCreateRMAKey: {
+    mainKey: "CreateRMA",
+  },
 
 //  // useGetModelVersion ModelVersionResponseDTOKey
 //   useGetModelVersionKey: {

@@ -180,26 +180,7 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact }) => {
   return (
     <Box sx={{ maxWidth: 1200, margin: "0 auto", padding: 2, pt: 0 }}>
       <Paper elevation={3} sx={{ padding: 3 }}>
-        {/* <Typography variant="h5" component="h1" gutterBottom>
-          Create New RMA
-        </Typography> */}
 
-        {/* {selectedContact && (
-          <Box
-            sx={{
-              mb: 2,
-              p: 2,
-              bgcolor: "#e8f5e8",
-              border: "1px solid #4caf50",
-              borderRadius: 1,
-            }}
-          >
-            <Typography variant="body1" color="success.main">
-              <strong>✓ Contact Selected:</strong> {selectedContact.first_name} {selectedContact.last_name}(
-              {selectedContact.email_address?.address})
-            </Typography>
-          </Box>
-        )} */}
 
         <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
           Fill out the form below to create a new Return Merchandise Authorization (RMA).
