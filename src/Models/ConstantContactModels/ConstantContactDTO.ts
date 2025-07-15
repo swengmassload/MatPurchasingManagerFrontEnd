@@ -1,5 +1,35 @@
 // Constant Contact API Response DTOs
 
+export interface DetailContact {
+  contact_id: string;
+  email_address: EmailAddress;
+  first_name?: string;
+  last_name?: string;
+  job_title?: string;
+  company_name?: string;
+  create_source?: string;
+  created_at?: string;
+  updated_at?: string;
+  list_memberships?: string[];
+  phone_numbers?: PhoneNumber[];
+  street_addresses?: Address[];
+  custom_fields?: CustomField[];
+  taggings?: Tagging[];
+  birthday_month?: number;
+  birthday_day?: number;
+  anniversary?: string;
+  fax_number?: string;
+  notes?: string;
+  source?: Source;
+  opt_out_reason?: string;
+  update_source?: string;
+}
+
+export interface Source {
+  source_type: string;
+  details?: string;
+}
+
 export interface EmailAddress {
   address: string;
   permission_to_send?: string;
@@ -24,6 +54,9 @@ export interface Contact {
   phone_numbers?: PhoneNumber[];
   street_addresses?: Address[];
 }
+
+
+
 
 export interface Address {
   kind?: string; // e.g., 'work', 'home'
@@ -58,7 +91,16 @@ export interface EnhancedEmailAddress {
   opt_in_date: string;
   confirm_status: ConfirmStatus;
 }
+export interface CustomField {
+  custom_field_id: string;
+  name?: string;
+  value: string;
+}
 
+export interface Tagging {
+  tag_id: string;
+  tag_name: string;
+}
 export interface EnhancedContact {
   contact_id: string;
   email_address: EnhancedEmailAddress;

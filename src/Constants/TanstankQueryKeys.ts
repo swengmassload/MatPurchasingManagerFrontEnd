@@ -1,4 +1,5 @@
-//import { useGetContactByEmailProps } from "../Hooks/useGetContactByEmail";
+import { useGetContactByContactIdProps } from "../Hooks/useGetContactByContactId";
+
 
 
 export const QueryKeys = {
@@ -7,6 +8,13 @@ export const QueryKeys = {
     mainKey: "Contacts",
    // subKeys: (params: { data: useGetContactByEmailProps }) => [params.data.email],
   },
+
+useGetContactByContactIdKey: {
+    mainKey: "ContactsByContactId",
+    subKeys: (params: { data: useGetContactByContactIdProps }) => [params.data.ContactId],
+  },
+
+
 //  // useGetModelVersion ModelVersionResponseDTOKey
 //   useGetModelVersionKey: {
 //     mainKey: "ModelVersionResponseDTOKey",  
