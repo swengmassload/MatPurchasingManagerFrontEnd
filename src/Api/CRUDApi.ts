@@ -63,6 +63,13 @@ export interface CRUDApiInterface<CreateType, ResponseType> {
 
             return Promise.reject(new Error("No Query Provided"));}
 
+     if (query==="")
+          {
+            alert("No Query Provided");
+           
+          }
+
+
           return  baseRequest.GetData<TResponseDTO>(axiosInstance, query)},
       getBlob: (query: string) => 
         { 

@@ -34,7 +34,7 @@ const LayoutInLetWrapper = ({
 
   useEffect(() => {
     console.count("LayoutInLetWrapper - If this is always count then there is problem");
-    debugger;
+  
     //const currentToken = localStorage.getItem("currentToken");
 
     const RmaUser = JSON.parse(localStorage.getItem(RMAUserStorageKey) || "{}") as LoginUserStateSliceProps;

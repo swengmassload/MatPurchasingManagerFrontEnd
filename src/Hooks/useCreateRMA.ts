@@ -4,8 +4,7 @@ import { BASEAPIURL } from "../Constants/FixValues";
 import { RMACreateRequestDTO } from "../Models/RMAManagerModels/Dto";
 import toast from "react-hot-toast";
 import { QueryKeys } from "../Constants/TanstankQueryKeys";
-import { RMACreateEnpoints } from "../Constants/APINames";
-
+import { RMAManagerEnpoints } from "../Constants/EndPoints";
 
 
 export const useCreateRMA = () => {
@@ -13,7 +12,7 @@ export const useCreateRMA = () => {
 
   return useMutation({
     mutationFn: (rmaData: RMACreateRequestDTO) =>
-      CRUDApi<RMACreateRequestDTO, RMACreateRequestDTO>(BASEAPIURL + RMACreateEnpoints).addData(
+      CRUDApi<RMACreateRequestDTO, RMACreateRequestDTO>(BASEAPIURL + RMAManagerEnpoints.RMACreateEnpoints).addData(
         rmaData
       ),
     onSuccess: (data) => {

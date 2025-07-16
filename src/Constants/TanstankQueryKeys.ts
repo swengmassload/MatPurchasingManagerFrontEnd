@@ -9,6 +9,12 @@ export const QueryKeys = {
    // subKeys: (params: { data: useGetContactByEmailProps }) => [params.data.email],
   },
 
+
+
+  useGetRMANumberKey: {
+    mainKey: "RMANextNumber",
+  },
+
 useGetContactByContactIdKey: {
     mainKey: "ContactsByContactId",
     subKeys: (params: { data: useGetContactByContactIdProps }) => [params.data.ContactId],

@@ -37,21 +37,7 @@ const CreateRMA = () => {
 
         {/* Right Side - RMA Form */}
         <Box sx={{ flex: { lg: "1" }, width: { xs: "100%", lg: "60%" } }}>
-          {/* {selectedContact && (
-            <Paper 
-              elevation={2} 
-              sx={{ 
-                mb: 2, 
-                p: 2, 
-                bgcolor: "#e8f5e8", 
-                border: "1px solid #4caf50"
-              }}
-            >
-              <Typography variant="body1" color="success.main">
-                <strong>✓ Selected Contact:</strong> {selectedContact.first_name} {selectedContact.last_name} ({selectedContact.email_address.address})
-              </Typography>
-            </Paper>
-          )} */}
+
           <CreateRMAForm selectedContact={selectedContact} />
         </Box>
       </Box>

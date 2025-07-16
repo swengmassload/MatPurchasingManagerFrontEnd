@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import {
   Box,
   Card,
@@ -18,6 +18,7 @@ import { RMACreateRequestDTO } from "../../../Models/RMAManagerModels/Dto";
 import { Contact } from "../../../Models/ConstantContactModels/ConstantContactDTO";
 import { useCreateRMA } from "../../../Hooks/useCreateRMA";
 import toast from "react-hot-toast";
+import { useGetRMANumber } from "../../../Hooks/useGetRMANumber";
 
 // Status options
 const statusOptions = ["New", "In Progress", "Pending Parts", "Under Review", "Completed", "Cancelled", "On Hold"];
@@ -28,6 +29,8 @@ interface CreateRMAFormProps {
 
 const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact }) => {
   console.log("Selected Contact:", selectedContact);
+
+  const nextNumberRequest = useGetRMANumber();
   const createRMAMutation = useCreateRMA();
   const [formData, setFormData] = useState<RMACreateRequestDTO>({
     rMANumber: undefined,
@@ -48,6 +51,21 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact }) => {
     notes: "",
     guidId: undefined,
   });
+
+  useEffect(() => {
+    if (nextNumberRequest.data && nextNumberRequest.data.length > 0) {
+      if (nextNumberRequest.data.length === 1) {
+        setFormData((prev) => ({ ...prev, rMANumber: nextNumberRequest.data![0].nextNumber }));
+      } else {
+        alert("Multiple RMA numbers found, please check the API response. Contact support To resolve this issue.");
+        console.error("Multiple RMA numbers found:", nextNumberRequest.data);
+      }
+    } else if (nextNumberRequest.data && nextNumberRequest.data.length === 0) {
+      alert("No RMA Number Found. Contact support To resolve this issue.");
+      console.warn("No RMA number found in the response");
+      setFormData((prev) => ({ ...prev, rMANumber: undefined }));
+    }
+  }, [nextNumberRequest.data]);
 
   const [errors, setErrors] = useState<Partial<RMACreateRequestDTO>>({});
 
@@ -108,9 +126,9 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact }) => {
       newErrors.salesPerson = "Sales person is required";
     }
 
-    if (formData.phoneNumber && !/^[\+]?[1-9][\d]{0,15}$/.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = "Invalid phone number format";
-    }
+    // if (formData.phoneNumber && !/^[\+]?[1-9][\d]{0,15}$/.test(formData.phoneNumber)) {
+    //   newErrors.phoneNumber = "Invalid phone number format";
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -127,6 +145,9 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact }) => {
     try {
       await createRMAMutation.mutateAsync(formData);
       console.log("RMA created successfully:", formData);
+      // refresh next RMA number
+      nextNumberRequest.refetch();
+      //num
       // Reset form after successful submission
       setFormData({
         rMANumber: undefined,
@@ -180,8 +201,6 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact }) => {
   return (
     <Box sx={{ maxWidth: 1200, margin: "0 auto", padding: 2, pt: 0 }}>
       <Paper elevation={3} sx={{ padding: 3 }}>
-
-
         <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
           Fill out the form below to create a new Return Merchandise Authorization (RMA).
         </Typography>

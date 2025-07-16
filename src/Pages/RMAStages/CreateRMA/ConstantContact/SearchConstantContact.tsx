@@ -12,6 +12,7 @@ import { Contact, DetailContact } from "../../../../Models/ConstantContactModels
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { SideBarMenuName } from "../../../../Constants/SideBarMenuNames";
+import { useGetRMANumber } from "../../../../Hooks/useGetRMANumber";
 
 interface SearchConstantContactProps {
   onContactSelected?: (contact: Contact | null) => void;
@@ -38,6 +39,9 @@ const SearchConstantContact: React.FC<SearchConstantContactProps> = ({ onContact
     isLoading,
     error,
   } = useGetContactByEmail(searchEmail ? { email: searchEmail } : undefined, startSearching);
+
+
+
 
   // Use the contact details hook
   const {

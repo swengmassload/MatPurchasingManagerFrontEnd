@@ -7,10 +7,7 @@ export const COMPRESSIONTESTERAPINAME = `/CompressionTesterAPI`;
 export const RMAAPINAME = `/RMAManagerAPI`;
 
 //export const baseURL = "https://localhost:7272/api";// th
-export const ExchangeEndPoint = `${RMAAPINAME}/v1/ConstantContact/exchangeCode`;
-export const SearchEndPoint = `${RMAAPINAME}/v1/ConstantContact/searchContact`;
-export const SearchContactEndPoint = `${RMAAPINAME}/v1/ConstantContact/searchContactByContactId`;
-export const RMACreateEnpoints = `${RMAAPINAME}/v1/ConstantContact/createContact`;
+
 
 //https://developer.constantcontact.com/login/index.html
 export  const clientId = "a861af35-d728-4e4b-8151-5b1f048db025";

@@ -20,7 +20,7 @@ import { RMAUserStorageKey } from "../../Constants/APINames";
 const AppbarHeight = 120; // Adjust this value based on your app bar height`
 
 export function ApplicationManagerLayOut() {
-  debugger;
+
   console.count("ApplicationManagerLayOut- If this is always count then  there is problem");
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ export function ApplicationManagerLayOut() {
     navigate(SideBarMenuName.LoggedOut.route);
   }, []);
   useEffect(() => {
-    debugger;
+
   
       const RmaUser = JSON.parse(localStorage.getItem(RMAUserStorageKey) || "{}") as LoginUserStateSliceProps;
     if (RmaUser.token) {

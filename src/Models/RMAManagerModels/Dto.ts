@@ -58,7 +58,26 @@ export interface ProblemDetails {
 
     [key: string]: any;
 }
+export interface RMANextNumberCreateRequestDTO {
+    nextNumber?: number;
+    guidId?: string;
+}
 
+export interface RMANextNumberResponseDTO {
+    nextNumber: number;
+      guidId?: string;
+
+}
+
+export interface RMANextNumberUpdateRequestDTO {
+    nextNumber?: number;
+    guidId?: string;
+}
+
+export interface RMAProblemTypeCreateRequestDTO {
+    problemType?: string | undefined;
+    guidId?: string;
+}
 export interface RMACreateRequestDTO {
     rMANumber?: number;
     customerEmail?: string | undefined;

@@ -52,7 +52,7 @@ const OAuthCallback = () => {
       alert("An error occurred while exchanging the code for a token. Please try again.");
     }
     if (request.isSuccess) {
-      debugger;
+    
       console.log("Token exchange successful:", request.data);
 
       // Debug: Log navigation details
