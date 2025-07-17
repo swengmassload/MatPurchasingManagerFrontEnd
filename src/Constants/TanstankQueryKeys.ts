@@ -1,3 +1,4 @@
+import { useGetConfirmIfUserHasExistingValidTokenProps } from "../Hooks/useGetConfirmIfUserHasExistingValidToken";
 import { useGetContactByContactIdProps } from "../Hooks/useGetContactByContactId";
 
 
@@ -10,6 +11,10 @@ export const QueryKeys = {
   },
 
 
+  useGetConfirmIfUserHasExistingValidTokenPropsKey: {
+    mainKey: "UserId",
+    subKeys: (params: { data: useGetConfirmIfUserHasExistingValidTokenProps }) => [params.data.UserId],
+  },
 
   useGetRMANumberKey: {
     mainKey: "RMANextNumber",

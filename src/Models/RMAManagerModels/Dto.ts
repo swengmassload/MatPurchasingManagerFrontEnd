@@ -96,6 +96,7 @@ export interface RMACreateRequestDTO {
     faxNumber?: string | undefined;
     notes?: string | undefined;
     guidId?: string;
+    createContact: boolean;
 }
 
 export interface RMAEventCreateRequestDTO {

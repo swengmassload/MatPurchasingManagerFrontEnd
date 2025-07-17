@@ -13,7 +13,10 @@ import {
   Divider,
   Paper,
   Stack,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
+import { Email } from "@mui/icons-material";
 import { RMACreateRequestDTO } from "../../../Models/RMAManagerModels/Dto";
 import { Contact } from "../../../Models/ConstantContactModels/ConstantContactDTO";
 import { useCreateRMA } from "../../../Hooks/useCreateRMA";
@@ -50,6 +53,7 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact }) => {
     faxNumber: "",
     notes: "",
     guidId: undefined,
+    createContact: true, // New field to indicate if a contact should be created
   });
 
   useEffect(() => {
@@ -167,6 +171,7 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact }) => {
         faxNumber: "",
         notes: "",
         guidId: undefined,
+        createContact: true,
       });
       setErrors({});
     } catch (error) {
@@ -194,8 +199,49 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact }) => {
       faxNumber: "",
       notes: "",
       guidId: undefined,
+      createContact: true,
     });
     setErrors({});
+  };
+
+  const handleSendMail = () => {
+    const subject = encodeURIComponent(
+      `RMA Request - ${formData.rMANumber ? `RMA #${formData.rMANumber}` : "New RMA"}`
+    );
+    const body = encodeURIComponent(
+      `
+Dear ${formData.contactName || "Customer"},
+
+This is regarding your RMA request with the following details:
+
+RMA Number: ${formData.rMANumber || "To be assigned"}
+Customer Email: ${formData.customerEmail}
+Company: ${formData.companyName}
+Contact Name: ${formData.contactName}
+Phone Number: ${formData.phoneNumber}
+Status: ${formData.status}
+
+Problem Description:
+${formData.rMAProblemDescription}
+
+${formData.notes ? `Additional Notes:\n${formData.notes}` : ""}
+
+Please let us know if you need any further assistance.
+
+Best regards,
+${formData.salesPerson || "Sales Team"}
+    `.trim()
+    );
+
+    const mailtoLink = `mailto:${formData.customerEmail}?subject=${subject}&body=${body}`;
+
+    try {
+      window.location.href = mailtoLink;
+      toast.success("Default mail client opened");
+    } catch (error) {
+      toast.error("Failed to open mail client");
+      console.error("Error opening mail client:", error);
+    }
   };
 
   return (
@@ -403,6 +449,30 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact }) => {
               </CardContent>
             </Card>
 
+            {/* Contact Creation Option */}
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom color="primary">
+                  Contact Options
+                </Typography>
+                <Divider sx={{ mb: 2 }} />
+
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={formData.createContact}
+                      onChange={(e) => setFormData((prev) => ({ ...prev, createContact: e.target.checked }))}
+                      color="primary"
+                    />
+                  }
+                  label="Create a new contact record for this customer"
+                />
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 1, ml: 4 }}>
+                  Check this box if you want to create a new contact record in the system for this customer.
+                </Typography>
+              </CardContent>
+            </Card>
+
             {/* Submit Section */}
             <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
               {selectedContact && (
@@ -423,6 +493,17 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact }) => {
                   Clear Contact
                 </Button>
               )}
+              <Button
+                type="button"
+                variant="outlined"
+                color="info"
+                startIcon={<Email />}
+                onClick={handleSendMail}
+                disabled={createRMAMutation.isPending || !formData.customerEmail}
+                sx={{ minWidth: 120 }}
+              >
+                Send Mail
+              </Button>
               <Button type="button" variant="outlined" onClick={handleReset} disabled={createRMAMutation.isPending}>
                 Reset Form
               </Button>

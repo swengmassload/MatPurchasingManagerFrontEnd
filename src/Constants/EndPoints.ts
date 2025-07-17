@@ -74,6 +74,8 @@ export const RMAManagerEnpoints = {
   ExchangeEndPoint: `${RMAAPINAME}/v1/ConstantContact/exchangeCode`,
   SearchEndPoint: `${RMAAPINAME}/v1/ConstantContact/searchContact`,
   SearchContactEndPoint: `${RMAAPINAME}/v1/ConstantContact/searchContactByContactId`,
+  ConfirmIfUserHasExistingValidToken: `${RMAAPINAME}/v1/ConstantContact/ConfirmIfUserHasExistingValidToken`,
+  
   RMACreateEnpoints: `${RMAAPINAME}/v1/RMAs`,
   RMANextNumberEndpoint: `${RMAAPINAME}/v1/RMANextNumbers`,
 };

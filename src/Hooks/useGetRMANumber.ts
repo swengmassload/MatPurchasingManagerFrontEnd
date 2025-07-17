@@ -22,7 +22,7 @@ export const useGetRMANumber = () => {
   // Log successful responses
   useEffect(() => {
     if (queryResult.isSuccess && queryResult.data) {
-      alert("useGetRMANumber search successful!");
+     // alert("useGetRMANumber search successful!");
       console.log("🎉 useGetRMANumber Response data:", queryResult.data);
     }
   }, [queryResult.isSuccess, queryResult.data]);
