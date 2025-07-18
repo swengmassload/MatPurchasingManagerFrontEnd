@@ -9,6 +9,7 @@ import ApplicationManagerLayOut from "../Pages/LayOut/ApplicationManagerLayOut";
 import { SideBarMenuName } from "../Constants/SideBarMenuNames";
 import CreateRMALayOut from "../Pages/RMAStages/CreateRMA/CreateRMALayOut";
 import OAuthCallback from "../Pages/RMAStages/CreateRMA/ConstantContact/OAuthCallback";
+import PackageReceivedLayOut from "../Pages/RMAStages/PackageReceived/PackageReceivedLayOut";
 
 export const RoutesProvider = [
   {
@@ -52,6 +53,12 @@ export const RoutesProvider = [
     path: SideBarMenuName.CreateRMA.route,
     element: <CreateRMALayOut />,
   },
+
+      {
+        path: SideBarMenuName.RECEIVEPACKAGE.route,
+        element: <PackageReceivedLayOut />,
+      },
+
     ],
   },
 ];

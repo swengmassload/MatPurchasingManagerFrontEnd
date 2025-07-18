@@ -5,7 +5,10 @@ import toast from "react-hot-toast";
 import { RootState } from "../../../../../Redux/store";
 import { useGetContactByEmail } from "../../../../../Hooks/useGetContactByEmail";
 import { useGetContactByContactId } from "../../../../../Hooks/useGetContactByContactId";
-import { useGetConfirmIfUserHasExistingValidToken } from "../../../../../Hooks/useGetConfirmIfUserHasExistingValidToken";
+import {
+  useGetConfirmIfUserHasExistingValidToken,
+  ValidToken,
+} from "../../../../../Hooks/useGetConfirmIfUserHasExistingValidToken";
 import { IsTokenValid } from "../../../../../Utils/IsTokenValidAndFunctionClaimInToken";
 import { Contact, DetailContact } from "../../../../../Models/ConstantContactModels/ConstantContactDTO";
 import { authUrl, ConstantContactSearchEmailKey, RMAUserStorageKey } from "../../../../../Constants/APINames";
@@ -23,6 +26,7 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
   const [loadingToastId, setLoadingToastId] = useState<string | null>(null);
   const [checkingToken, setCheckingToken] = useState<boolean>(true);
   const [successMessage, setSuccessMessage] = useState("");
+  const [persistentTokenValidation, setPersistentTokenValidation] = useState<ValidToken | null>(null);
 
   const appUser = useSelector((state: RootState) => state.loginUser);
   const navigate = useNavigate();
@@ -48,6 +52,14 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
     checkingToken && appUser?.userName ? { UserId: appUser.userName } : undefined,
     checkingToken
   );
+
+  // Effect: Store token validation result persistently once received
+  useEffect(() => {
+    if (tokenValidationResult && !persistentTokenValidation) {
+      console.log("🔑 Storing token validation result persistently:", tokenValidationResult);
+      setPersistentTokenValidation(tokenValidationResult);
+    }
+  }, [tokenValidationResult, persistentTokenValidation]);
 
   // Effect: Handle OAuth callback
   useEffect(() => {
@@ -129,7 +141,17 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
 
       if (IsTokenValid(appUser?.token)) {
         localStorage.setItem(RMAUserStorageKey, JSON.stringify(appUser));
-        setCheckingToken(true);
+
+        // Only check token if we don't have a persistent validation or it's invalid
+        if (!persistentTokenValidation || !persistentTokenValidation.isValid) {
+          setCheckingToken(true);
+        } else {
+          // We already have valid token, proceed directly with search
+          console.log("✅ Using cached valid token, proceeding with search");
+          setSearchEmail(currentSearchEmail);
+          setStartSearching(true);
+          toast.success("Using cached valid token! Searching contacts...");
+        }
       } else {
         toast.error(`Token is invalid or expired. Please Login again.`);
         setTimeout(() => {
@@ -170,7 +192,7 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
     showingDetails,
     fetchingContactId,
     successMessage,
-    tokenValidationResult,
+    tokenValidationResult: persistentTokenValidation || tokenValidationResult,
 
     // API states
     result,

@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, CardContent } from "@mui/material";
 import { Contact } from "../../../../Models/ConstantContactModels/ConstantContactDTO";
+import { ValidToken } from "../../../../Hooks/useGetConfirmIfUserHasExistingValidToken";
 import { useSearchConstantContact } from "./Hooks/useSearchConstantContact";
 import SearchHeader from "./Components/SearchHeader";
 import SearchForm from "./Components/SearchForm";
@@ -9,9 +10,13 @@ import SearchResults from "./Components/SearchResults";
 
 interface SearchConstantContactProps {
   onContactSelected?: (contact: Contact | null) => void;
+  onTokenValidationChange?: (tokenValidationResult: ValidToken | null) => void;
 }
 
-const SearchConstantContact: React.FC<SearchConstantContactProps> = ({ onContactSelected }) => {
+const SearchConstantContact: React.FC<SearchConstantContactProps> = ({
+  onContactSelected,
+  onTokenValidationChange,
+}) => {
   console.log("🔄 SearchConstantContact component rendered");
 
   const {
@@ -20,6 +25,7 @@ const SearchConstantContact: React.FC<SearchConstantContactProps> = ({ onContact
     searchEmail,
     selectedContact,
     contactDetails,
+    tokenValidationResult,
     showingDetails,
     fetchingContactId,
     successMessage,
@@ -33,6 +39,12 @@ const SearchConstantContact: React.FC<SearchConstantContactProps> = ({ onContact
     handleFetchContactDetails,
     handleUseContactDetails,
   } = useSearchConstantContact(onContactSelected);
+
+  // Notify parent component about token validation changes
+  React.useEffect(() => {
+    console.log("Token validation result in SearchConstantContact:", tokenValidationResult);
+    onTokenValidationChange?.(tokenValidationResult || null);
+  }, [tokenValidationResult, onTokenValidationChange]);
 
   return (
     <Card

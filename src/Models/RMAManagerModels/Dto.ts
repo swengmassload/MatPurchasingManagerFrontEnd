@@ -8,354 +8,359 @@
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
-
-
 export interface AuthCodeDto {
-    code?: string | undefined;
-    userId?: string | undefined;
+  code?: string | undefined;
+  userId?: string | undefined;
 }
 
 export interface PartUsedCreateRequestDTO {
-    rMANumber?: number;
-    productId?: string | undefined;
-    partCode?: string | undefined;
-    dateUsed?: Date;
-    userName?: string | undefined;
-    partDescription?: string | undefined;
-    quantity?: number;
-    cost?: string | undefined;
-    notes?: string | undefined;
-    guidId?: string;
+  rMANumber?: number;
+  productId?: string | undefined;
+  partCode?: string | undefined;
+  dateUsed?: Date;
+  userName?: string | undefined;
+  partDescription?: string | undefined;
+  quantity?: number;
+  cost?: string | undefined;
+  notes?: string | undefined;
+  guidId?: string;
 }
 
 export interface PartUsedGetRequestDTO {
-    entityNameId?: any | undefined;
+  entityNameId?: any | undefined;
 }
 
 export interface PartUsedResponseDTO {
-    value?: any | undefined;
+  value?: any | undefined;
 }
 
 export interface PartUsedUpdateRequestDTO {
-    rMANumber?: number;
-    productId?: string | undefined;
-    partCode?: string | undefined;
-    dateUsed?: Date;
-    userName?: string | undefined;
-    partDescription?: string | undefined;
-    quantity?: number;
-    cost?: string | undefined;
-    notes?: string | undefined;
-    guidId?: string;
+  rMANumber?: number;
+  productId?: string | undefined;
+  partCode?: string | undefined;
+  dateUsed?: Date;
+  userName?: string | undefined;
+  partDescription?: string | undefined;
+  quantity?: number;
+  cost?: string | undefined;
+  notes?: string | undefined;
+  guidId?: string;
 }
 
 export interface ProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
+  type?: string | undefined;
+  title?: string | undefined;
+  status?: number | undefined;
+  detail?: string | undefined;
+  instance?: string | undefined;
 
-    [key: string]: any;
+  [key: string]: any;
 }
 export interface RMANextNumberCreateRequestDTO {
-    nextNumber?: number;
-    guidId?: string;
+  nextNumber?: number;
+  guidId?: string;
 }
 
 export interface RMANextNumberResponseDTO {
-    nextNumber: number;
-      guidId?: string;
-
+  nextNumber: number;
+  guidId?: string;
 }
 
 export interface RMANextNumberUpdateRequestDTO {
-    nextNumber?: number;
-    guidId?: string;
+  nextNumber?: number;
+  guidId?: string;
 }
 
 export interface RMAProblemTypeCreateRequestDTO {
-    problemType?: string | undefined;
-    guidId?: string;
+  problemType?: string | undefined;
+  guidId?: string;
 }
 export interface RMACreateRequestDTO {
-    rMANumber?: number;
-    customerEmail?: string | undefined;
-    dateIssued?: Date;
-    dateRecieved?: Date;
-    rMAProblemDescription?: string | undefined;
-    status?: string | undefined;
-    salesPerson?: string | undefined;
-    companyName?: string | undefined;
-    contactName?: string | undefined;
-    city?: string | undefined;
-    province?: string | undefined;
-    zipCode?: string | undefined;
-    country?: string | undefined;
-    phoneNumber?: string | undefined;
-    faxNumber?: string | undefined;
-    notes?: string | undefined;
-    guidId?: string;
-    createContact: boolean;
+  rMANumber?: number;
+  customerEmail?: string | undefined;
+  dateIssued?: Date;
+  dateRecieved?: Date;
+  rMAProblemDescription?: string | undefined;
+  status?: string | undefined;
+  salesPerson?: string | undefined;
+  companyName?: string | undefined;
+  contactName?: string | undefined;
+  city?: string | undefined;
+  province?: string | undefined;
+  zipCode?: string | undefined;
+  country?: string | undefined;
+  phoneNumber?: string | undefined;
+  faxNumber?: string | undefined;
+  notes?: string | undefined;
+  guidId?: string;
+  createContact: boolean;
 }
 
 export interface RMAEventCreateRequestDTO {
-    rMANumber?: number;
-    userName?: string | undefined;
-    timeStamp?: Date;
-    status?: string | undefined;
-    notes?: string | undefined;
-    guidId?: string;
+  rMANumber?: number;
+  userName?: string | undefined;
+  timeStamp?: Date;
+  status?: string | undefined;
+  notes?: string | undefined;
+  guidId?: string;
 }
 
 export interface RMAEventGetRequestDTO {
-    entityNameId?: any | undefined;
+  entityNameId?: any | undefined;
 }
 
 export interface RMAEventResponseDTO {
-    value?: any | undefined;
+  value?: any | undefined;
 }
 
 export interface RMAEventUpdateRequestDTO {
-    rMANumber?: number;
-    userName?: string | undefined;
-    timeStamp?: Date;
-    status?: string | undefined;
-    notes?: string | undefined;
-    guidId?: string;
+  rMANumber?: number;
+  userName?: string | undefined;
+  timeStamp?: Date;
+  status?: string | undefined;
+  notes?: string | undefined;
+  guidId?: string;
 }
 
 export interface RMAGetRequestDTO {
-    entityNameId?: any | undefined;
+  entityNameId?: any | undefined;
 }
 
 export interface RMAProblemTypeCreateRequestDTO {
-    problemType?: string | undefined;
-    guidId?: string;
+  problemType?: string | undefined;
+  guidId?: string;
 }
 
 export interface RMAProblemTypeGetRequestDTO {
-    entityNameId?: any | undefined;
+  entityNameId?: any | undefined;
 }
 
 export interface RMAProblemTypeResponseDTO {
-    value?: any | undefined;
+  value?: any | undefined;
 }
 
 export interface RMAProblemTypeUpdateRequestDTO {
-    problemType?: string | undefined;
-    guidId?: string;
+  problemType?: string | undefined;
+  guidId?: string;
 }
 
 export interface RMAProductCertificateCreateRequestDTO {
-    productCertificateId?: number;
-    rMANumber?: number;
-    productId?: string | undefined;
-    certifcateType?: string | undefined;
-    jsonData?: string | undefined;
-    timestamp?: Date;
-    capacity?: number;
-    guidId?: string;
+  productCertificateId?: number;
+  rMANumber?: number;
+  productId?: string | undefined;
+  certifcateType?: string | undefined;
+  jsonData?: string | undefined;
+  timestamp?: Date;
+  capacity?: number;
+  guidId?: string;
 }
 
 export interface RMAProductCertificateGetRequestDTO {
-    entityNameId?: any | undefined;
+  entityNameId?: any | undefined;
 }
 
 export interface RMAProductCertificateResponseDTO {
-    value?: any | undefined;
+  value?: any | undefined;
 }
 
 export interface RMAProductCertificateUpdateRequestDTO {
-    productCertificateId?: number;
-    rMANumber?: number;
-    productId?: string | undefined;
-    certifcateType?: string | undefined;
-    jsonData?: string | undefined;
-    timestamp?: Date;
-    capacity?: number;
-    guidId?: string;
+  productCertificateId?: number;
+  rMANumber?: number;
+  productId?: string | undefined;
+  certifcateType?: string | undefined;
+  jsonData?: string | undefined;
+  timestamp?: Date;
+  capacity?: number;
+  guidId?: string;
 }
 
 export interface RMAProductCreateRequestDTO {
-    rMANumber?: number;
-    productId?: string | undefined;
-    productType?: string | undefined;
-    problemType?: string | undefined;
-    solution?: string | undefined;
-    problemDetails?: string | undefined;
-    solutionDetails?: string | undefined;
-    repairMade?: string | undefined;
-    userName?: string | undefined;
-    date?: Date;
-    timeTakenInMinutes?: number;
-    guidId?: string;
+  rMANumber?: number;
+  productId?: string | undefined;
+  productType?: string | undefined;
+  problemType?: string | undefined;
+  solution?: string | undefined;
+  problemDetails?: string | undefined;
+  solutionDetails?: string | undefined;
+  repairMade?: string | undefined;
+  userName?: string | undefined;
+  date?: Date;
+  timeTakenInMinutes?: number;
+  guidId?: string;
 }
 
 export interface RMAProductGetRequestDTO {
-    entityNameId?: any | undefined;
+  entityNameId?: any | undefined;
 }
 
 export interface RMAProductResponseDTO {
-    value?: any | undefined;
+  value?: any | undefined;
 }
 
 export interface RMAProductTypeCreateRequestDTO {
-    productType?: string | undefined;
-    description?: string | undefined;
-    warrantyPeriodInMonths?: number;
-    weight?: number;
-    length?: number;
-    width?: number;
-    height?: number;
-    volume?: number;
-    density?: number;
-    guidId?: string;
+  productType?: string | undefined;
+  description?: string | undefined;
+  warrantyPeriodInMonths?: number;
+  weight?: number;
+  length?: number;
+  width?: number;
+  height?: number;
+  volume?: number;
+  density?: number;
+  guidId?: string;
 }
 
 export interface RMAProductTypeGetRequestDTO {
-    entityNameId?: any | undefined;
+  entityNameId?: any | undefined;
 }
 
 export interface RMAProductTypeResponseDTO {
-    value?: any | undefined;
+  value?: any | undefined;
 }
 
 export interface RMAProductTypeUpdateRequestDTO {
-    productType?: string | undefined;
-    description?: string | undefined;
-    warrantyPeriodInMonths?: number;
-    weight?: number;
-    length?: number;
-    width?: number;
-    height?: number;
-    volume?: number;
-    density?: number;
-    guidId?: string;
+  productType?: string | undefined;
+  description?: string | undefined;
+  warrantyPeriodInMonths?: number;
+  weight?: number;
+  length?: number;
+  width?: number;
+  height?: number;
+  volume?: number;
+  density?: number;
+  guidId?: string;
 }
 
 export interface RMAProductUpdateRequestDTO {
-    rMANumber?: number;
-    productId?: string | undefined;
-    productType?: string | undefined;
-    problemType?: string | undefined;
-    solution?: string | undefined;
-    problemDetails?: string | undefined;
-    solutionDetails?: string | undefined;
-    repairMade?: string | undefined;
-    userName?: string | undefined;
-    date?: Date;
-    timeTakenInMinutes?: number;
-    guidId?: string;
+  rMANumber?: number;
+  productId?: string | undefined;
+  productType?: string | undefined;
+  problemType?: string | undefined;
+  solution?: string | undefined;
+  problemDetails?: string | undefined;
+  solutionDetails?: string | undefined;
+  repairMade?: string | undefined;
+  userName?: string | undefined;
+  date?: Date;
+  timeTakenInMinutes?: number;
+  guidId?: string;
 }
 
 export interface RMAResponseDTO {
-    value?: any | undefined;
+  value?: any | undefined;
 }
 
 export interface RMASolutionTypeCreateRequestDTO {
-    solution?: string | undefined;
-    guidId?: string;
+  solution?: string | undefined;
+  guidId?: string;
 }
 
 export interface RMASolutionTypeGetRequestDTO {
-    entityNameId?: any | undefined;
+  entityNameId?: any | undefined;
 }
 
 export interface RMASolutionTypeResponseDTO {
-    value?: any | undefined;
+  value?: any | undefined;
 }
 
 export interface RMASolutionTypeUpdateRequestDTO {
-    solution?: string | undefined;
-    guidId?: string;
+  solution?: string | undefined;
+  guidId?: string;
 }
 
 export interface RMAStatusCreateRequestDTO {
-    status?: string | undefined;
-    minNoOfDaysToReSendNotification?: number;
-    guidId?: string;
+  status?: string | undefined;
+  minNoOfDaysToReSendNotification?: number;
+  guidId?: string;
 }
 
 export interface RMAStatusGetRequestDTO {
-    entityNameId?: any | undefined;
+  entityNameId?: any | undefined;
 }
 
 export interface RMAStatusResponseDTO {
-    value?: any | undefined;
+  value?: any | undefined;
 }
 
 export interface RMAStatusUpdateRequestDTO {
-    status?: string | undefined;
-    minNoOfDaysToReSendNotification?: number;
-    guidId?: string;
+  status?: string | undefined;
+  minNoOfDaysToReSendNotification?: number;
+  guidId?: string;
 }
 
 export interface RMATokenCreateRequestDTO {
-    userId?: string | undefined;
-    accessToken?: string | undefined;
-    refreshToken?: string | undefined;
-    expiry?: number;
-    createdAt?: Date;
-    guidId?: string;
+  userId?: string | undefined;
+  accessToken?: string | undefined;
+  refreshToken?: string | undefined;
+  expiry?: number;
+  createdAt?: Date;
+  guidId?: string;
 }
 
 export interface RMATokenGetRequestDTO {
-    entityNameId?: any | undefined;
+  entityNameId?: any | undefined;
 }
 
 export interface RMATokenResponseDTO {
-    userId?: string | undefined;
-    accessToken?: string | undefined;
-    refreshToken?: string | undefined;
-    expiry?: number;
-    createdAt?: Date;
-    guidId?: string;
+  userId?: string | undefined;
+  accessToken?: string | undefined;
+  refreshToken?: string | undefined;
+  expiry?: number;
+  createdAt?: Date;
+  guidId?: string;
 }
 
 export interface RMATokenUpdateRequestDTO {
-    userId?: string | undefined;
-    accessToken?: string | undefined;
-    refreshToken?: string | undefined;
-    expiry?: number;
-    createdAt?: Date;
-    guidId?: string;
+  userId?: string | undefined;
+  accessToken?: string | undefined;
+  refreshToken?: string | undefined;
+  expiry?: number;
+  createdAt?: Date;
+  guidId?: string;
 }
 
 export interface RMAUpdateRequestDTO {
-    rMANumber?: number;
-    customerEmail?: string | undefined;
-    dateIssued?: Date;
-    dateRecieved?: Date;
-    rMAProblemDescription?: string | undefined;
-    status?: string | undefined;
-    salesPerson?: string | undefined;
-    companyName?: string | undefined;
-    contactName?: string | undefined;
-    city?: string | undefined;
-    province?: string | undefined;
-    zipCode?: string | undefined;
-    country?: string | undefined;
-    phoneNumber?: string | undefined;
-    faxNumber?: string | undefined;
-    notes?: string | undefined;
-    guidId?: string;
+  rMANumber?: number;
+  customerEmail?: string | undefined;
+  dateIssued?: Date;
+  dateRecieved?: Date;
+  rMAProblemDescription?: string | undefined;
+  status?: string | undefined;
+  salesPerson?: string | undefined;
+  companyName?: string | undefined;
+  contactName?: string | undefined;
+  city?: string | undefined;
+  province?: string | undefined;
+  zipCode?: string | undefined;
+  country?: string | undefined;
+  phoneNumber?: string | undefined;
+  faxNumber?: string | undefined;
+  notes?: string | undefined;
+  guidId?: string;
 }
 
 export interface RepairTypeCreateRequestDTO {
-    rMAType?: string | undefined;
-    guidId?: string;
+  rMAType?: string | undefined;
+  guidId?: string;
 }
 
 export interface RepairTypeGetRequestDTO {
-    entityNameId?: any | undefined;
+  entityNameId?: any | undefined;
 }
 
 export interface RepairTypeResponseDTO {
-    value?: any | undefined;
+  value?: any | undefined;
 }
 
 export interface RepairTypeUpdateRequestDTO {
-    rMAType?: string | undefined;
-    guidId?: string;
+  rMAType?: string | undefined;
+  guidId?: string;
+}
+
+export interface PackageReceivedEventCreateRequestDTO {
+  rMANumber: number;
+  userName?: string | undefined;
+  timeStamp?: Date;
+  notes: string | undefined;
+  guidId?: string;
 }

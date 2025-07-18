@@ -1,4 +1,4 @@
-import { DefaultProductionStages } from "./ProductionStages";
+import { DefaultRMAStages } from "./RMAStages";
 export const sideBardrawerWidth: number = 256;
 export interface MenuName {
   stage: string;
@@ -8,189 +8,45 @@ export interface MenuName {
 }
 
 export class SideBarMenuName {
-  public static readonly ProductionStages: MenuName = {
-    stage: "Production Stages",
-    route: "ProductionStages",
-    description: "ProductionStages",
-  };
-
-  public static readonly SurfacePreparation: MenuName = {
-    stage: DefaultProductionStages.SurfacePreparation.stage,
-    route: DefaultProductionStages.SurfacePreparation.code,
-    barCode: DefaultProductionStages.SurfacePreparation.code,
-    description: "Surface Preparation stage description",
-  };
-
-  public static readonly Gauging: MenuName = {
-    stage: DefaultProductionStages.Gauging.stage,
-    route: DefaultProductionStages.Gauging.code,
-    barCode: DefaultProductionStages.Gauging.code,
-    description: "Gauging stage description",
-  };
-
-  public static readonly GaugeInspection: MenuName = {
-    stage: DefaultProductionStages.GaugeInspection.stage,
-    route: DefaultProductionStages.GaugeInspection.code,
-    barCode: DefaultProductionStages.GaugeInspection.code,
-    description: "Gauge Inspection stage description",
-  };
-
-  public static readonly Wiring: MenuName = {
-    stage: DefaultProductionStages.Wiring.stage,
-    route: DefaultProductionStages.Wiring.code,
-    barCode: DefaultProductionStages.Wiring.code,
-    description: "Wiring stage description",
-  };
-
-  public static readonly Cabling: MenuName = {
-    stage: DefaultProductionStages.Cabling.stage,
-    route: DefaultProductionStages.Cabling.code,
-    barCode: DefaultProductionStages.Cabling.code,
-    description: "Cabling/Trimming (Zero balance) stage description",
-  };
-
-  public static readonly ExerciseAndInitialVerificationManual: MenuName = {
-    stage:
-      DefaultProductionStages.InitialVerificationManual.optionalCommonName ??
-      DefaultProductionStages.InitialVerificationManual.stage,
-    route: DefaultProductionStages.InitialVerificationManual.code + "Manual",
-    barCode: DefaultProductionStages.InitialVerificationManual.code,
-    description: "Exercise/InitialVerification Manual",
-  };
-
-  public static readonly ExerciseAndInitialVerificationAuto: MenuName = {
-    stage:
-      DefaultProductionStages.InitialVerificationAuto.optionalCommonName ??
-      DefaultProductionStages.InitialVerificationAuto.stage,
-    route: DefaultProductionStages.InitialVerificationAuto.code + "Auto",
-    barCode: DefaultProductionStages.InitialVerificationAuto.code,
-    description: "Exercise/InitialVerification Auto",
-  };
-
-  public static readonly AddResistor: MenuName = {
-    stage: DefaultProductionStages.AddResistor.stage,
-    route: DefaultProductionStages.AddResistor.code,
-    barCode: DefaultProductionStages.AddResistor.code,
-    description: "Add Resistor stage description",
-  };
-
-  public static readonly Sealing: MenuName = {
-    stage: DefaultProductionStages.Sealing.stage,
-    route: DefaultProductionStages.Sealing.code,
-    barCode: DefaultProductionStages.Sealing.code,
-    description: "Sealing stage description",
-  };
-
-  public static readonly FinalVerificationManual: MenuName = {
-    stage:
-      DefaultProductionStages.FinalVerificationManual.optionalCommonName ??
-      DefaultProductionStages.FinalVerificationManual.stage,
-
-    route: DefaultProductionStages.FinalVerificationManual.code + "Manual",
-    barCode: DefaultProductionStages.FinalVerificationManual.code,
-    description: "FinalVerification Manual",
-  };
-
-  public static readonly FinalVerificationAuto: MenuName = {
-    stage:
-      DefaultProductionStages.FinalVerificationAuto.optionalCommonName ??
-      DefaultProductionStages.FinalVerificationAuto.stage,
-
-    route: DefaultProductionStages.FinalVerificationAuto.code + "Auto",
-    barCode: DefaultProductionStages.FinalVerificationAuto.code,
-    description: "FinalVerification Auto",
-  };
-
-  public static readonly Labelling: MenuName = {
-    stage: DefaultProductionStages.Labelling.stage,
-    route: DefaultProductionStages.Labelling.code,
-    barCode: DefaultProductionStages.Labelling.code,
-    description: "Labelling stage description",
-  };
-
-  public static readonly Inventory: MenuName = {
-    stage: DefaultProductionStages.Inventory.stage,
-    route: DefaultProductionStages.Inventory.code,
-    barCode: DefaultProductionStages.Inventory.code,
-    description: "Inventory stage description",
-  };
-
-  public static readonly Shipping: MenuName = {
-    stage: DefaultProductionStages.Shipping.stage,
-    route: DefaultProductionStages.Shipping.code,
-    barCode: DefaultProductionStages.Shipping.code,
-    description: "Shipping stage description",
-  };
-
   public static readonly CreateRMA: MenuName = {
-    stage: "Create RMA",
-    route: "CreateRMA",
-    barCode: `CreateRMA`,
-    description: "Create RMA",
+    stage: DefaultRMAStages.LABELSENT.stage,
+    route: DefaultRMAStages.LABELSENT.code,
+    barCode: DefaultRMAStages.LABELSENT.code,
+    description: DefaultRMAStages.LABELSENT.CommonName,
   };
 
-  public static readonly RecordDefects: MenuName = {
-    stage: "Record Defect",
-    route: "RecordDefects",
-    barCode: `RecordDefects`,
-    description: "Record Defect",
+  public static readonly RECEIVEPACKAGE: MenuName = {
+    stage: DefaultRMAStages.PACKAGERECEIVED.stage,
+    route: DefaultRMAStages.PACKAGERECEIVED.code,
+    barCode: DefaultRMAStages.PACKAGERECEIVED.code,
+    description: DefaultRMAStages.PACKAGERECEIVED.CommonName,
   };
 
-  public static readonly AssignSerialNo: MenuName = {
-    stage: DefaultProductionStages.AssignSerialNo.stage,
-    route: DefaultProductionStages.AssignSerialNo.code,
-    barCode: DefaultProductionStages.AssignSerialNo.code,
-    description: "Assign SerialNo stage description/Batch",
+  public static readonly ACCESSEDPRODUCT: MenuName = {
+    stage: DefaultRMAStages.PRODUCTASSESSED.stage,
+    route: DefaultRMAStages.PRODUCTASSESSED.code,
+    barCode: DefaultRMAStages.PRODUCTASSESSED.code,
+    description: DefaultRMAStages.PRODUCTASSESSED.CommonName,
   };
 
-  public static readonly Tracking: MenuName = {
-    stage: "Track / Report",
-    route: "Tracking",
-    barCode: `Tracking`,
-    description: "Tracking",
+  public static readonly ADDSALESORDER: MenuName = {
+    stage: DefaultRMAStages.SALESORDERADDED.stage,
+    route: DefaultRMAStages.SALESORDERADDED.code,
+    barCode: DefaultRMAStages.SALESORDERADDED.code,
+    description: DefaultRMAStages.SALESORDERADDED.CommonName,
   };
 
-  public static readonly AddPicture: MenuName = {
-    stage: "Add Picture",
-    route: "AddPicture",
-    barCode: `AddPicture`,
-    description: "Add Picture",
+  public static readonly REPAIRPRODUCT: MenuName = {
+    stage: DefaultRMAStages.REPAIRINPROGRESS.stage,
+    route: DefaultRMAStages.REPAIRINPROGRESS.code,
+    barCode: DefaultRMAStages.REPAIRINPROGRESS.code,
+    description: DefaultRMAStages.REPAIRINPROGRESS.CommonName,
   };
-
-  public static readonly Defects: MenuName = {
-    stage: "Defects",
-    route: "Defects",
-    barCode: `Defects`,
-    description: "Defects Type Creation",
-  };
-
-  public static readonly Advanced: MenuName = {
-    stage: "Advanced",
-    route: "Advanced",
-    barCode: `Advanced`,
-    description: "Advanced /Settings",
-  };
-
-  public static readonly PrintStageCard: MenuName = {
-    stage: "PrintStageCard",
-    route: "PrintStageCard",
-    description: "Print Stage Card",
-  };
-  public static readonly ModelVersionReAssignment: MenuName = {
-    stage: "ModelVersionReAssignment",
-    route: "ModelVersionReAssignment",
-    description: "Model Version Reassignment",
-  };
-  public static readonly NCRList: MenuName = { stage: "NCRList", route: "NCRList", description: "NCR List" };
-  public static readonly ChangeStage: MenuName = {
-    stage: "ChangeStage",
-    route: "ChangeStage",
-    description: "Change Stage",
-  };
-  public static readonly ReferenceLoadCell: MenuName = {
-    stage: "ReferenceLoadCell",
-    route: "ReferenceLoadCell",
-    description: "Reference Load Cell",
+  public static readonly CLOSEDRMA: MenuName = {
+    stage: DefaultRMAStages.RMA_CLOSED.stage,
+    route: DefaultRMAStages.RMA_CLOSED.code,
+    barCode: DefaultRMAStages.RMA_CLOSED.code,
+    description: DefaultRMAStages.RMA_CLOSED.CommonName,
   };
 
   public static readonly dashBoard: MenuName = { stage: "dashBoard", route: "/dashBoard", description: "dashBoard" };
@@ -205,38 +61,20 @@ export class SideBarMenuName {
   public static readonly Base: MenuName = { stage: "Base", route: "/", description: "Base" };
 
   public static readonly AllMenu: MenuName[] = [
-    SideBarMenuName.ProductionStages,
-    SideBarMenuName.SurfacePreparation,
-    SideBarMenuName.Gauging,
-    SideBarMenuName.GaugeInspection,
-    SideBarMenuName.Wiring,
-    SideBarMenuName.Cabling,
-    SideBarMenuName.ExerciseAndInitialVerificationManual,
-    SideBarMenuName.ExerciseAndInitialVerificationAuto,
-    SideBarMenuName.AddResistor,
-    SideBarMenuName.Sealing,
-    SideBarMenuName.FinalVerificationManual,
-    SideBarMenuName.FinalVerificationAuto,
-    SideBarMenuName.Labelling,
-    SideBarMenuName.Inventory,
-    SideBarMenuName.Shipping,
-    SideBarMenuName.RecordDefects,
-    SideBarMenuName.AssignSerialNo,
-    SideBarMenuName.Tracking,
-    SideBarMenuName.AddPicture,
-    SideBarMenuName.Defects,
-    SideBarMenuName.Advanced,
+    //    SideBarMenuName.ProductionStages,
+
+    SideBarMenuName.CreateRMA,
+    SideBarMenuName.RECEIVEPACKAGE,
+    SideBarMenuName.ACCESSEDPRODUCT,
+    SideBarMenuName.ADDSALESORDER,
+    SideBarMenuName.REPAIRPRODUCT,
+    SideBarMenuName.CLOSEDRMA,
     SideBarMenuName.dashBoard,
     SideBarMenuName.NotFound,
     SideBarMenuName.NoAuthPage,
     SideBarMenuName.LoggedOut,
     SideBarMenuName.All,
     SideBarMenuName.Base,
-    SideBarMenuName.PrintStageCard,
-    SideBarMenuName.ModelVersionReAssignment,
-    SideBarMenuName.NCRList,
-    SideBarMenuName.ChangeStage,
-    SideBarMenuName.ReferenceLoadCell,
   ];
   public static isBarcodeInStageBarCodes(barcode: string): boolean {
     return SideBarMenuName.AllMenu.some((item) => item.barCode === barcode);
