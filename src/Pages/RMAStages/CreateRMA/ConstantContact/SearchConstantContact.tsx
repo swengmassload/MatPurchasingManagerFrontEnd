@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent } from "@mui/material";
+import { Card, CardContent, CircularProgress, Alert, Typography, Box } from "@mui/material";
 import { Contact } from "../../../../Models/ConstantContactModels/ConstantContactDTO";
 import { ValidToken } from "../../../../Hooks/useGetConfirmIfUserHasExistingValidToken";
 import { useSearchConstantContact } from "./Hooks/useSearchConstantContact";
@@ -20,20 +20,27 @@ const SearchConstantContact: React.FC<SearchConstantContactProps> = ({
   console.log("🔄 SearchConstantContact component rendered");
 
   const {
-    currentSearchEmail,
-    setCurrentSearchEmail,
+    // Token validation state (primary concern)
+    tokenValidationComplete,
+    tokenValidationResult,
+    isCheckingToken,
+
+    // State
     searchEmail,
+    setSearchEmail,
     selectedContact,
     contactDetails,
-    tokenValidationResult,
     showingDetails,
     fetchingContactId,
     successMessage,
+
+    // API states
     result,
     isLoading,
     error,
     isLoadingDetails,
-    isCheckingToken,
+
+    // Handlers
     handleSearch,
     handleKeyPress,
     handleFetchContactDetails,
@@ -46,6 +53,56 @@ const SearchConstantContact: React.FC<SearchConstantContactProps> = ({
     onTokenValidationChange?.(tokenValidationResult || null);
   }, [tokenValidationResult, onTokenValidationChange]);
 
+  // Show loading state while checking token
+  if (!tokenValidationComplete) {
+    return (
+      <Card
+        elevation={3}
+        sx={{
+          borderRadius: 2,
+          background: "linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)",
+          border: "1px solid #e0e0e0",
+          height: "fit-content",
+        }}
+      >
+        <CardContent sx={{ p: 3, textAlign: "center" }}>
+          <SearchHeader />
+          <Box sx={{ mt: 3, display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+            <CircularProgress size={40} />
+            <Typography variant="body2" color="text.secondary">
+              Checking Constant Contact authorization...
+            </Typography>
+          </Box>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Show warning if token is invalid (this will trigger OAuth redirect)
+  // if (!tokenValidationResult?.isValid) {
+  //   return (
+  //     <Card
+  //       elevation={3}
+  //       sx={{
+  //         borderRadius: 2,
+  //         background: "linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)",
+  //         border: "1px solid #e0e0e0",
+  //         height: "fit-content",
+  //       }}
+  //     >
+  //       <CardContent sx={{ p: 3 }}>
+  //         <SearchHeader />
+  //         <Alert severity="warning" sx={{ mt: 2 }}>
+  //           <Typography variant="body2">
+  //             No valid Constant Contact token found. You will be redirected to authorize access.
+  //           </Typography>
+  //         </Alert>
+  //       </CardContent>
+  //     </Card>
+  //   );
+  // }
+
+  // Normal UI when token is valid
   return (
     <Card
       elevation={3}
@@ -60,18 +117,18 @@ const SearchConstantContact: React.FC<SearchConstantContactProps> = ({
         <SearchHeader />
 
         <SearchForm
-          currentSearchEmail={currentSearchEmail}
-          onEmailChange={setCurrentSearchEmail}
+          currentSearchEmail={searchEmail}
+          onEmailChange={setSearchEmail}
           onSearch={handleSearch}
           onKeyPress={handleKeyPress}
           isLoading={isLoading}
-          isCheckingToken={isCheckingToken}
+          ishasConstantContactToken={tokenValidationResult?.isValid || false}
         />
 
         <StatusMessages
           successMessage={successMessage}
           isLoading={isLoading}
-          isCheckingToken={isCheckingToken}
+          ishasConstantContactToken={tokenValidationResult?.isValid || false}
           error={error}
         />
 

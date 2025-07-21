@@ -30,7 +30,7 @@ export function ApplicationManagerLayOut() {
     navigate(SideBarMenuName.LoggedOut.route);
   }, []);
   useEffect(() => {
-
+debugger
   
       const RmaUser = JSON.parse(localStorage.getItem(RMAUserStorageKey) || "{}") as LoginUserStateSliceProps;
     if (RmaUser.token) {

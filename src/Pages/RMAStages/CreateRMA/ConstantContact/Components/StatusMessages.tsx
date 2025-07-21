@@ -4,11 +4,16 @@ import { Box, Typography } from "@mui/material";
 interface StatusMessagesProps {
   successMessage?: string;
   isLoading?: boolean;
-  isCheckingToken?: boolean;
+  ishasConstantContactToken?: boolean;
   error?: Error | null;
 }
 
-const StatusMessages: React.FC<StatusMessagesProps> = ({ successMessage, isLoading, isCheckingToken, error }) => {
+const StatusMessages: React.FC<StatusMessagesProps> = ({
+  successMessage,
+  isLoading,
+  ishasConstantContactToken,
+  error,
+}) => {
   return (
     <>
       {/* Success Message */}
@@ -46,7 +51,7 @@ const StatusMessages: React.FC<StatusMessagesProps> = ({ successMessage, isLoadi
       )}
 
       {/* Token Checking State */}
-      {isCheckingToken && (
+      {ishasConstantContactToken && (
         <Box
           sx={{
             mb: 3,
@@ -57,7 +62,7 @@ const StatusMessages: React.FC<StatusMessagesProps> = ({ successMessage, isLoadi
           }}
         >
           <Typography variant="body1" sx={{ color: "#856404" }}>
-            Checking for existing valid token...
+            Found existing valid token...
           </Typography>
         </Box>
       )}

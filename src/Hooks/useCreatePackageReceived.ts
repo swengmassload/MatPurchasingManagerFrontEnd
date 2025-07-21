@@ -8,10 +8,11 @@ import { PackageReceivedEventCreateRequestDTO } from "../Models/RMAManagerModels
 
 export const useCreatePackageReceived = () => {
   const queryClient = useQueryClient();
-
+//
   return useMutation({
     mutationFn: (rmaData: PackageReceivedEventCreateRequestDTO) =>
-      CRUDApi<PackageReceivedEventCreateRequestDTO, PackageReceivedEventCreateRequestDTO>(BASEAPIURL + RMAManagerEnpoints.RMACreateEnpoints).addData(
+      CRUDApi<PackageReceivedEventCreateRequestDTO, PackageReceivedEventCreateRequestDTO>(BASEAPIURL 
+        + RMAManagerEnpoints.PackageReceivedEventsEndPoints).addData(
         rmaData
       ),
     onSuccess: (data) => {

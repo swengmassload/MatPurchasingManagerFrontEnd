@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+//import { useEffect } from "react";
 import CRUDApi from "../Api/CRUDApi";
 import { BASEAPIURL } from "../Constants/FixValues";
 import { QueryKeys } from "../Constants/TanstankQueryKeys";
@@ -13,8 +13,6 @@ export const useGetConfirmIfUserHasExistingValidToken = (
   data: useGetConfirmIfUserHasExistingValidTokenProps | undefined,
   startSearching: boolean
 ) => {
-  debugger
-
   const queryResult = useQuery<ValidToken | undefined, Error>({
     queryKey: [QueryKeys.useGetConfirmIfUserHasExistingValidTokenPropsKey.mainKey, data?.UserId],
     queryFn: () => {
@@ -25,20 +23,18 @@ export const useGetConfirmIfUserHasExistingValidToken = (
         BASEAPIURL + RMAManagerEnpoints.ConfirmIfUserHasExistingValidToken
       ).getDataSinglewtQryParams(data);
     },
-    enabled: !!data?.UserId && startSearching, // Only run the query if email exists and search is enabled
+    enabled: !!data?.UserId && startSearching,
+    // Disable retries for token validation
+    retry: false,
+    // Cache the result for 5 minutes to avoid repeated calls
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    // Keep in cache for 10 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    // Don't refetch on window focus
+    refetchOnWindowFocus: false,
+    // Don't refetch on reconnect
+    refetchOnReconnect: false,
   });
-
-  // Log successful responses
-  useEffect(() => {
-    if (queryResult.isSuccess) {
-   
-      console.log("🎉 Token validation successful! User has valid token",queryResult.data);
-    } else if (queryResult.isError) {
-      console.error("Error in useGetConfirmIfUserHasExistingValidToken:", queryResult.error
-      );
-      alert("An error occurred while validating the token. Please try again.");
-    }
-  }, [queryResult.isSuccess,queryResult.isError, queryResult.data]);
 
   return queryResult;
 };

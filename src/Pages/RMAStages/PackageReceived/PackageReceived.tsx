@@ -17,10 +17,10 @@ const PackageReceived = () => {
 
   const [formData, setFormData] = useState<PackageReceivedEventCreateRequestDTO>({
     rMANumber: 0,
-    userName: "",
+    //userName: "",
     timeStamp: new Date(),
     notes: "",
-    guidId: "",
+//    guidId: "",
   });
 
   const [errors, setErrors] = useState<PackageReceivedFormErrors>({});
@@ -85,10 +85,10 @@ const PackageReceived = () => {
       // Reset form after successful submission
       setFormData({
         rMANumber: 0,
-        userName: "",
+        //userName: "",
         timeStamp: new Date(),
         notes: "",
-        guidId: "",
+        //guidId: "",
       });
       setErrors({});
     } catch (error) {
@@ -100,10 +100,10 @@ const PackageReceived = () => {
   const handleReset = () => {
     setFormData({
       rMANumber: 0,
-      userName: "",
+      //userName: "",
       timeStamp: new Date(),
       notes: "",
-      guidId: "",
+      //guidId: "",
     });
     setErrors({});
     toast("Form has been reset");

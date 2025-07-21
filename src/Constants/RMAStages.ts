@@ -58,7 +58,7 @@ export class DefaultRMAStages {
     stage: "RMA_CLOSED",
     CommonName: " CLOSED RMA",
     code: "CLOSED",
-    priority: 3,
+    priority: 6,
   };
 
   public static readonly AllStages: RMAStage[] = [

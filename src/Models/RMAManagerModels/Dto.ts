@@ -357,10 +357,18 @@ export interface RepairTypeUpdateRequestDTO {
   guidId?: string;
 }
 
+// export interface PackageReceivedEventCreateRequestDTO {
+//   rMANumber: number;
+//   userName?: string | undefined;
+//   timeStamp?: Date;
+//   notes: string | undefined;
+//   guidId?: string;
+// }
+
 export interface PackageReceivedEventCreateRequestDTO {
   rMANumber: number;
-  userName?: string | undefined;
-  timeStamp?: Date;
   notes: string | undefined;
-  guidId?: string;
+  timeStamp?: Date;
+  
 }
+

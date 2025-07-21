@@ -12,7 +12,7 @@ export const useCreateRMA = () => {
 
   return useMutation({
     mutationFn: (rmaData: RMACreateRequestDTO) =>
-      CRUDApi<RMACreateRequestDTO, RMACreateRequestDTO>(BASEAPIURL + RMAManagerEnpoints.RMACreateEnpoints).addData(
+      CRUDApi<RMACreateRequestDTO, RMACreateRequestDTO>(BASEAPIURL + RMAManagerEnpoints.RMACreateEndpoints).addData(
         rmaData
       ),
     onSuccess: (data) => {

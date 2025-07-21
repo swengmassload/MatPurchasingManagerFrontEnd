@@ -16,7 +16,6 @@ import { SideBarMenuName } from "../../../../../Constants/SideBarMenuNames";
 
 export const useSearchConstantContact = (onContactSelected?: (contact: Contact | null) => void) => {
   // State management
-  const [currentSearchEmail, setCurrentSearchEmail] = useState<string>("");
   const [searchEmail, setSearchEmail] = useState<string>("");
   const [startSearching, setStartSearching] = useState<boolean>(false);
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
@@ -24,8 +23,10 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
   const [showingDetails, setShowingDetails] = useState<string | null>(null);
   const [fetchingContactId, setFetchingContactId] = useState<string | null>(null);
   const [loadingToastId, setLoadingToastId] = useState<string | null>(null);
-  const [checkingToken, setCheckingToken] = useState<boolean>(true);
   const [successMessage, setSuccessMessage] = useState("");
+
+  // Token validation state - runs immediately on mount
+  const [tokenValidationComplete, setTokenValidationComplete] = useState<boolean>(false);
   const [persistentTokenValidation, setPersistentTokenValidation] = useState<ValidToken | null>(null);
 
   const appUser = useSelector((state: RootState) => state.loginUser);
@@ -44,29 +45,37 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
     error: detailError,
   } = useGetContactByContactId(fetchingContactId ? { ContactId: fetchingContactId } : undefined, !!fetchingContactId);
 
+  // Token validation hook - runs immediately when user exists
   const {
     data: tokenValidationResult,
     isLoading: isCheckingToken,
     error: tokenValidationError,
   } = useGetConfirmIfUserHasExistingValidToken(
-    checkingToken && appUser?.userName ? { UserId: appUser.userName } : undefined,
-    checkingToken
+    appUser?.userName ? { UserId: appUser.userName } : undefined,
+    !!appUser?.userName && !tokenValidationComplete // Only run if user exists and not completed yet
   );
 
-  // Effect: Store token validation result persistently once received
+  // Effect: Handle token validation results (runs once)
   useEffect(() => {
-    if (tokenValidationResult && !persistentTokenValidation) {
-      console.log("🔑 Storing token validation result persistently:", tokenValidationResult);
+    if (tokenValidationResult && !tokenValidationComplete) {
+      console.log("🔑 Token validation completed:", tokenValidationResult);
       setPersistentTokenValidation(tokenValidationResult);
+      setTokenValidationComplete(true);
     }
-  }, [tokenValidationResult, persistentTokenValidation]);
 
-  // Effect: Handle OAuth callback
+    if (tokenValidationError && !tokenValidationComplete) {
+      console.log("❌ Token validation failed:", tokenValidationError);
+      // Set a default invalid token result
+      setPersistentTokenValidation({ isValid: false, message: "Token validation failed" });
+      setTokenValidationComplete(true);
+    }
+  }, [tokenValidationResult, tokenValidationError, tokenValidationComplete]);
+
+  // Effect: Handle OAuth callback (runs once on mount)
   useEffect(() => {
     const storedEmail = localStorage.getItem(ConstantContactSearchEmailKey);
     if (storedEmail) {
       console.log("✅ Found stored email, starting search:", storedEmail);
-      setCurrentSearchEmail(storedEmail);
       setSearchEmail(storedEmail);
       setStartSearching(true);
       localStorage.removeItem(ConstantContactSearchEmailKey);
@@ -74,9 +83,11 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
     }
   }, []);
 
-  // Effect: Handle successful contact details fetch
+  // Effect: Handle contact details fetch
   useEffect(() => {
-    if (detailResult && fetchingContactId) {
+    if (!fetchingContactId) return;
+
+    if (detailResult) {
       console.log("✅ Contact details fetched successfully:", detailResult);
       setContactDetails(detailResult);
       setShowingDetails(fetchingContactId);
@@ -88,11 +99,8 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
       }
       toast.success(`Contact details loaded successfully!`);
     }
-  }, [detailResult, fetchingContactId, loadingToastId]);
 
-  // Effect: Handle contact details fetch errors
-  useEffect(() => {
-    if (detailError && fetchingContactId) {
+    if (detailError) {
       console.log("❌ Contact details fetch failed:", detailError);
       setFetchingContactId(null);
 
@@ -102,62 +110,38 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
       }
       toast.error(`Failed to load contact details: ${detailError.message}`);
     }
-  }, [detailError, fetchingContactId, loadingToastId]);
-
-  // Effect: Handle token validation results
-  useEffect(() => {
-    if (tokenValidationResult && checkingToken) {
-      console.log("🔑 Token validation result:", tokenValidationResult);
-      setCheckingToken(false);
-
-      if (tokenValidationResult.isValid) {
-        console.log("✅ Valid token found on server, proceeding with search");
-        setSearchEmail(currentSearchEmail);
-        setStartSearching(true);
-        toast.success("Valid token found! Searching contacts...");
-      } else {
-        console.log("❌ No valid token found, redirecting to OAuth");
-        toast.success(tokenValidationResult.message || "No valid token found. Redirecting to OAuth...");
-        window.location.href = authUrl;
-      }
-    }
-  }, [tokenValidationResult, checkingToken, currentSearchEmail]);
-
-  // Effect: Handle token validation errors
-  useEffect(() => {
-    if (tokenValidationError && checkingToken) {
-      console.log("❌ Token validation failed:", tokenValidationError);
-      setCheckingToken(false);
-      console.log("🔄 Token validation error, redirecting to OAuth");
-      toast.success("Unable to verify existing token. Redirecting to OAuth...");
-      window.location.href = authUrl;
-    }
-  }, [tokenValidationError, checkingToken]);
+  }, [detailResult, detailError, fetchingContactId, loadingToastId]);
 
   // Handlers
   const handleSearch = async () => {
-    if (currentSearchEmail.trim()) {
-      localStorage.setItem(ConstantContactSearchEmailKey, currentSearchEmail);
+    debugger;
+    // Prevent search if token validation not complete
+    if (!tokenValidationComplete) {
+      toast.error("Please wait for token validation to complete");
+      return;
+    }
+
+    // Prevent search if token is invalid
+    if (!persistentTokenValidation?.isValid) {
+      toast.error("Valid token required. Redirecting to OAuth...");
+      window.location.href = authUrl;
+      return;
+    }
+
+    if (searchEmail.trim()) {
+      localStorage.setItem(ConstantContactSearchEmailKey, searchEmail);
 
       if (IsTokenValid(appUser?.token)) {
+        alert("Using validated token for search--Setting APPUSERKEY");
         localStorage.setItem(RMAUserStorageKey, JSON.stringify(appUser));
-
-        // Only check token if we don't have a persistent validation or it's invalid
-        if (!persistentTokenValidation || !persistentTokenValidation.isValid) {
-          setCheckingToken(true);
-        } else {
-          // We already have valid token, proceed directly with search
-          console.log("✅ Using cached valid token, proceeding with search");
-          setSearchEmail(currentSearchEmail);
-          setStartSearching(true);
-          toast.success("Using cached valid token! Searching contacts...");
-        }
+        console.log("✅ Using validated token, proceeding with search");
+        setStartSearching(true);
+        toast.success("Searching contacts...");
       } else {
         toast.error(`Token is invalid or expired. Please Login again.`);
         setTimeout(() => {
           navigate(SideBarMenuName.LoggedOut.route);
         }, 3000);
-        return;
       }
     }
   };
@@ -169,6 +153,12 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
   };
 
   const handleFetchContactDetails = (contact: Contact) => {
+    // Prevent if token validation not complete or invalid
+    if (!tokenValidationComplete || !persistentTokenValidation?.isValid) {
+      toast.error("Valid token required for this operation");
+      return;
+    }
+
     console.log("📋 Fetching contact details for:", contact.contact_id);
     setFetchingContactId(contact.contact_id);
     const toastId = toast.loading(`Fetching details for ${contact.first_name} ${contact.last_name}...`);
@@ -183,23 +173,25 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
   };
 
   return {
+    // Token validation state (primary concern)
+    tokenValidationComplete,
+    tokenValidationResult: persistentTokenValidation,
+    isCheckingToken,
+
     // State
-    currentSearchEmail,
-    setCurrentSearchEmail,
     searchEmail,
+    setSearchEmail,
     selectedContact,
     contactDetails,
     showingDetails,
     fetchingContactId,
     successMessage,
-    tokenValidationResult: persistentTokenValidation || tokenValidationResult,
 
     // API states
     result,
     isLoading,
     error,
     isLoadingDetails,
-    isCheckingToken,
 
     // Handlers
     handleSearch,

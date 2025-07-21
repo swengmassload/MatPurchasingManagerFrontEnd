@@ -76,7 +76,8 @@ export const RMAManagerEnpoints = {
   SearchContactEndPoint: `${RMAAPINAME}/v1/ConstantContact/searchContactByContactId`,
   ConfirmIfUserHasExistingValidToken: `${RMAAPINAME}/v1/ConstantContact/ConfirmIfUserHasExistingValidToken`,
   
-  RMACreateEnpoints: `${RMAAPINAME}/v1/RMAs`,
+  RMACreateEndpoints: `${RMAAPINAME}/v1/RMAs`,
+PackageReceivedEventsEndPoints: `${RMAAPINAME}/v1/PackageReceivedEvents`,
   RMANextNumberEndpoint: `${RMAAPINAME}/v1/RMANextNumbers`,
 };
 //https://localhost:7175/RMAManagerAPI/v1/RMANextNumbers'
