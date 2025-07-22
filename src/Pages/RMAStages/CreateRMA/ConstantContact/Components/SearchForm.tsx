@@ -8,7 +8,6 @@ interface SearchFormProps {
   onSearch: () => void;
   onKeyPress: (e: React.KeyboardEvent) => void;
   isLoading: boolean;
-  ishasConstantContactToken: boolean;
 }
 
 const SearchForm: React.FC<SearchFormProps> = ({
@@ -17,11 +16,9 @@ const SearchForm: React.FC<SearchFormProps> = ({
   onSearch,
   onKeyPress,
   isLoading,
-  ishasConstantContactToken,
 }) => {
   return (
     <Box sx={{ mb: 3 }}>
-  
       <Stack direction="row" spacing={2} alignItems="center">
         <TextField
           label="Email Address"
@@ -31,9 +28,11 @@ const SearchForm: React.FC<SearchFormProps> = ({
           onKeyPress={onKeyPress}
           placeholder="Enter email to search"
           fullWidth
-          disabled={isLoading }
-          InputProps={{
-            startAdornment: <Email sx={{ mr: 1, color: "action.active" }} />,
+          disabled={isLoading}
+          slotProps={{
+            input: {
+              startAdornment: <Email sx={{ mr: 1, color: "action.active" }} />,
+            },
           }}
           sx={{
             "& .MuiOutlinedInput-root": {
@@ -45,7 +44,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
         <Button
           variant="contained"
           onClick={onSearch}
-          disabled={!currentSearchEmail.trim() || isLoading }
+          disabled={!currentSearchEmail.trim() || isLoading}
           sx={{
             minWidth: 120,
             height: 56,
@@ -54,7 +53,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
             fontSize: "1rem",
           }}
         >
-          {isLoading ? "Processing..." :  "Search"}
+          {isLoading ? "Processing..." : "Search"}
         </Button>
       </Stack>
     </Box>

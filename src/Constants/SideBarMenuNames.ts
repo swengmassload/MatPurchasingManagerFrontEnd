@@ -29,6 +29,13 @@ export class SideBarMenuName {
     description: DefaultRMAStages.PRODUCTASSESSED.CommonName,
   };
 
+  public static readonly TRACKING: MenuName = {
+    stage: DefaultRMAStages.TRACKING.stage,
+    route: DefaultRMAStages.TRACKING.code,
+    barCode: DefaultRMAStages.TRACKING.code,
+    description: DefaultRMAStages.TRACKING.CommonName,
+  };
+
   public static readonly ADDSALESORDER: MenuName = {
     stage: DefaultRMAStages.SALESORDERADDED.stage,
     route: DefaultRMAStages.SALESORDERADDED.code,

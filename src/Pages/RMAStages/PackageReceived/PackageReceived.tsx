@@ -112,9 +112,6 @@ const PackageReceived = () => {
   return (
     <Box sx={{ maxWidth: 800, margin: "0 auto", padding: 2 }}>
       <Paper elevation={3} sx={{ padding: 3 }}>
-        <Typography variant="h4" gutterBottom color="primary" sx={{ textAlign: "center", mb: 2 }}>
-          Package Received Event
-        </Typography>
 
         <Typography variant="body1" color="text.secondary" sx={{ mb: 3, textAlign: "center" }}>
           Record when a package has been received for an RMA request.
@@ -139,8 +136,8 @@ const PackageReceived = () => {
                     onChange={handleFieldChange("rMANumber")}
                     error={Boolean(errors.rMANumber)}
                     helperText={errors.rMANumber}
-                    inputProps={{ min: 1 }}
-                    sx={{ maxWidth: 300 }}
+                
+                
                   />
 
                   <TextField

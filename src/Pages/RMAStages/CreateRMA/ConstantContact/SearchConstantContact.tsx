@@ -122,7 +122,7 @@ const SearchConstantContact: React.FC<SearchConstantContactProps> = ({
           onSearch={handleSearch}
           onKeyPress={handleKeyPress}
           isLoading={isLoading}
-          ishasConstantContactToken={tokenValidationResult?.isValid || false}
+         // ishasConstantContactToken={tokenValidationResult?.isValid || false}
         />
 
         <StatusMessages

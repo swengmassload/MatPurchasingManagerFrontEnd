@@ -1,6 +1,5 @@
 import assets from "../../../assets";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+
 import { SideBarMenuName } from "../../../Constants/SideBarMenuNames";
 
 export interface SideBarItemProps {
@@ -71,5 +70,11 @@ export const SideBarContent: SideBarItemProps[] = [
     sideBarLink: SideBarMenuName.CLOSEDRMA.route,
     level: 0,
     menuNumber: 6,
-  },
+  },{
+    sideBarText: SideBarMenuName.TRACKING.description,
+    sidebarIconUrl: assets.icons.defects,
+    sideBarLink: SideBarMenuName.TRACKING.route,
+    level: 0,
+    menuNumber: 7,
+  }
 ]; //as SideBarItemProps[];

@@ -372,3 +372,28 @@ export interface PackageReceivedEventCreateRequestDTO {
   
 }
 
+
+export interface TrackingGroupedProductDTO {
+  //ModelName: string ;
+  stage: string;
+  count: number;
+
+}
+
+export class TrackReport {
+  ModelName: string = "RMA";
+  Total: number = 0;
+  LabelSentValue: number = 0;
+  PackageReceivedValue: number = 0;
+  ProductAssessedValue: number = 0;
+  SalesOrderAddedValue: number = 0;
+  RepairInProgressValue: number = 0;
+  RMACLOSEDValue: number = 0;
+}
+
+export interface RMAGetTrackingDetailRequestDTO {
+  stage?: string;
+  //modelName?: string;
+  rMANumber?: number | null;
+  GetRequestByrMANumber?: boolean;
+}

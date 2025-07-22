@@ -21,7 +21,7 @@ export class DefaultRMAStages {
   public static readonly LABELSENT: RMAStage = {
     stage: "LABEL_SENT",
     code: "LABELSENT",
-    CommonName: "CREATE RMA",
+    CommonName: "Create RMA",
 
     priority: 1,
   };
@@ -29,34 +29,40 @@ export class DefaultRMAStages {
   public static readonly PACKAGERECEIVED: RMAStage = {
     stage: "PACKAGE_RECEIVED",
     code: "PACKAGERECEIVED",
-    CommonName: "RECEIVE PACKAGE",
+    CommonName: "Receive Package",
     priority: 2,
   };
 
   public static readonly PRODUCTASSESSED: RMAStage = {
     stage: "PRODUCT_ASSESSED",
     code: "PRODUCTASSESSED",
-    CommonName: "ASSESS PRODUCT",
+    CommonName: "Assess Product",
     priority: 3,
   };
 
   public static readonly SALESORDERADDED: RMAStage = {
     stage: "SALES_ORDER_ADDED",
     code: "SALESORDERADDED",
-    CommonName: "ADD SALES ORDER",
+    CommonName: "Add Sales Order",
+    priority: 4,
+  };
+  public static readonly TRACKING: RMAStage = {
+    stage: "TRACKING",
+    code: "TRACKING",
+    CommonName: "Tracking",
     priority: 4,
   };
 
   public static readonly REPAIRINPROGRESS: RMAStage = {
     stage: "REPAIR_IN_PROGRESS",
-    CommonName: "REPAIR IN PROGRESS",
+    CommonName: "Repair Prodcuct",
     code: "REPAIRINPROGRESS",
     priority: 5,
   };
 
   public static readonly RMA_CLOSED: RMAStage = {
     stage: "RMA_CLOSED",
-    CommonName: " CLOSED RMA",
+    CommonName: "Closed RMA",
     code: "CLOSED",
     priority: 6,
   };

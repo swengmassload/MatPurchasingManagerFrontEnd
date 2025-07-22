@@ -5,11 +5,15 @@ import NoAuthPage from "../Pages/NoAuthPage/NoAuthPage";
 import LoggedOut from "../Pages/LoggedOut/LoggedOut";
 import ApplicationManagerLayOut from "../Pages/LayOut/ApplicationManagerLayOut";
 
-
 import { SideBarMenuName } from "../Constants/SideBarMenuNames";
 import CreateRMALayOut from "../Pages/RMAStages/CreateRMA/CreateRMALayOut";
 import OAuthCallback from "../Pages/RMAStages/CreateRMA/ConstantContact/OAuthCallback";
 import PackageReceivedLayOut from "../Pages/RMAStages/PackageReceived/PackageReceivedLayOut";
+import AssessPackageLayOut from "../Pages/RMAStages/AssessPackage/AssessPackageLayOut";
+import CloseRMALayOut from "../Pages/RMAStages/CloseRMA/CloseRMALayOut";
+import AddSalesOrderLayOut from "../Pages/RMAStages/AddSalesOrder/AddSalesOrderLayOut";
+import RepairProductLayOut from "../Pages/RMAStages/RepairProduct/RepairProductLayOut";
+import TrackingLayOut from "../Pages/Tracking/TrackingLayOut";
 
 export const RoutesProvider = [
   {
@@ -19,10 +23,10 @@ export const RoutesProvider = [
   },
 
   {
-    path: "/oauth/callback" ,
+    path: "/oauth/callback",
     element: <OAuthCallback />,
   },
-    {
+  {
     path: SideBarMenuName.NoAuthPage.route,
     element: <NoAuthPage />,
   },
@@ -49,16 +53,36 @@ export const RoutesProvider = [
         index: true,
         element: <PlayGround />,
       },
-    {
-    path: SideBarMenuName.CreateRMA.route,
-    element: <CreateRMALayOut />,
-  },
+      {
+        path: SideBarMenuName.CreateRMA.route,
+        element: <CreateRMALayOut />,
+      },
 
       {
         path: SideBarMenuName.RECEIVEPACKAGE.route,
         element: <PackageReceivedLayOut />,
       },
 
+      {
+        path: SideBarMenuName.ACCESSEDPRODUCT.route,
+        element: <AssessPackageLayOut />,
+      },
+      {
+        path: SideBarMenuName.CLOSEDRMA.route,
+        element: <CloseRMALayOut />,
+      },
+      {
+        path: SideBarMenuName.REPAIRPRODUCT.route,
+        element: <RepairProductLayOut />,
+      },
+      {
+        path: SideBarMenuName.ADDSALESORDER.route,
+        element: <AddSalesOrderLayOut />,
+      },
+      {
+        path: SideBarMenuName.TRACKING.route,
+        element: <TrackingLayOut />,
+      },
     ],
   },
 ];

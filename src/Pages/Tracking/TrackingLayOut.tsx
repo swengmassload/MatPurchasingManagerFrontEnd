@@ -1,0 +1,54 @@
+import { Box, Tab, Tabs } from "@mui/material";
+//import { EstablishedClaims } from "../../../Constants/EstablishedClaims";
+
+//import Tracking from "./Tracking";
+import LayoutInLetWrapper from "../LayOut/LayoutInLetWrapper";
+import { useState } from "react";
+import { TabListSyle, TabIndicatorStyle, TabBorderStyle } from "../../Components/Common/TabListStyle";
+import TrackByRMANumber from "./TrackByRMANumber/TrackByRMANumber";
+import TrackByStage from "./TrackByStage/TrackByStage";
+import { TabContext, TabPanel } from "@mui/lab";
+const TrackingLayOut = () => {
+const [value, setValue] = useState("1");
+  const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue);  };
+    return (
+      <LayoutInLetWrapper pageTitle="Track and Report" layOutAccessClaim="">
+        <Box
+          sx={{
+            width: "100%",
+
+            background: "white",
+
+          }}
+        >
+          <TabContext value={value}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              sx={TabListSyle}
+              TabIndicatorProps={TabIndicatorStyle}
+            >
+              <Tab sx={TabBorderStyle} label="Track by Stage" value="1" />
+              <Tab sx={TabBorderStyle} label="Track by Serial Number" value="2" />
+{/*            
+              <Tab sx={TabBorderStyle} label="Print Certificates" value="4" /> */}
+            </Tabs>
+            <TabPanel value="1" sx={{ padding: "0px" }}>
+              <TrackByStage />
+            </TabPanel>
+
+            <TabPanel value="2" sx={{ padding: "0px" }}>
+              <TrackByRMANumber />
+            </TabPanel>
+
+                        {/* <TabPanel value="4" sx={{ padding: "0px" }}>
+              <PrintCertificates />
+            </TabPanel> */}
+          </TabContext>
+        </Box>
+      </LayoutInLetWrapper>
+    );
+  };
+
+export default TrackingLayOut
