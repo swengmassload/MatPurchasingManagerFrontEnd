@@ -11,7 +11,7 @@ export interface Status {
 
 export interface RMAStage {
   stage: string;
-  code: string;
+  code: string;// code is used for routing
   priority?: number;
   CommonName: string;
   stageCardName?: string;

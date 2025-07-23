@@ -246,9 +246,31 @@ export interface RMAProductUpdateRequestDTO {
   guidId?: string;
 }
 
+
+
+
+    // Supporting interfaces for the referenced DTOs
 export interface RMAResponseDTO {
-  value?: any | undefined;
+  rMANumber: number;
+  customerEmail: string;
+  dateIssued: string; // ISO date string
+  dateReceived: string; // ISO date string
+  rmaProblemDescription: string;
+  stage: string;
+  salesPerson: string;
+  companyName: string;
+  contactName: string;
+  city: string;
+  province: string;
+  zipCode: string;
+  country: string;
+  phoneNumber: string;
+  faxNumber: string;
+  notes: string;
+  guidId: string; // UUID string
 }
+
+
 
 export interface RMASolutionTypeCreateRequestDTO {
   solution?: string | undefined;
@@ -357,13 +379,7 @@ export interface RepairTypeUpdateRequestDTO {
   guidId?: string;
 }
 
-// export interface PackageReceivedEventCreateRequestDTO {
-//   rMANumber: number;
-//   userName?: string | undefined;
-//   timeStamp?: Date;
-//   notes: string | undefined;
-//   guidId?: string;
-// }
+
 
 export interface PackageReceivedEventCreateRequestDTO {
   rMANumber: number;
@@ -381,7 +397,7 @@ export interface TrackingGroupedProductDTO {
 }
 
 export class TrackReport {
-  ModelName: string = "RMA";
+ // ModelName: string = "RMA";
   Total: number = 0;
   LabelSentValue: number = 0;
   PackageReceivedValue: number = 0;
@@ -396,4 +412,77 @@ export interface RMAGetTrackingDetailRequestDTO {
   //modelName?: string;
   rMANumber?: number | null;
   GetRequestByrMANumber?: boolean;
+}
+
+
+
+
+interface LabelSentEventResponseDTO {
+  rmaNumber: number;
+  userName: string;
+  timeStamp: Date; // ISO date string
+  senderEmail: string;
+  receiverEmail: string;
+  message: string;
+  guidId: string; // UUID string
+}
+
+export interface PackageReceivedEventResponseDTO {
+  rmaNumber: number;
+  userName: string;
+  timeStamp: Date; // ISO date string
+  notes: string;
+  guidId: string; // UUID string
+}
+
+export interface ProductAssessedEventResponseDTO {
+  rmaNumber: number;
+  userName: string;
+  timeStamp: Date; // ISO date string
+  notes: string;
+  guidId: string; // UUID string
+}
+
+export interface SalesOrderAddedEventResponseDTO {
+  rmaNumber: number;
+  userName: string;
+  timeStamp: Date; // ISO date string
+  notes: string;
+  guidId: string; // UUID string
+}
+
+export interface RepairInProgressEventResponseDTO {
+  rmaNumber: number;
+  userName: string;
+  timeStamp: Date; // ISO date string
+  notes: string;
+  guidId: string; // UUID string
+}
+
+export interface RMACloseEventResponseDTO {
+  rmaNumber: number;
+  userName: string;
+  timeStamp: Date; // ISO date string
+  notes: string;
+  guidId: string; // UUID string
+}
+
+// Main interface equivalent to RMATrackingReportDetailResponceDTO
+export interface RMATrackingReportDetailResponseDTO {
+  products: RMAResponseDTO;
+  labelSentEvents: LabelSentEventResponseDTO[];
+  packageReceivedEvents?: PackageReceivedEventResponseDTO[] | null;
+  productAssessedEvents?: ProductAssessedEventResponseDTO[] | null;
+  salesOrderAddedEvents?: SalesOrderAddedEventResponseDTO[] | null;
+  repairInProgressEvents?: RepairInProgressEventResponseDTO[] | null;
+  rmaClosedEvents?: RMACloseEventResponseDTO[] | null;
+}
+
+export interface BaseEventResponseDTO {
+  EventName: string;
+  RMANumber: number;
+  userName: string | undefined;
+  timeStamp: Date;
+  guidId: string;
+  AllPropertiesAsJson?: string | undefined;
 }

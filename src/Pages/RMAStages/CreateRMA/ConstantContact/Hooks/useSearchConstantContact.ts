@@ -132,7 +132,7 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
       localStorage.setItem(ConstantContactSearchEmailKey, searchEmail);
 
       if (IsTokenValid(appUser?.token)) {
-        alert("Using validated token for search--Setting APPUSERKEY");
+       
         localStorage.setItem(RMAUserStorageKey, JSON.stringify(appUser));
         console.log("✅ Using validated token, proceeding with search");
         setStartSearching(true);

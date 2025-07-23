@@ -19,9 +19,9 @@ const CreateRMA = () => {
   };
 
   return (
-    <Box sx={{ width: "100%", padding: 2 }}>
+    <Box sx={{ width: "100%", padding: 0 }}>
       {/* Header */}
-      <Box sx={{ marginBottom: 3, textAlign: "center" }}>
+      <Box sx={{ marginBottom: 1, textAlign: "center" }}>
         <Typography variant="body1" color="text.secondary">
           Search for customer contacts and create RMA
         </Typography>

@@ -18,7 +18,7 @@ const RMADetailsSection: React.FC<RMADetailsSectionProps> = ({ formData, errors,
         <Typography variant="h6" gutterBottom color="primary">
           RMA Details
         </Typography>
-        <Divider sx={{ mb: 2 }} />
+        <Divider sx={{ mb: 1 }} />
 
         <Stack spacing={2}>
           <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
@@ -31,14 +31,14 @@ const RMADetailsSection: React.FC<RMADetailsSectionProps> = ({ formData, errors,
               InputLabelProps={{ shrink: true }}
             />
 
-            <TextField
+            {/* <TextField
               sx={{ flex: 1, minWidth: 250 }}
               label="Date Received"
               type="date"
               value={formData.dateRecieved ? formData.dateRecieved.toISOString().split("T")[0] : ""}
               onChange={onDateChange("dateRecieved")}
               InputLabelProps={{ shrink: true }}
-            />
+            /> */}
           </Box>
 
           <TextField

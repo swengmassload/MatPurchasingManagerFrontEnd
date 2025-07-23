@@ -4,6 +4,8 @@ import { useGetGroupRMATrackingReport } from "../../../Hooks/useGetGroupRMATrack
 import { TabHeader } from "../../../Components/Common/Headers";
 import CircularSpinner from "../../../Components/Common/CircularSpinner";
 import TrackByStageMUITable from "./TrackByStageMUITable";
+import { GetTrackReportForRMA } from "./GetTrackReportForRMA";
+import { Box } from "@mui/material";
 
 interface TrackByStageProps {}
 
@@ -17,20 +19,20 @@ function ConvertTrackingGroupedProductDTOToTrackReport(data: TrackingGroupedProd
   // result is the data that will be returned because we dont need any grouping
   //just one group 
   //if we need to group then the commented code will be relevant
-//  const result: TrackReport[] = [];
-//   const distincModels = data
-//     .map((item) => item.modelName)
-//     .filter((value, index, self) => self.indexOf(value) === index);
+ const result: TrackReport[] = [];
+  // const distincModels = data
+  //   .map((item) => item.modelName)
+  //   .filter((value, index, self) => self.indexOf(value) === index);
 
-//   distincModels.forEach((element) => {
-//     debugger
-//     const trackedModelData = data.filter((item) => item.modelName === element);
-//     const trackReport = GetTrackReportForModel(element, trackedModelData);
+ // distincModels.forEach((element) => {
+    debugger
+  //  const trackedModelData = data.filter((item) => item.modelName === element);
+    const trackReport = GetTrackReportForRMA(data);
 
-//     result.push(trackReport);
-//     debugger;
-//   });
-//   return result;
+    result.push(trackReport);
+    debugger;
+ // });
+  return result;
 }
 const TrackByStage = ({}: TrackByStageProps) => {
   const [trackingData, setTrackingData] = useState<TrackReport[] | undefined>([]);
@@ -48,8 +50,9 @@ debugger
     <>
       <TabHeader textAlign="left">Track by Production Stages</TabHeader>
        <CircularSpinner isFetching={request.isFetching} caption="Loading..."></CircularSpinner>
-
-      {trackingData && <TrackByStageMUITable data={trackingData} />}
+<Box  sx={{ width: "100%", height: "100%", overflow: "auto" ,pl: 5,pr: 50}}>
+  {trackingData && <TrackByStageMUITable data={trackingData} />}
+</Box>
     </>
   );
 };

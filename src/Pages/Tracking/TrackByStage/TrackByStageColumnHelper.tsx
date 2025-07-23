@@ -31,7 +31,8 @@ export const TrackByStageColumnHelper = (data: TrackReport[]) => {
 
         columnHelper.accessor((row) => row.LabelSentValue.toString(), {
       header: "Label Sent",
-      id: DefaultRMAStages.LABELSENT.code,
+      //id: DefaultRMAStages.LABELSENT.code,
+       id: DefaultRMAStages.LABELSENT.stage,
       size: 80,
       enableEditing: false,
       Footer: () => {
@@ -44,7 +45,7 @@ export const TrackByStageColumnHelper = (data: TrackReport[]) => {
 
     columnHelper.accessor((row) => row.PackageReceivedValue.toString(), {
       header: "Package Received",
-      id: DefaultRMAStages.PACKAGERECEIVED.code,
+      id: DefaultRMAStages.PACKAGERECEIVED.stage,
       size: 80,
       enableEditing: false,
       Footer: () => {
@@ -55,7 +56,7 @@ export const TrackByStageColumnHelper = (data: TrackReport[]) => {
 
     columnHelper.accessor((row) => row.ProductAssessedValue.toString(), {
       header: "Product Assessed",
-      id: DefaultRMAStages.PRODUCTASSESSED.code,
+      id: DefaultRMAStages.PRODUCTASSESSED.stage,
       size: 80,
       enableEditing: false,
       Footer: () => {
@@ -66,7 +67,7 @@ export const TrackByStageColumnHelper = (data: TrackReport[]) => {
 
     columnHelper.accessor((row) => row.SalesOrderAddedValue.toString(), {
       header: "Sales Order",
-      id: DefaultRMAStages.SALESORDERADDED.code,
+      id: DefaultRMAStages.SALESORDERADDED.stage,
       size: 80,
       enableEditing: false,
       Footer: () => {
@@ -77,7 +78,7 @@ export const TrackByStageColumnHelper = (data: TrackReport[]) => {
 
     columnHelper.accessor((row) => row.RepairInProgressValue.toString(), {
       header: "Repair In Progress",
-      id: DefaultRMAStages.REPAIRINPROGRESS.code,
+      id: DefaultRMAStages.REPAIRINPROGRESS.stage,
       size: 80,
       enableEditing: false,
       Footer: () => {
@@ -87,12 +88,21 @@ export const TrackByStageColumnHelper = (data: TrackReport[]) => {
     }),
     columnHelper.accessor((row) => row.RMACLOSEDValue.toString(), {
       header: "RMA Closed",
-      id: DefaultRMAStages.RMA_CLOSED.code,
+      id: DefaultRMAStages.RMA_CLOSED.stage,
       size: 80,
       enableEditing: false,
       Footer: () => {
         const total = data.reduce((sum, item) => sum + (item.RMACLOSEDValue || 0), 0);
         return <Box sx={{ fontWeight: "bold" }}> {total}</Box>;
+      },
+    }),
+        columnHelper.accessor((row) => row.Total.toString(), {
+      header: "Total",
+      size: 70,
+      Cell: ({ cell }) => <div style={{ whiteSpace: "normal", wordBreak: "break-word" }}>{cell.getValue()}</div>,
+      Footer: () => {
+        const total = data.reduce((sum, item) => sum + (item.Total || 0), 0);
+        return <Box sx={{ fontWeight: "bold" }}>Total: {total}</Box>;
       },
     }),
   ];

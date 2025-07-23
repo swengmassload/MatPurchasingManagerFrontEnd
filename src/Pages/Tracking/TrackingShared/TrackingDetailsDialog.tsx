@@ -1,18 +1,25 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Box } from "@mui/material";
 
 import { useState } from "react";
-import { RMAGetTrackingDetailRequestDTO } from "../../../Models/RMAManagerModels/Dto";
+import { RMATrackingReportDetailResponseDTO } from "../../../Models/RMAManagerModels/Dto";
 import { LayOutHeader } from "../../../Components/Common/Headers";
+import TrackingRMAs from "./TrackingRMAs";
+import TrackingSelectedRMAEvents from "./TrackingSelectedRMAEvents";
+import TrackingSelectedRMAInfo from "./TrackingSelectedRMAInfo";
+import { SortedAvailableEvents } from "./SortedAvailableEvents";
 
 interface TrackingDetailsDialogProps {
   open: boolean;
   onClose: () => void;
-  data: RMAGetTrackingDetailRequestDTO[];
+  data: RMATrackingReportDetailResponseDTO[];
   additionalInfo?: string;
 }
 
 const TrackingDetailsDialog: React.FC<TrackingDetailsDialogProps> = ({ open, onClose, data, additionalInfo }) => {
-  const [selectedTrackingDetail, setSelectedTrackingDetail] = useState<RMAGetTrackingDetailRequestDTO | undefined>(
+  debugger;
+  console.log("TrackingDetailsDialog Rendered", data);
+  console.log("Additional Info:", additionalInfo);
+  const [selectedTrackingDetail, setSelectedTrackingDetail] = useState<RMATrackingReportDetailResponseDTO | undefined>(
     undefined
   );
   return (
@@ -37,28 +44,28 @@ const TrackingDetailsDialog: React.FC<TrackingDetailsDialogProps> = ({ open, onC
       {!additionalInfo && (
         <DialogTitle>
           {" "}
-          <LayOutHeader>Product History</LayOutHeader>
+          <LayOutHeader>RMA History</LayOutHeader>
         </DialogTitle>
       )}
       {additionalInfo && (
         <DialogTitle>
           {" "}
-          <LayOutHeader>Product History {additionalInfo}</LayOutHeader>{" "}
+          <LayOutHeader>RMA History {additionalInfo}</LayOutHeader>{" "}
         </DialogTitle>
       )}
       <DialogContent>
         <Box sx={{ display: "flex", width: "100%", height: "100%", gap: 5 }}>
-          {/* <Box>
-            <TrackingProducts data={data} setSelectedTrackingDetail={setSelectedTrackingDetail} />
+          <Box>
+            <TrackingRMAs data={data} setSelectedTrackingDetail={setSelectedTrackingDetail} />
           </Box>
           <Box>
-            <TrackingSelectedProductInfo product={selectedTrackingDetail?.products} />
+            <TrackingSelectedRMAInfo product={selectedTrackingDetail?.products} />
           </Box>
           <Box>
             {selectedTrackingDetail && (
-              <TrackingSelectedProductEvents filterEvents={SortedAvailableEvents(selectedTrackingDetail) || []} />
+              <TrackingSelectedRMAEvents filterEvents={SortedAvailableEvents(selectedTrackingDetail) || []} />
             )}
-          </Box> */}
+          </Box>
         </Box>
       </DialogContent>
 

@@ -131,7 +131,7 @@ const TrackByStageMUITable = ({ data, hiddenColumns, enableRowSelection = false 
         if (cellValue === null || cellValue === undefined || cellValue == "0") return;
 
         const columnKey = cell.column.columnDef.id;
-        const firstColumnValue = cell.row.original.ModelName; //[firstColumn.accessorKey ];
+       // const firstColumnValue = cell.row.original.ModelName; //[firstColumn.accessorKey ];
         setTrackingParams({
           rMANumber: null,
           stage: columnKey,

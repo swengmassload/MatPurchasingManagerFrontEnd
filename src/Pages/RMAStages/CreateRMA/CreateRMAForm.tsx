@@ -34,12 +34,12 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact, tokenVal
   return (
     <Box sx={{ maxWidth: 1200, margin: "0 auto", padding: 2, pt: 0 }}>
       <Paper elevation={3} sx={{ padding: 3 }}>
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+        <Typography variant="body1" color="text.secondary" sx={{ mb: 0 }}>
           Fill out the form below to create a new Return Merchandise Authorization (RMA).
         </Typography>
 
         <form onSubmit={handleSubmit}>
-          <Stack spacing={3}>
+          <Stack spacing={1}>
             <CustomerInformationSection formData={formData} errors={errors} onFieldChange={handleFieldChange} />
 
             <AddressInformationSection formData={formData} onFieldChange={handleFieldChange} />

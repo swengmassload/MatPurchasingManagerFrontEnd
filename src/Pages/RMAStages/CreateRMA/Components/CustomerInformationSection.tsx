@@ -66,23 +66,16 @@ const CustomerInformationSection: React.FC<CustomerInformationSectionProps> = ({
 
             <TextField
               sx={{ flex: 1, minWidth: 250 }}
-              label="Sales Person *"
-              value={formData.salesPerson}
-              onChange={onFieldChange("salesPerson")}
-              error={Boolean(errors.salesPerson)}
-              helperText={errors.salesPerson}
-            />
-          </Box>
-
-          <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-            <TextField
-              sx={{ flex: 1, minWidth: 250 }}
               label="Phone Number"
               value={formData.phoneNumber}
               onChange={onFieldChange("phoneNumber")}
               error={Boolean(errors.phoneNumber)}
               helperText={errors.phoneNumber}
             />
+          </Box>
+{/* 
+          <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+
 
             <TextField
               sx={{ flex: 1, minWidth: 250 }}
@@ -90,7 +83,7 @@ const CustomerInformationSection: React.FC<CustomerInformationSectionProps> = ({
               value={formData.faxNumber}
               onChange={onFieldChange("faxNumber")}
             />
-          </Box>
+          </Box> */}
         </Stack>
       </CardContent>
     </Card>

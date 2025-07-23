@@ -5,7 +5,7 @@ import { BASEAPIURL } from "../Constants/FixValues";
 import { QueryKeys } from "../Constants/TanstankQueryKeys";
 
 import { isEmptyOrNil } from "../Utils/isEmptyOrNil";
-import { RMAGetTrackingDetailRequestDTO } from "../Models/RMAManagerModels/Dto";
+import { RMAGetTrackingDetailRequestDTO, RMATrackingReportDetailResponseDTO } from "../Models/RMAManagerModels/Dto";
 import { RMAManagerEnpoints } from "../Constants/EndPoints";
 
 const validateProductIdRequest = (prod: RMAGetTrackingDetailRequestDTO): boolean => {
@@ -26,11 +26,11 @@ export const useGetRMATrackingDetails = (
   param: RMAGetTrackingDetailRequestDTO | undefined,
   enabledGetTrackingDetails: boolean
 ) => {
-  return useQuery<RMAGetTrackingDetailRequestDTO[] | undefined, Error>({
+  return useQuery<RMATrackingReportDetailResponseDTO[] | undefined, Error>({
    // queryKey: [QueryKeys.useGetTrackingDetailsKey.mainKey, { ...QueryKeys.useGetTrackingDetailsKey.subKeys }],
         queryKey: [QueryKeys.useGetRMATrackingDetails.mainKey, {...param }],
     queryFn: () =>
-      CRUDApi<RMAGetTrackingDetailRequestDTO, RMAGetTrackingDetailRequestDTO[]>(
+      CRUDApi<RMAGetTrackingDetailRequestDTO, RMATrackingReportDetailResponseDTO[]>(
         `${BASEAPIURL}${RMAManagerEnpoints.GetRMATrackingDetails}`
       ).getDataSinglewtQryParams(param as RMAGetTrackingDetailRequestDTO),
     enabled: validateTrackingRequest(param) && enabledGetTrackingDetails,

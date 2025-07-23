@@ -79,7 +79,7 @@ export const RMAManagerEnpoints = {
   PackageReceivedEventsEndPoints: `${RMAAPINAME}/v1/PackageReceivedEvents`,
   RMANextNumberEndpoint: `${RMAAPINAME}/v1/RMANextNumbers`,
 
-  TrackingGroupedRMAProduct: `${RMAAPINAME}/v1/RMATracking/GroupedRMAProduct`,
+  TrackingGroupedRMAProduct: `${RMAAPINAME}/v1/RMATracking`,
   GetRMATrackingDetails: `${RMAAPINAME}/v1/RMATracking/TrackingReportDetail`,
 
 };
