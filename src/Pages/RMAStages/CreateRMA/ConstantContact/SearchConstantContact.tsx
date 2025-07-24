@@ -23,7 +23,7 @@ const SearchConstantContact: React.FC<SearchConstantContactProps> = ({
     // Token validation state (primary concern)
     tokenValidationComplete,
     tokenValidationResult,
-    isCheckingToken,
+//    isCheckingToken,
 
     // State
     searchEmail,

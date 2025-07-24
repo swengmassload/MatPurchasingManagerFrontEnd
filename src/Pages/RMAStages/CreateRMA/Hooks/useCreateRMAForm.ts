@@ -69,7 +69,7 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
 
   const validateForm = (): boolean => {
     const newErrors: Partial<RMACreateRequestDTO> = {};
-
+debugger
     if (!formData.customerEmail) {
       newErrors.customerEmail = "Customer email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.customerEmail)) {
@@ -90,9 +90,9 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
       newErrors.contactName = "Contact name is required";
     }
 
-    if (!formData.salesPerson) {
-      newErrors.salesPerson = "Sales person is required";
-    }
+    // if (!formData.salesPerson) {
+    //   newErrors.salesPerson = "Sales person is required";
+    // }
 
     if (formData.phoneNumber && !/^[\+]?[1-9][\d]{0,15}$/.test(formData.phoneNumber)) {
       newErrors.phoneNumber = "Invalid phone number format";

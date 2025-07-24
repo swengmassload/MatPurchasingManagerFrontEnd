@@ -246,10 +246,7 @@ export interface RMAProductUpdateRequestDTO {
   guidId?: string;
 }
 
-
-
-
-    // Supporting interfaces for the referenced DTOs
+// Supporting interfaces for the referenced DTOs
 export interface RMAResponseDTO {
   rMANumber: number;
   customerEmail: string;
@@ -269,8 +266,6 @@ export interface RMAResponseDTO {
   notes: string;
   guidId: string; // UUID string
 }
-
-
 
 export interface RMASolutionTypeCreateRequestDTO {
   solution?: string | undefined;
@@ -379,25 +374,20 @@ export interface RepairTypeUpdateRequestDTO {
   guidId?: string;
 }
 
-
-
 export interface PackageReceivedEventCreateRequestDTO {
   rMANumber: number;
   notes: string | undefined;
   timeStamp?: Date;
-  
 }
-
 
 export interface TrackingGroupedProductDTO {
   //ModelName: string ;
   stage: string;
   count: number;
-
 }
 
 export class TrackReport {
- // ModelName: string = "RMA";
+  // ModelName: string = "RMA";
   Total: number = 0;
   LabelSentValue: number = 0;
   PackageReceivedValue: number = 0;
@@ -413,9 +403,6 @@ export interface RMAGetTrackingDetailRequestDTO {
   rMANumber?: number | null;
   GetRequestByrMANumber?: boolean;
 }
-
-
-
 
 interface LabelSentEventResponseDTO {
   rmaNumber: number;
@@ -485,4 +472,65 @@ export interface BaseEventResponseDTO {
   timeStamp: Date;
   guidId: string;
   AllPropertiesAsJson?: string | undefined;
+}
+
+// Assessment DTOs
+export interface RMAAssessmentCreateRequestDTO {
+  rmaNumber: number;
+  solutionType: string;
+  solutionNotes: string;
+  products: ProductItemDTO[];
+  userName?: string;
+  timeStamp?: Date;
+  guidId?: string;
+}
+
+export interface RepairItemDTO {
+  description: string;
+  date: Date;
+  hoursUsed: number;
+}
+
+export interface PartItemDTO {
+  description: string;
+  quantity: number;
+}
+
+export interface ProductItemDTO {
+  productCapacity: string;
+  productUnit: string;
+  serialNo: string;
+  modelNo: string;
+  calibrationType: "Tension" | "Compression";
+  warrantyCheck: boolean;
+  repairsDone: RepairItemDTO[];
+  partsUsed: PartItemDTO[];
+}
+
+export interface RMAAssessmentResponseDTO {
+  rmaNumber: number;
+  solutionType: string;
+  solutionNotes: string;
+  repairsDone: RepairItemDTO[];
+  partsUsed: PartItemDTO[];
+  userName: string;
+  timeStamp: Date;
+  guidId: string;
+}
+
+export interface SolutionTypeResponseDTO {
+  solutionType: string;
+  description?: string;
+  guidId: string;
+}
+
+export interface RMASearchResponseDTO {
+  rmaNumber: number;
+  customerName: string;
+  contactEmail: string;
+  productDescription: string;
+  issueDescription: string;
+  status: string;
+  dateCreated: Date;
+  guidId: string;
 }
