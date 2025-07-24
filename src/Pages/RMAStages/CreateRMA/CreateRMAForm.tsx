@@ -28,6 +28,8 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact, tokenVal
     handleSubmit,
     handleReset,
     handleSendMail,
+    handleSendMailWithAttachments,
+    handleSendMailWithAutoFile,
     handleClearContact,
   } = useCreateRMAForm(selectedContact);
 
@@ -63,6 +65,8 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact, tokenVal
               isSubmitting={isSubmitting}
               onClearContact={handleClearContact}
               onSendMail={handleSendMail}
+              onSendMailWithAttachments={handleSendMailWithAttachments}
+              onSendMailWithAutoFile={handleSendMailWithAutoFile}
               onReset={handleReset}
             />
           </Stack>

@@ -46,8 +46,8 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
     }
   }, [selectedContact]);
 
-  const handleFieldChange = (field: keyof RMACreateRequestDTO) => 
-    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | any) => {
+  const handleFieldChange =
+    (field: keyof RMACreateRequestDTO) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | any) => {
       const value = event.target.value;
       setFormData((prev) => ({ ...prev, [field]: value }));
 
@@ -57,11 +57,10 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
       }
     };
 
-  const handleDateChange = (field: 'dateIssued' | 'dateRecieved') => 
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const date = e.target.value ? new Date(e.target.value) : undefined;
-      setFormData((prev) => ({ ...prev, [field]: date }));
-    };
+  const handleDateChange = (field: "dateIssued" | "dateRecieved") => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const date = e.target.value ? new Date(e.target.value) : undefined;
+    setFormData((prev) => ({ ...prev, [field]: date }));
+  };
 
   const handleCreateContactChange = (checked: boolean) => {
     setFormData((prev) => ({ ...prev, createContact: checked }));
@@ -69,7 +68,7 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
 
   const validateForm = (): boolean => {
     const newErrors: Partial<RMACreateRequestDTO> = {};
-debugger
+    debugger;
     if (!formData.customerEmail) {
       newErrors.customerEmail = "Customer email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.customerEmail)) {
@@ -129,12 +128,140 @@ debugger
     setErrors({});
   };
 
-  const handleSendMail = () => {
+  const generateRMADataAsText = (): string => {
+    return `
+=== RMA REQUEST DETAILS ===
+RMA Number: ${formData.rMANumber || "To be assigned"}
+Date Created: ${new Date().toLocaleDateString()}
+Status: ${formData.status || "New"}
+
+=== CUSTOMER INFORMATION ===
+Customer Email: ${formData.customerEmail || "N/A"}
+Company Name: ${formData.companyName || "N/A"}
+Contact Name: ${formData.contactName || "N/A"}
+Phone Number: ${formData.phoneNumber || "N/A"}
+
+=== RMA DETAILS ===
+Sales Person: ${formData.salesPerson || "N/A"}
+Date Issued: ${formData.dateIssued ? formData.dateIssued.toLocaleDateString() : "N/A"}
+Date Received: ${formData.dateRecieved ? formData.dateRecieved.toLocaleDateString() : "N/A"}
+
+=== PROBLEM DESCRIPTION ===
+${formData.rMAProblemDescription || "N/A"}
+
+=== ADDITIONAL NOTES ===
+${formData.notes || "None"}
+
+=== CONTACT PREFERENCES ===
+Create Contact: ${formData.createContact ? "Yes" : "No"}
+
+Generated on: ${new Date().toISOString()}
+    `.trim();
+  };
+
+  const handleSendMail = (attachmentFiles?: File[]) => {
     const subject = encodeURIComponent(
       `RMA Request - ${formData.rMANumber ? `RMA #${formData.rMANumber}` : "New RMA"}`
     );
+
+    const attachmentText =
+      attachmentFiles && attachmentFiles.length > 0
+        ? `\n\nManual Attachments to include:\n${attachmentFiles.map((file) => `- ${file.name} (${(file.size / 1024).toFixed(1)} KB)`).join("\n")}\n\nNote: Please manually attach these files to your email.`
+        : "";
+
+    // Auto-generate RMA data as text attachment content
+    const rmaDataText = generateRMADataAsText();
+
     const body = encodeURIComponent(
       `
+Dear ${formData.contactName || "Customer"},
+
+This is regarding your RMA request with the following details:
+
+RMA Number: ${formData.rMANumber || "To be assigned"}
+Customer Email: ${formData.customerEmail}
+Company: ${formData.companyName}
+Contact Name: ${formData.contactName}
+Phone Number: ${formData.phoneNumber}
+Status: ${formData.status}
+
+Problem Description:
+${formData.rMAProblemDescription}
+
+${formData.notes ? `Additional Notes:\n${formData.notes}` : ""}${attachmentText}
+
+=== COMPLETE RMA DATA (Copy to .txt file if needed) ===
+${rmaDataText}
+=== END RMA DATA ===
+
+Please let us know if you need any further assistance.
+
+Best regards,
+${formData.salesPerson || "Sales Team"}
+    `.trim()
+    );
+
+    const mailtoLink = `mailto:${formData.customerEmail}?subject=${subject}&body=${body}`;
+
+    try {
+      window.location.href = mailtoLink;
+      if (attachmentFiles && attachmentFiles.length > 0) {
+        toast.success(
+          `Default mail client opened. Please manually attach ${attachmentFiles.length} file(s) mentioned in the email.`
+        );
+      } else {
+        toast.success("Default mail client opened");
+      }
+    } catch (error) {
+      toast.error("Failed to open mail client");
+      console.error("Error opening mail client:", error);
+    }
+  };
+
+  const generateAndDownloadRMAFile = (): File => {
+    const rmaData = generateRMADataAsText();
+    const fileName = `RMA_${formData.rMANumber || "New"}_${new Date().toISOString().split("T")[0]}.txt`;
+
+    // Create a Blob with the RMA data
+    const blob = new Blob([rmaData], { type: "text/plain" });
+
+    // Create a File object
+    const file = new File([blob], fileName, { type: "text/plain" });
+
+    // Auto-download the file
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    toast.success(`RMA data file downloaded: ${fileName}`);
+    return file;
+  };
+
+  const handleSendMailWithAttachments = async (attachmentFiles: File[]) => {
+    try {
+      // Auto-generate and download RMA data file
+      const rmaDataFile = generateAndDownloadRMAFile();
+
+      // Combine user attachments with auto-generated RMA file
+      const allAttachments = [rmaDataFile, ...attachmentFiles];
+
+      // Create FormData for file uploads
+      const formDataForEmail = new FormData();
+
+      // Add RMA details
+      formDataForEmail.append("to", formData.customerEmail || "");
+      formDataForEmail.append(
+        "subject",
+        `RMA Request - ${formData.rMANumber ? `RMA #${formData.rMANumber}` : "New RMA"}`
+      );
+      formDataForEmail.append(
+        "body",
+        `
 Dear ${formData.contactName || "Customer"},
 
 This is regarding your RMA request with the following details:
@@ -155,18 +282,41 @@ Please let us know if you need any further assistance.
 
 Best regards,
 ${formData.salesPerson || "Sales Team"}
-    `.trim()
-    );
+      `.trim()
+      );
 
-    const mailtoLink = `mailto:${formData.customerEmail}?subject=${subject}&body=${body}`;
+      // Add attachments (including auto-generated RMA file)
+      allAttachments.forEach((file, index) => {
+        formDataForEmail.append(`attachment_${index}`, file);
+      });
 
-    try {
-      window.location.href = mailtoLink;
-      toast.success("Default mail client opened");
+      // TODO: Replace with your actual email API endpoint
+      // const response = await fetch('/api/send-email-with-attachments', {
+      //   method: 'POST',
+      //   body: formDataForEmail,
+      // });
+
+      // For now, just simulate the API call
+      console.log("Email with attachments would be sent:", {
+        to: formData.customerEmail,
+        attachments: allAttachments.map((f) => f.name),
+      });
+
+      toast.success(
+        `Email with ${allAttachments.length} attachment(s) would be sent via email service (including auto-generated RMA data file)`
+      );
     } catch (error) {
-      toast.error("Failed to open mail client");
-      console.error("Error opening mail client:", error);
+      toast.error("Failed to send email with attachments");
+      console.error("Error sending email:", error);
     }
+  };
+
+  const handleSendMailWithAutoFile = () => {
+    // Auto-generate and download RMA data file
+    const rmaDataFile = generateAndDownloadRMAFile();
+
+    // Send email with file reference
+    handleSendMail([rmaDataFile]);
   };
 
   const handleClearContact = () => {
@@ -188,6 +338,8 @@ ${formData.salesPerson || "Sales Team"}
     handleSubmit,
     handleReset,
     handleSendMail,
+    handleSendMailWithAttachments,
+    handleSendMailWithAutoFile,
     handleClearContact,
   };
 };
