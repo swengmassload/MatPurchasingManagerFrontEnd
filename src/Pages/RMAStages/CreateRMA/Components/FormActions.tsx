@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, ButtonGroup } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { Email, AttachFile, AutoAwesome } from "@mui/icons-material";
 import { Contact } from "../../../../Models/ConstantContactModels/ConstantContactDTO";
 import { RMACreateRequestDTO } from "../../../../Models/RMAManagerModels/Dto";
@@ -9,7 +9,7 @@ interface FormActionsProps {
   formData: RMACreateRequestDTO;
   isSubmitting: boolean;
   onClearContact: () => void;
-  onSendMail: () => void;
+  onSendMail: (files?: File[]) => void;
   onSendMailWithAttachments?: (files: File[]) => void;
   onSendMailWithAutoFile?: () => void;
   onReset: () => void;
@@ -46,6 +46,10 @@ const FormActions: React.FC<FormActionsProps> = ({
     }
   };
 
+  const handleSendBasicMail = () => {
+    onSendMail();
+  };
+
   const isEmailDisabled = isSubmitting || !formData.customerEmail;
 
   return (
@@ -55,7 +59,7 @@ const FormActions: React.FC<FormActionsProps> = ({
           Clear Contact
         </Button>
       )}
-      
+
       {/* Email Options */}
       <Box sx={{ display: "flex", gap: 1 }}>
         <Button
@@ -63,13 +67,13 @@ const FormActions: React.FC<FormActionsProps> = ({
           variant="outlined"
           color="info"
           startIcon={<Email />}
-          onClick={onSendMail}
+          onClick={handleSendBasicMail}
           disabled={isEmailDisabled}
           sx={{ minWidth: 120 }}
         >
           Send Mail
         </Button>
-        
+
         {(onSendMailWithAttachments || onSendMailWithAutoFile) && (
           <>
             <Button
@@ -83,7 +87,7 @@ const FormActions: React.FC<FormActionsProps> = ({
             >
               Send + Auto File
             </Button>
-            
+
             <Button
               type="button"
               variant="outlined"
@@ -95,15 +99,9 @@ const FormActions: React.FC<FormActionsProps> = ({
             >
               Send + Attachments
             </Button>
-            
-            <input
-              ref={fileInputRef}
-              type="file"
-              multiple
-              onChange={handleFileSelect}
-              style={{ display: 'none' }}
-            />
-            
+
+            <input ref={fileInputRef} type="file" multiple onChange={handleFileSelect} style={{ display: "none" }} />
+
             {attachmentFiles.length > 0 && (
               <Button
                 type="button"

@@ -76,12 +76,12 @@ export interface RMAProblemTypeCreateRequestDTO {
   guidId?: string;
 }
 export interface RMACreateRequestDTO {
-  rMANumber?: number;
+  // rMANumber: number;
   customerEmail?: string | undefined;
   dateIssued?: Date;
-  dateRecieved?: Date;
+  dateReceived?: Date;
   rMAProblemDescription?: string | undefined;
-  status?: string | undefined;
+  stage?: string | undefined;
   salesPerson?: string | undefined;
   companyName?: string | undefined;
   contactName?: string | undefined;
@@ -248,10 +248,11 @@ export interface RMAProductUpdateRequestDTO {
 
 // Supporting interfaces for the referenced DTOs
 export interface RMAResponseDTO {
-  rMANumber: number;
+  rmaNumber: number;
   customerEmail: string;
-  dateIssued: string; // ISO date string
-  dateReceived: string; // ISO date string
+
+  dateIssued?: Date;
+  dateReceived?: Date;
   rmaProblemDescription: string;
   stage: string;
   salesPerson: string;
@@ -340,7 +341,7 @@ export interface RMAUpdateRequestDTO {
   rMANumber?: number;
   customerEmail?: string | undefined;
   dateIssued?: Date;
-  dateRecieved?: Date;
+  dateReceived?: Date;
   rMAProblemDescription?: string | undefined;
   status?: string | undefined;
   salesPerson?: string | undefined;

@@ -27,7 +27,7 @@ const CustomerInformationSection: React.FC<CustomerInformationSectionProps> = ({
               textAlign: "right",
             }}
           >
-            RMA NUMBER: {formData.rMANumber || ""}
+           {/* // RMA NUMBER: {formData.rMANumber || ""} */}
           </Typography>
         </Box>
         <Divider sx={{ mb: 2 }} />

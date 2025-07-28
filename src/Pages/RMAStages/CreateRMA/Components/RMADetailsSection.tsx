@@ -8,7 +8,7 @@ interface RMADetailsSectionProps {
   onFieldChange: (
     field: keyof RMACreateRequestDTO
   ) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | any) => void;
-  onDateChange: (field: "dateIssued" | "dateRecieved") => (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onDateChange: (field: "dateIssued" | "dateReceived") => (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const RMADetailsSection: React.FC<RMADetailsSectionProps> = ({ formData, errors, onFieldChange, onDateChange }) => {
@@ -35,8 +35,8 @@ const RMADetailsSection: React.FC<RMADetailsSectionProps> = ({ formData, errors,
               sx={{ flex: 1, minWidth: 250 }}
               label="Date Received"
               type="date"
-              value={formData.dateRecieved ? formData.dateRecieved.toISOString().split("T")[0] : ""}
-              onChange={onDateChange("dateRecieved")}
+              value={formData.dateReceived ? formData.dateReceived.toISOString().split("T")[0] : ""}
+              onChange={onDateChange("dateReceived")}
               InputLabelProps={{ shrink: true }}
             /> */}
           </Box>

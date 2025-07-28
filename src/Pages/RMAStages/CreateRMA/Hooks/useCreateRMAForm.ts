@@ -1,34 +1,17 @@
 import { useState, useEffect } from "react";
-import { RMACreateRequestDTO } from "../../../../Models/RMAManagerModels/Dto";
+import { RMACreateRequestDTO, RMAResponseDTO } from "../../../../Models/RMAManagerModels/Dto";
 import { Contact } from "../../../../Models/ConstantContactModels/ConstantContactDTO";
 import { useCreateRMA } from "../../../../Hooks/useCreateRMA";
-import { useGetRMANumber } from "../../../../Hooks/useGetRMANumber";
+//import { useGetRMANumber } from "../../../../Hooks/useGetRMANumber";
 import { DefaultRMAFormValues } from "../CreateRMADTODefaultValues";
 import toast from "react-hot-toast";
 
 export const useCreateRMAForm = (selectedContact?: Contact | null) => {
-  const nextNumberRequest = useGetRMANumber();
+  // const nextNumberRequest = useGetRMANumber();
   const createRMAMutation = useCreateRMA();
   const [formData, setFormData] = useState<RMACreateRequestDTO>(DefaultRMAFormValues);
   const [errors, setErrors] = useState<Partial<RMACreateRequestDTO>>({});
 
-  // Handle RMA number assignment
-  useEffect(() => {
-    if (nextNumberRequest.data && nextNumberRequest.data.length > 0) {
-      if (nextNumberRequest.data.length === 1) {
-        setFormData((prev) => ({ ...prev, rMANumber: nextNumberRequest.data![0].nextNumber }));
-      } else {
-        alert("Multiple RMA numbers found, please check the API response. Contact support To resolve this issue.");
-        console.error("Multiple RMA numbers found:", nextNumberRequest.data);
-      }
-    } else if (nextNumberRequest.data && nextNumberRequest.data.length === 0) {
-      alert("No RMA Number Found. Contact support To resolve this issue.");
-      console.warn("No RMA number found in the response");
-      setFormData((prev) => ({ ...prev, rMANumber: undefined }));
-    }
-  }, [nextNumberRequest.data]);
-
-  // Auto-populate form when contact is selected
   useEffect(() => {
     if (selectedContact) {
       setFormData((prev) => ({
@@ -57,7 +40,7 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
       }
     };
 
-  const handleDateChange = (field: "dateIssued" | "dateRecieved") => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDateChange = (field: "dateIssued" | "dateReceived") => (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = e.target.value ? new Date(e.target.value) : undefined;
     setFormData((prev) => ({ ...prev, [field]: date }));
   };
@@ -110,15 +93,41 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
     }
 
     try {
-      await createRMAMutation.mutateAsync(formData);
-      console.log("RMA created successfully:", formData);
+      const createdRMA = await createRMAMutation.mutateAsync(formData);
+      console.log("RMA created successfully:", createdRMA);
+debugger
+      // Show alert with RMA details
+      if (createdRMA) {
+        const alertMessage = `
+🎉 RMA Created Successfully!
+
+RMA Number: ${createdRMA.rmaNumber }
+Customer: ${createdRMA.contactName || "N/A"}
+Company: ${createdRMA.companyName || "N/A"}
+Email: ${createdRMA.customerEmail || "N/A"}
+Status: ${createdRMA.stage || "New"}
+Date Created: ${new Date().toLocaleDateString()}
+
+Problem Description: ${formData.rMAProblemDescription?.substring(0, 100)}${(formData.rMAProblemDescription?.length || 0) > 100 ? "..." : ""}
+        `.trim();
+
+        alert(alertMessage);
+
+        // Also show a toast for quick feedback
+        toast.success(`RMA #${createdRMA.rMANumber || "New"} created successfully!`);
+      } else {
+        alert("RMA created successfully but no details returned");
+        toast.success("RMA created successfully!");
+      }
+
       // refresh next RMA number
-      nextNumberRequest.refetch();
+      //nextNumberRequest.refetch();
       // Reset form after successful submission
       setFormData(DefaultRMAFormValues);
       setErrors({});
     } catch (error) {
       // Error handling is done in the mutation
+      alert("Failed to create RMA. Please try again.");
       console.error("Error in handleSubmit:", error);
     }
   };
@@ -128,23 +137,23 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
     setErrors({});
   };
 
-  const generateRMADataAsText = (): string => {
+  const generateRMADataAsText = (createdRMA: RMAResponseDTO): string => {
     return `
 === RMA REQUEST DETAILS ===
-RMA Number: ${formData.rMANumber || "To be assigned"}
+
 Date Created: ${new Date().toLocaleDateString()}
-Status: ${formData.status || "New"}
+Status: ${createdRMA.stage || "New"}
 
 === CUSTOMER INFORMATION ===
-Customer Email: ${formData.customerEmail || "N/A"}
-Company Name: ${formData.companyName || "N/A"}
-Contact Name: ${formData.contactName || "N/A"}
-Phone Number: ${formData.phoneNumber || "N/A"}
+Customer Email: ${createdRMA.customerEmail || "N/A"}
+Company Name: ${createdRMA.companyName || "N/A"}
+Contact Name: ${createdRMA.contactName || "N/A"}
+Phone Number: ${createdRMA.phoneNumber || "N/A"}
 
 === RMA DETAILS ===
-Sales Person: ${formData.salesPerson || "N/A"}
-Date Issued: ${formData.dateIssued ? formData.dateIssued.toLocaleDateString() : "N/A"}
-Date Received: ${formData.dateRecieved ? formData.dateRecieved.toLocaleDateString() : "N/A"}
+Sales Person: ${createdRMA.salesPerson || "N/A"}
+Date Issued: ${createdRMA.dateIssued ? createdRMA.dateIssued.toLocaleDateString() : "N/A"}
+Date Received: ${createdRMA.dateReceived ? createdRMA.dateReceived.toLocaleDateString() : "N/A"}
 
 === PROBLEM DESCRIPTION ===
 ${formData.rMAProblemDescription || "N/A"}
@@ -160,8 +169,14 @@ Generated on: ${new Date().toISOString()}
   };
 
   const handleSendMail = (attachmentFiles?: File[]) => {
+    const createdRMA = createRMAMutation.data;
+    if (!createdRMA) {
+      toast.error("Please create an RMA first before sending email");
+      return;
+    }
+
     const subject = encodeURIComponent(
-      `RMA Request - ${formData.rMANumber ? `RMA #${formData.rMANumber}` : "New RMA"}`
+      `RMA Request - ${createdRMA.rMANumber ? `RMA #${createdRMA.rMANumber}` : "New RMA"}`
     );
 
     const attachmentText =
@@ -170,20 +185,20 @@ Generated on: ${new Date().toISOString()}
         : "";
 
     // Auto-generate RMA data as text attachment content
-    const rmaDataText = generateRMADataAsText();
+    const rmaDataText = generateRMADataAsText(createdRMA);
 
     const body = encodeURIComponent(
       `
-Dear ${formData.contactName || "Customer"},
+Dear ${createdRMA.contactName || "Customer"},
 
 This is regarding your RMA request with the following details:
 
-RMA Number: ${formData.rMANumber || "To be assigned"}
-Customer Email: ${formData.customerEmail}
-Company: ${formData.companyName}
-Contact Name: ${formData.contactName}
-Phone Number: ${formData.phoneNumber}
-Status: ${formData.status}
+RMA Number: ${createdRMA.rMANumber || "To be assigned"}
+Customer Email: ${createdRMA.customerEmail}
+Company: ${createdRMA.companyName}
+Contact Name: ${createdRMA.contactName}
+Phone Number: ${createdRMA.phoneNumber}
+Status: ${createdRMA.stage}
 
 Problem Description:
 ${formData.rMAProblemDescription}
@@ -218,9 +233,9 @@ ${formData.salesPerson || "Sales Team"}
     }
   };
 
-  const generateAndDownloadRMAFile = (): File => {
-    const rmaData = generateRMADataAsText();
-    const fileName = `RMA_${formData.rMANumber || "New"}_${new Date().toISOString().split("T")[0]}.txt`;
+  const generateAndDownloadRMAFile = (createdRMA: RMAResponseDTO): File => {
+    const rmaData = generateRMADataAsText(createdRMA);
+    const fileName = `RMA_${createdRMA.rMANumber || "New"}_${new Date().toISOString().split("T")[0]}.txt`;
 
     // Create a Blob with the RMA data
     const blob = new Blob([rmaData], { type: "text/plain" });
@@ -243,9 +258,15 @@ ${formData.salesPerson || "Sales Team"}
   };
 
   const handleSendMailWithAttachments = async (attachmentFiles: File[]) => {
+    const createdRMA = createRMAMutation.data;
+    if (!createdRMA) {
+      toast.error("Please create an RMA first before sending email with attachments");
+      return;
+    }
+
     try {
       // Auto-generate and download RMA data file
-      const rmaDataFile = generateAndDownloadRMAFile();
+      const rmaDataFile = generateAndDownloadRMAFile(createdRMA);
 
       // Combine user attachments with auto-generated RMA file
       const allAttachments = [rmaDataFile, ...attachmentFiles];
@@ -254,10 +275,10 @@ ${formData.salesPerson || "Sales Team"}
       const formDataForEmail = new FormData();
 
       // Add RMA details
-      formDataForEmail.append("to", formData.customerEmail || "");
+      formDataForEmail.append("to", createdRMA.customerEmail || "");
       formDataForEmail.append(
         "subject",
-        `RMA Request - ${formData.rMANumber ? `RMA #${formData.rMANumber}` : "New RMA"}`
+        `RMA Request - ${createdRMA.rMANumber ? `RMA #${createdRMA.rMANumber}` : "New RMA"}`
       );
       formDataForEmail.append(
         "body",
@@ -266,12 +287,12 @@ Dear ${formData.contactName || "Customer"},
 
 This is regarding your RMA request with the following details:
 
-RMA Number: ${formData.rMANumber || "To be assigned"}
-Customer Email: ${formData.customerEmail}
-Company: ${formData.companyName}
-Contact Name: ${formData.contactName}
-Phone Number: ${formData.phoneNumber}
-Status: ${formData.status}
+RMA Number: ${createdRMA.rMANumber || "To be assigned"}
+Customer Email: ${createdRMA.customerEmail}
+Company: ${createdRMA.companyName}
+Contact Name: ${createdRMA.contactName}
+Phone Number: ${createdRMA.phoneNumber}
+Status: ${createdRMA.stage}
 
 Problem Description:
 ${formData.rMAProblemDescription}
@@ -312,8 +333,14 @@ ${formData.salesPerson || "Sales Team"}
   };
 
   const handleSendMailWithAutoFile = () => {
+    const createdRMA = createRMAMutation.data;
+    if (!createdRMA) {
+      toast.error("Please create an RMA first before sending email with auto file");
+      return;
+    }
+
     // Auto-generate and download RMA data file
-    const rmaDataFile = generateAndDownloadRMAFile();
+    const rmaDataFile = generateAndDownloadRMAFile(createdRMA);
 
     // Send email with file reference
     handleSendMail([rmaDataFile]);
@@ -341,5 +368,6 @@ ${formData.salesPerson || "Sales Team"}
     handleSendMailWithAttachments,
     handleSendMailWithAutoFile,
     handleClearContact,
+    createdRMA: createRMAMutation.data || null,
   };
 };

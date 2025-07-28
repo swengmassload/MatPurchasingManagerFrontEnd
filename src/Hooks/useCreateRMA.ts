@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import CRUDApi from "../Api/CRUDApi";
 import { BASEAPIURL } from "../Constants/FixValues";
-import { RMACreateRequestDTO } from "../Models/RMAManagerModels/Dto";
+import { RMACreateRequestDTO, RMAResponseDTO } from "../Models/RMAManagerModels/Dto";
 import toast from "react-hot-toast";
 import { QueryKeys } from "../Constants/TanstankQueryKeys";
 import { RMAManagerEnpoints } from "../Constants/EndPoints";
@@ -12,7 +12,7 @@ export const useCreateRMA = () => {
 
   return useMutation({
     mutationFn: (rmaData: RMACreateRequestDTO) =>
-      CRUDApi<RMACreateRequestDTO, RMACreateRequestDTO>(BASEAPIURL + RMAManagerEnpoints.RMACreateEndpoints).addData(
+      CRUDApi<RMACreateRequestDTO, RMAResponseDTO>(BASEAPIURL + RMAManagerEnpoints.RMACreateEndpoints).addData(
         rmaData
       ),
     onSuccess: (data) => {
