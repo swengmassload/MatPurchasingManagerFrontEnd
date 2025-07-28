@@ -1,6 +1,19 @@
 import React from "react";
-import { Card, CardContent, Typography, TextField, Button, Box, Divider, Alert, CircularProgress } from "@mui/material";
-import { Search } from "@mui/icons-material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  Divider,
+  Alert,
+  CircularProgress,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from "@mui/material";
+import { Search, ExpandMore } from "@mui/icons-material";
 import { RMASearchResponseDTO } from "../../../../Models/RMAManagerModels/Dto";
 import { standardInputSx } from "../../../../Constants/ComponentStyles";
 
@@ -76,12 +89,13 @@ const RMASearchSection: React.FC<RMASearchSectionProps> = ({
               RMA #{searchResults.rmaNumber} found successfully!
             </Alert>
 
-            <Card variant="outlined" sx={{ backgroundColor: "#f9f9f9", width: "100%" }}>
-              <CardContent>
-                <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: "bold" }}>
+            <Accordion defaultExpanded sx={{ backgroundColor: "#f9f9f9", width: "100%" }}>
+              <AccordionSummary expandIcon={<ExpandMore />} aria-controls="rma-details-content" id="rma-details-header">
+                <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
                   RMA Details
                 </Typography>
-
+              </AccordionSummary>
+              <AccordionDetails>
                 <Box
                   sx={{
                     display: "grid",
@@ -144,8 +158,8 @@ const RMASearchSection: React.FC<RMASearchSectionProps> = ({
                     </Box>
                   </Box>
                 </Box>
-              </CardContent>
-            </Card>
+              </AccordionDetails>
+            </Accordion>
           </Box>
         )}
       </CardContent>

@@ -26,11 +26,9 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact, tokenVal
     handleDateChange,
     handleCreateContactChange,
     handleSubmit,
-    handleReset,
     handleSendMail,
     handleSendMailWithAttachments,
     handleSendMailWithAutoFile,
-    handleClearContact,
   } = useCreateRMAForm(selectedContact);
 
   return (
@@ -60,14 +58,11 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact, tokenVal
             />
 
             <FormActions
-              selectedContact={selectedContact}
               formData={formData}
               isSubmitting={isSubmitting}
-              onClearContact={handleClearContact}
               onSendMail={handleSendMail}
               onSendMailWithAttachments={handleSendMailWithAttachments}
               onSendMailWithAutoFile={handleSendMailWithAutoFile}
-              onReset={handleReset}
             />
           </Stack>
         </form>

@@ -17,10 +17,22 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
       setFormData((prev) => ({
         ...prev,
         customerEmail: selectedContact.email_address?.address || "",
+        city:
+          [
+            selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.street,
+            selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.city,
+          ]
+            .filter(Boolean)
+            .join(", ") || "",
+        zipCode: selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.postal_code || "",
+        //state: selectedContact.street_addresses ?.filter((addr) => addr.kind === 'work')[0]?.state || "",
+        province: selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.state || "",
+        country: selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.country || "",
         contactName: `${selectedContact.first_name || ""} ${selectedContact.last_name || ""}`.trim(),
         companyName: selectedContact.company_name || "",
         phoneNumber:
           selectedContact.phone_numbers
+            ?.filter((phone) => phone.kind === "work")
             ?.map((phone) => phone.phone_number)
             .filter(Boolean)
             .join(", ") || "",
@@ -95,13 +107,13 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
     try {
       const createdRMA = await createRMAMutation.mutateAsync(formData);
       console.log("RMA created successfully:", createdRMA);
-debugger
+      debugger;
       // Show alert with RMA details
       if (createdRMA) {
         const alertMessage = `
 🎉 RMA Created Successfully!
 
-RMA Number: ${createdRMA.rmaNumber }
+RMA Number: ${createdRMA.rmaNumber}
 Customer: ${createdRMA.contactName || "N/A"}
 Company: ${createdRMA.companyName || "N/A"}
 Email: ${createdRMA.customerEmail || "N/A"}
@@ -114,7 +126,7 @@ Problem Description: ${formData.rMAProblemDescription?.substring(0, 100)}${(form
         alert(alertMessage);
 
         // Also show a toast for quick feedback
-        toast.success(`RMA #${createdRMA.rMANumber || "New"} created successfully!`);
+        toast.success(`RMA #${createdRMA.rmaNumber || "New"} created successfully!`);
       } else {
         alert("RMA created successfully but no details returned");
         toast.success("RMA created successfully!");
@@ -176,7 +188,7 @@ Generated on: ${new Date().toISOString()}
     }
 
     const subject = encodeURIComponent(
-      `RMA Request - ${createdRMA.rMANumber ? `RMA #${createdRMA.rMANumber}` : "New RMA"}`
+      `RMA Request - ${createdRMA.rmaNumber ? `RMA #${createdRMA.rmaNumber}` : "New RMA"}`
     );
 
     const attachmentText =
@@ -193,7 +205,7 @@ Dear ${createdRMA.contactName || "Customer"},
 
 This is regarding your RMA request with the following details:
 
-RMA Number: ${createdRMA.rMANumber || "To be assigned"}
+RMA Number: ${createdRMA.rmaNumber || "To be assigned"}
 Customer Email: ${createdRMA.customerEmail}
 Company: ${createdRMA.companyName}
 Contact Name: ${createdRMA.contactName}
@@ -235,7 +247,7 @@ ${formData.salesPerson || "Sales Team"}
 
   const generateAndDownloadRMAFile = (createdRMA: RMAResponseDTO): File => {
     const rmaData = generateRMADataAsText(createdRMA);
-    const fileName = `RMA_${createdRMA.rMANumber || "New"}_${new Date().toISOString().split("T")[0]}.txt`;
+    const fileName = `RMA_${createdRMA.rmaNumber || "New"}_${new Date().toISOString().split("T")[0]}.txt`;
 
     // Create a Blob with the RMA data
     const blob = new Blob([rmaData], { type: "text/plain" });
@@ -278,7 +290,7 @@ ${formData.salesPerson || "Sales Team"}
       formDataForEmail.append("to", createdRMA.customerEmail || "");
       formDataForEmail.append(
         "subject",
-        `RMA Request - ${createdRMA.rMANumber ? `RMA #${createdRMA.rMANumber}` : "New RMA"}`
+        `RMA Request - ${createdRMA.rmaNumber ? `RMA #${createdRMA.rmaNumber}` : "New RMA"}`
       );
       formDataForEmail.append(
         "body",
@@ -287,7 +299,7 @@ Dear ${formData.contactName || "Customer"},
 
 This is regarding your RMA request with the following details:
 
-RMA Number: ${createdRMA.rMANumber || "To be assigned"}
+RMA Number: ${createdRMA.rmaNumber || "To be assigned"}
 Customer Email: ${createdRMA.customerEmail}
 Company: ${createdRMA.companyName}
 Contact Name: ${createdRMA.contactName}

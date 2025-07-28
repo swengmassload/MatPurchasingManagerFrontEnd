@@ -64,7 +64,7 @@ export interface Address {
   city?: string;
   state?: string;
   postal_code?: string;
-  country_code?: string;
+  country?: string;
 }
 export interface PhoneNumber {
   phone_number: string;

@@ -55,7 +55,7 @@ export class DefaultRMAStages {
 
   public static readonly REPAIRINPROGRESS: RMAStage = {
     stage: "REPAIR_IN_PROGRESS",
-    CommonName: "Repair Prodcuct",
+    CommonName: "Repair Product",
     code: "REPAIRINPROGRESS",
     priority: 5,
   };

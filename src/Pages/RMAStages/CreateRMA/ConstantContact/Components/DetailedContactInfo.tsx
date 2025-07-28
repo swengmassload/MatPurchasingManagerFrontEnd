@@ -38,7 +38,8 @@ const DetailedContactInfo: React.FC<DetailedContactInfoProps> = ({ contactDetail
         <ContactDetailField label="Phone Number(s)" isFlexStart>
           <Box sx={{ textAlign: "right", maxWidth: "60%" }}>
             {contactDetails.phone_numbers
-              .filter((phone) => phone.phone_number)
+              .filter((phone) => phone.kind && phone.phone_number) // Ensure both kind and phone_number are present
+              .filter((phone) => phone.kind=="work") // Filter out any phone numbers that are
               .map((phone, index) => (
                 <Typography key={index} variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
                   {phone.phone_number}
@@ -55,9 +56,13 @@ const DetailedContactInfo: React.FC<DetailedContactInfoProps> = ({ contactDetail
       {contactDetails.street_addresses && contactDetails.street_addresses.length > 0 && (
         <ContactDetailField label="Address(es)" isFlexStart>
           <Box sx={{ textAlign: "right", maxWidth: "60%" }}>
-            {contactDetails.street_addresses.map((address, index) => (
-              <Typography key={index} variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
-                {[address.street, address.city, address.state, address.postal_code, address.country_code]
+            {contactDetails.street_addresses
+              //.filter((address) => address.street && address.city && address.state && address.postal_code && address.country_code)
+               .filter(address => address.kind === "work") 
+              // Ensure all necessary fields are present
+              .map((address, index) => (
+                <Typography key={index} variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
+                  {[address.street, address.city, address.state, address.postal_code, address.country_code]
                   .filter(Boolean)
                   .join(", ")}
               </Typography>

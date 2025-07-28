@@ -7,7 +7,7 @@ import {
   ProductItemDTO,
 } from "../../../Models/RMAManagerModels/Dto";
 import RMASearchSection from "./Components/RMASearchSection";
-import { RMAListSection, SolutionSection, ProductSection } from "./Components";
+import { RMAListSection, ProductSection } from "./Components";
 import toast from "react-hot-toast";
 
 const AssessPackage = () => {
@@ -22,15 +22,11 @@ const AssessPackage = () => {
   const [searchError, setSearchError] = useState<string>("");
 
   // Assessment form state
-  const [solutionType, setSolutionType] = useState<string>("");
-  const [solutionNotes, setSolutionNotes] = useState<string>("");
   const [products, setProducts] = useState<ProductItemDTO[]>([]);
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
   // Form validation
   const [errors, setErrors] = useState<{
-    solutionType?: string;
-    solutionNotes?: string;
     products?: string;
   }>({});
 
@@ -135,17 +131,18 @@ const AssessPackage = () => {
   const validateForm = (): boolean => {
     const newErrors: typeof errors = {};
 
-    if (!solutionType.trim()) {
-      newErrors.solutionType = "Solution type is required";
-    }
-
-    if (!solutionNotes.trim()) {
-      newErrors.solutionNotes = "Solution notes are required";
-    }
-
     if (products.length === 0) {
       newErrors.products = "At least one product is required";
     } else {
+      // Check if all products have required solution fields
+      const productsWithMissingSolution = products.filter(
+        (product) => !product.solutionType?.trim() || !product.solutionNotes?.trim()
+      );
+
+      if (productsWithMissingSolution.length > 0) {
+        newErrors.products = "All products must have solution type and solution notes";
+      }
+
       // Check if products have repairs and parts
       const hasProductsWithRepairsOrParts = products.some(
         (product) => product.repairsDone.length > 0 || product.partsUsed.length > 0
@@ -176,8 +173,6 @@ const AssessPackage = () => {
     try {
       const assessmentData: RMAAssessmentCreateRequestDTO = {
         rmaNumber: searchResults.rmaNumber,
-        solutionType,
-        solutionNotes,
         products,
         userName: "Current User", // TODO: Get from user context
         timeStamp: new Date(),
@@ -190,8 +185,6 @@ const AssessPackage = () => {
       toast.success("Assessment saved successfully!");
 
       // Reset form
-      setSolutionType("");
-      setSolutionNotes("");
       setProducts([]);
       setErrors({});
     } catch (error) {
@@ -200,17 +193,6 @@ const AssessPackage = () => {
     } finally {
       setIsSaving(false);
     }
-  };
-
-  const handleReset = () => {
-    setRmaNumber("");
-    setSearchResults(null);
-    setSearchError("");
-    setSolutionType("");
-    setSolutionNotes("");
-    setProducts([]);
-    setErrors({});
-    toast("Form has been reset");
   };
 
   return (
@@ -242,27 +224,11 @@ const AssessPackage = () => {
             {/* Assessment Form - Only show if search is successful */}
             {searchResults && (
               <Stack spacing={3} sx={{ mt: 3 }}>
-                {/* Solution Section */}
-                <SolutionSection
-                  solutionType={solutionType}
-                  solutionNotes={solutionNotes}
-                  onSolutionTypeChange={setSolutionType}
-                  onSolutionNotesChange={setSolutionNotes}
-                  errors={{
-                    solutionType: errors.solutionType,
-                    solutionNotes: errors.solutionNotes,
-                  }}
-                />
-
                 {/* Product Section */}
                 <ProductSection products={products} onProductsChange={setProducts} error={errors.products} />
 
                 {/* Action Buttons */}
                 <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 4 }}>
-                  <Button variant="outlined" onClick={handleReset} disabled={isSaving}>
-                    Reset Form
-                  </Button>
-
                   <Button
                     variant="contained"
                     startIcon={<Save />}

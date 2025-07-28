@@ -478,8 +478,6 @@ export interface BaseEventResponseDTO {
 // Assessment DTOs
 export interface RMAAssessmentCreateRequestDTO {
   rmaNumber: number;
-  solutionType: string;
-  solutionNotes: string;
   products: ProductItemDTO[];
   userName?: string;
   timeStamp?: Date;
@@ -504,16 +502,15 @@ export interface ProductItemDTO {
   modelNo: string;
   calibrationType: "Tension" | "Compression";
   warrantyCheck: boolean;
+  solutionType: string;
+  solutionNotes: string;
   repairsDone: RepairItemDTO[];
   partsUsed: PartItemDTO[];
 }
 
 export interface RMAAssessmentResponseDTO {
   rmaNumber: number;
-  solutionType: string;
-  solutionNotes: string;
-  repairsDone: RepairItemDTO[];
-  partsUsed: PartItemDTO[];
+  products: ProductItemDTO[];
   userName: string;
   timeStamp: Date;
   guidId: string;

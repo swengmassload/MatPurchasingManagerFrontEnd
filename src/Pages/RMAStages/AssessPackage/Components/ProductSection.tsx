@@ -52,6 +52,8 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
     modelNo: "",
     calibrationType: "Tension",
     warrantyCheck: false,
+    solutionType: "",
+    solutionNotes: "",
     repairsDone: [],
     partsUsed: [],
   });
@@ -176,6 +178,8 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
         modelNo: "",
         calibrationType: "Tension",
         warrantyCheck: false,
+        solutionType: "",
+        solutionNotes: "",
         repairsDone: [],
         partsUsed: [],
       });
@@ -417,6 +421,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
                     onDeleteRepair={handleDeleteRepair}
                     onAddPart={handleAddPart}
                     onDeletePart={handleDeletePart}
+                    onUpdateProduct={handleUpdateProduct}
                   />
                 </AccordionDetails>
               </Accordion>
@@ -438,6 +443,7 @@ interface ProductDetailsPanelProps {
   onDeleteRepair: (productIndex: number, repairIndex: number) => void;
   onAddPart: (productIndex: number, part: PartItemDTO) => void;
   onDeletePart: (productIndex: number, partIndex: number) => void;
+  onUpdateProduct: (productIndex: number, updatedProduct: ProductItemDTO) => void;
 }
 
 const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
@@ -447,6 +453,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
   onDeleteRepair,
   onAddPart,
   onDeletePart,
+  onUpdateProduct,
 }) => {
   const [newRepair, setNewRepair] = useState<RepairItemDTO>({
     description: "",
@@ -550,6 +557,54 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
             </Typography>
             <Typography variant="body1">{product.calibrationType}</Typography>
           </Box>
+        </Box>
+      </Box>
+
+      {/* Solution Section */}
+      <Box sx={{ mb: 3, p: 2, bgcolor: "#f0f7ff", borderRadius: 1, border: "1px solid #e3f2fd" }}>
+        <Typography variant="h6" gutterBottom color="primary">
+          Solution Details
+        </Typography>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          {/* Solution Type */}
+          <FormControl fullWidth>
+            <InputLabel>Solution Type *</InputLabel>
+            <Select
+              value={product.solutionType || ""}
+              onChange={(e) =>
+                onUpdateProduct(productIndex, {
+                  ...product,
+                  solutionType: e.target.value,
+                })
+              }
+              label="Solution Type *"
+            >
+              <MenuItem value="Replace Component">Replace Component</MenuItem>
+              <MenuItem value="Repair Existing Component">Repair Existing Component</MenuItem>
+              <MenuItem value="Software Update">Software Update</MenuItem>
+              <MenuItem value="Firmware Update">Firmware Update</MenuItem>
+              <MenuItem value="Complete Unit Replacement">Complete Unit Replacement</MenuItem>
+              <MenuItem value="No Fault Found">No Fault Found</MenuItem>
+              <MenuItem value="Customer Error">Customer Error</MenuItem>
+              <MenuItem value="Return as Defective">Return as Defective</MenuItem>
+            </Select>
+          </FormControl>
+
+          {/* Solution Notes */}
+          <TextField
+            fullWidth
+            label="Solution Notes *"
+            multiline
+            rows={3}
+            value={product.solutionNotes || ""}
+            onChange={(e) =>
+              onUpdateProduct(productIndex, {
+                ...product,
+                solutionNotes: e.target.value,
+              })
+            }
+            placeholder="Describe the solution implemented, diagnosis results, and any relevant details..."
+          />
         </Box>
       </Box>
 
