@@ -54,6 +54,19 @@ const RMADetailsSection: React.FC<RMADetailsSectionProps> = ({ formData, errors,
 
           <TextField
             fullWidth
+            label="Pin Diameter"
+            type="number"
+            value={formData.pinDiameter || ""}
+            onChange={onFieldChange("pinDiameter")}
+            helperText="Enter the pin diameter measurement"
+            inputProps={{
+              step: "0.01",
+              min: "0"
+            }}
+          />
+
+          <TextField
+            fullWidth
             label="Additional Notes"
             multiline
             rows={3}

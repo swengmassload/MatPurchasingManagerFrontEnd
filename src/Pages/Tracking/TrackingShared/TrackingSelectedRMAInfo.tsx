@@ -10,7 +10,7 @@ interface TrackingSelectedProductInfoProps {
 
 const TrackingSelectedRMAInfo: React.FC<TrackingSelectedProductInfoProps> = ({ product }) => {
   const trackBasic = [
-    { label: "RMA NUmber", value: product?.rMANumber },
+    { label: "RMA NUmber", value: product?.rmaNumber },
     { label: "Stage", value: product?.stage },
     { label: "Company Name", value: product?.companyName },
     { label: "Contact Name", value: product?.contactName },

@@ -62,7 +62,7 @@ const DetailedContactInfo: React.FC<DetailedContactInfoProps> = ({ contactDetail
               // Ensure all necessary fields are present
               .map((address, index) => (
                 <Typography key={index} variant="body2" sx={{ color: "text.secondary", mb: 0.5 }}>
-                  {[address.street, address.city, address.state, address.postal_code, address.country_code]
+                  {[address.street, address.city, address.state, address.postal_code, address.country]
                   .filter(Boolean)
                   .join(", ")}
               </Typography>

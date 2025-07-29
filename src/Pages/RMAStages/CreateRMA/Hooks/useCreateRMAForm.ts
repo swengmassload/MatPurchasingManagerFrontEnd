@@ -17,25 +17,15 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
       setFormData((prev) => ({
         ...prev,
         customerEmail: selectedContact.email_address?.address || "",
-        city:
-          [
-            selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.street,
-            selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.city,
-          ]
-            .filter(Boolean)
-            .join(", ") || "",
+        street:selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.street    || "",            
+        city: selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.city|| "",
         zipCode: selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.postal_code || "",
-        //state: selectedContact.street_addresses ?.filter((addr) => addr.kind === 'work')[0]?.state || "",
         province: selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.state || "",
         country: selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.country || "",
         contactName: `${selectedContact.first_name || ""} ${selectedContact.last_name || ""}`.trim(),
         companyName: selectedContact.company_name || "",
-        phoneNumber:
-          selectedContact.phone_numbers
-            ?.filter((phone) => phone.kind === "work")
-            ?.map((phone) => phone.phone_number)
-            .filter(Boolean)
-            .join(", ") || "",
+        phoneNumber: selectedContact.phone_numbers?.filter((phone) => phone.kind === "work")[0]?.phone_number || "",
+
       }));
       toast.success(`Form populated with contact: ${selectedContact.first_name} ${selectedContact.last_name}`);
     }

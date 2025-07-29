@@ -85,6 +85,7 @@ export interface RMACreateRequestDTO {
   salesPerson?: string | undefined;
   companyName?: string | undefined;
   contactName?: string | undefined;
+  street?: string | undefined;
   city?: string | undefined;
   province?: string | undefined;
   zipCode?: string | undefined;
@@ -92,6 +93,7 @@ export interface RMACreateRequestDTO {
   phoneNumber?: string | undefined;
   faxNumber?: string | undefined;
   notes?: string | undefined;
+  pinDiameter?: number;
   guidId?: string;
   createContact: boolean;
 }
@@ -250,7 +252,6 @@ export interface RMAProductUpdateRequestDTO {
 export interface RMAResponseDTO {
   rmaNumber: number;
   customerEmail: string;
-
   dateIssued?: Date;
   dateReceived?: Date;
   rmaProblemDescription: string;
@@ -258,13 +259,15 @@ export interface RMAResponseDTO {
   salesPerson: string;
   companyName: string;
   contactName: string;
-  city: string;
-  province: string;
-  zipCode: string;
-  country: string;
-  phoneNumber: string;
-  faxNumber: string;
+  street?: string;
+  city?: string;
+  province?: string;
+  zipCode?: string;
+  country?: string;
+  phoneNumber?: string;
+  faxNumber?: string;
   notes: string;
+  pinDiameter?: number;
   guidId: string; // UUID string
 }
 
@@ -354,6 +357,7 @@ export interface RMAUpdateRequestDTO {
   phoneNumber?: string | undefined;
   faxNumber?: string | undefined;
   notes?: string | undefined;
+  pinDiameter?: number;
   guidId?: string;
 }
 

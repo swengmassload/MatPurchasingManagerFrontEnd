@@ -19,6 +19,14 @@ const AddressInformationSection: React.FC<AddressInformationSectionProps> = ({ f
         <Divider sx={{ mb: 2 }} />
 
         <Stack spacing={2}>
+          <TextField
+            fullWidth
+            label="Street Address"
+            value={formData.street}
+            onChange={onFieldChange("street")}
+            helperText="Enter the complete street address"
+          />
+
           <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
             <TextField
               sx={{ flex: 1, minWidth: 250 }}

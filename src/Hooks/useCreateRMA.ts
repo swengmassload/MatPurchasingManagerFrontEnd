@@ -16,7 +16,7 @@ export const useCreateRMA = () => {
         rmaData
       ),
     onSuccess: (data) => {
-         toast.success(`RMA created successfully! RMA Number: ${data?.rMANumber}`);
+         toast.success(`RMA created successfully! RMA Number: ${data?.rmaNumber ? data.rmaNumber : "N/A"}`);
       queryClient.invalidateQueries({ queryKey: [QueryKeys.useCreateRMAKey.mainKey] });
     }
     ,
