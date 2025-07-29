@@ -8,10 +8,10 @@
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
-export interface AuthCodeDto {
-  code?: string | undefined;
-  userId?: string | undefined;
-}
+// export interface AuthCodeDto {
+//   code?: string | undefined;
+//   userId?: string | undefined;
+// }
 
 export interface PartUsedCreateRequestDTO {
   rMANumber?: number;
@@ -535,4 +535,14 @@ export interface RMASearchResponseDTO {
   status: string;
   dateCreated: Date;
   guidId: string;
+}
+
+export interface LabelSentEventCreateRequestDTO {
+    senderEmail: string;
+    senderName: string;
+    receiverEmail: string;
+    subject: string;
+    message: string;
+    rmaNumber: number;
+    contactName: string;
 }

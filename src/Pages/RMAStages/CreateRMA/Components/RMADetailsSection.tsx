@@ -61,7 +61,7 @@ const RMADetailsSection: React.FC<RMADetailsSectionProps> = ({ formData, errors,
             helperText="Enter the pin diameter measurement"
             inputProps={{
               step: "0.01",
-              min: "0"
+              min: "0",
             }}
           />
 

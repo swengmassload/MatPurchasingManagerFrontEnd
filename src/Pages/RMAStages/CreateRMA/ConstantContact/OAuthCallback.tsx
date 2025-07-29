@@ -1,17 +1,12 @@
-// src/pages/OAuthCallback.tsx
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router";
-//import api from "../../../../Hooks/api";
-import { userId } from "../../../../Constants/APINames";
 import { SideBarMenuName } from "../../../../Constants/SideBarMenuNames";
-
 import { useExchangeCodeForToken } from "../../../../Hooks/useExchangeCodeForToken";
-//import { useNavigate, useLocation,  } from "react-router";
+import axios from "axios";
+import { RMAUserStorageKey } from "../../../../Constants/APINames";
 
-export interface exchageData {
-  code: string;
-  userId: string;
-}
+export interface exchageData {code: string;}
+  
 const OAuthCallback = () => {
   const [params] = useSearchParams();
   const navigate = useNavigate();
@@ -19,25 +14,29 @@ const OAuthCallback = () => {
 
   useEffect(() => {
     const code = params.get("code");
-
-    console.log("OAuth Callback Code:", code);
-
+   
     if (!code) {
-      //navigate("/login");
-      alert("Authorization failed. Please try again.");
+      debugger;
+      console.error("No code received from Constant Contact.",params);
+      alert("No Code back from Constant Contact.");
       return;
     }
-
+     console.log("OAuth Callback Code:", code);
     const exchange = async () => {
-      try {
-   
+      try {  
+   /// the token must have been saved in localStorage or state
+        const RmaUser = JSON.parse(localStorage.getItem(RMAUserStorageKey) || "{}") as { token?: string };
+        if (!RmaUser.token) {
+          console.error("No token found in localStorage or state.");
+          alert("No token found. Please log in again.");
+          return;
+        }
+        const apptoken = RmaUser.token ;
 
-        await request.mutateAsync({ code, userId });
-
-        // navigate(`${SideBarMenuName.dashBoard.route}/${SideBarMenuName.CreateRMA.route}`);
-        // alert("Authorization successful! You can now access your contacts.");
+        axios.defaults.headers.common["Authorization" ] = `Bearer ${apptoken}`;
+        await request.mutateAsync({ code });
       } catch (error) {
-        //navigate("/login");
+
         console.error("Error exchanging code for token:", error);
         alert("Authorization failed. Please try again.");
       }
@@ -54,11 +53,7 @@ const OAuthCallback = () => {
     if (request.isSuccess) {
     
       console.log("Token exchange successful:", request.data);
-
-      // Debug: Log navigation details
       console.log("Navigating to:", `${SideBarMenuName.dashBoard.route}/${SideBarMenuName.CreateRMA.route}`);
-      console.log("Dashboard route:", SideBarMenuName.dashBoard.route);
-      console.log("CreateRMA route:", SideBarMenuName.CreateRMA.route);
 
       navigate(`${SideBarMenuName.dashBoard.route}/${SideBarMenuName.CreateRMA.route}`);
     }

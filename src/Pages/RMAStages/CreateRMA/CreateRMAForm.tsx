@@ -8,6 +8,9 @@ import AddressInformationSection from "./Components/AddressInformationSection";
 import RMADetailsSection from "./Components/RMADetailsSection";
 import ContactOptionsSection from "./Components/ContactOptionsSection";
 import FormActions from "./Components/FormActions";
+import MailSenderModal from "./Components/MailSenderModal";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../Redux/store";
 
 interface CreateRMAFormProps {
   selectedContact?: Contact | null;
@@ -15,20 +18,19 @@ interface CreateRMAFormProps {
 }
 
 const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact, tokenValidationResult }) => {
-  console.log("Selected Contact:", selectedContact);
-  console.log("Token Validation Result:", tokenValidationResult);
+
 
   const {
     formData,
     errors,
     isSubmitting,
+    showMailModal,
     handleFieldChange,
     handleDateChange,
     handleCreateContactChange,
     handleSubmit,
-    handleSendMail,
-    handleSendMailWithAttachments,
-    handleSendMailWithAutoFile,
+    handleCloseMailModal,
+    createdRMA,
   } = useCreateRMAForm(selectedContact);
 
   return (
@@ -57,15 +59,19 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact, tokenVal
               onCreateContactChange={handleCreateContactChange}
             />
 
-            <FormActions
-              formData={formData}
-              isSubmitting={isSubmitting}
-              onSendMail={handleSendMail}
-              onSendMailWithAttachments={handleSendMailWithAttachments}
-              onSendMailWithAutoFile={handleSendMailWithAutoFile}
-            />
+            <FormActions isSubmitting={isSubmitting} />
           </Stack>
         </form>
+
+        {/* Mail Sender Modal */}
+        {showMailModal && createdRMA && (
+          <MailSenderModal
+            open={showMailModal}
+            onClose={handleCloseMailModal}
+            rmaData={createdRMA}
+           
+          />
+        )}
       </Paper>
     </Box>
   );

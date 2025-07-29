@@ -23,9 +23,6 @@ const SearchConstantContact: React.FC<SearchConstantContactProps> = ({
     // Token validation state (primary concern)
     tokenValidationComplete,
     tokenValidationResult,
-//    isCheckingToken,
-
-    // State
     searchEmail,
     setSearchEmail,
     selectedContact,
@@ -78,31 +75,7 @@ const SearchConstantContact: React.FC<SearchConstantContactProps> = ({
     );
   }
 
-  // Show warning if token is invalid (this will trigger OAuth redirect)
-  // if (!tokenValidationResult?.isValid) {
-  //   return (
-  //     <Card
-  //       elevation={3}
-  //       sx={{
-  //         borderRadius: 2,
-  //         background: "linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)",
-  //         border: "1px solid #e0e0e0",
-  //         height: "fit-content",
-  //       }}
-  //     >
-  //       <CardContent sx={{ p: 3 }}>
-  //         <SearchHeader />
-  //         <Alert severity="warning" sx={{ mt: 2 }}>
-  //           <Typography variant="body2">
-  //             No valid Constant Contact token found. You will be redirected to authorize access.
-  //           </Typography>
-  //         </Alert>
-  //       </CardContent>
-  //     </Card>
-  //   );
-  // }
 
-  // Normal UI when token is valid
   return (
     <Card
       elevation={3}
@@ -122,7 +95,7 @@ const SearchConstantContact: React.FC<SearchConstantContactProps> = ({
           onSearch={handleSearch}
           onKeyPress={handleKeyPress}
           isLoading={isLoading}
-         // ishasConstantContactToken={tokenValidationResult?.isValid || false}
+
         />
 
         <StatusMessages

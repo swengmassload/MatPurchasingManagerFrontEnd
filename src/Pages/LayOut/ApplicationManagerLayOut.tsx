@@ -34,7 +34,8 @@ debugger
   
       const RmaUser = JSON.parse(localStorage.getItem(RMAUserStorageKey) || "{}") as LoginUserStateSliceProps;
     if (RmaUser.token) {
-      axios.defaults.headers.common["Authorization"] = RmaUser.token;
+    
+        axios.defaults.headers.common["Authorization" ] = `Bearer ${RmaUser.token}`;
       //  const decodedresult= TryJwtDecode<JwtAccessTokenFormat>(currentToken);
       dispatch(
          setTokenNameBarcode({ token: RmaUser.token, email: RmaUser.email, userName:RmaUser.userName})

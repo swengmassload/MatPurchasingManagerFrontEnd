@@ -51,8 +51,8 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
     isLoading: isCheckingToken,
     error: tokenValidationError,
   } = useGetConfirmIfUserHasExistingValidToken(
-    appUser?.userName ? { UserId: appUser.userName } : undefined,
-    !!appUser?.userName && !tokenValidationComplete // Only run if user exists and not completed yet
+    appUser?.email ? { UserId: appUser.email } : undefined,
+    !!appUser?.email && !tokenValidationComplete // Only run if user exists and not completed yet
   );
 
   // Effect: Handle token validation results (runs once)
@@ -124,20 +124,24 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
     // Prevent search if token is invalid
     if (!persistentTokenValidation?.isValid) {
       toast.error("Valid token required. Redirecting to OAuth...");
+      // store login user and search email in localStorage b4 it will redirect
+      localStorage.setItem(RMAUserStorageKey, JSON.stringify(appUser));
+      localStorage.setItem(ConstantContactSearchEmailKey, searchEmail);
       window.location.href = authUrl;
       return;
     }
 
     if (searchEmail.trim()) {
-      localStorage.setItem(ConstantContactSearchEmailKey, searchEmail);
+     
 
       if (IsTokenValid(appUser?.token)) {
        
-        localStorage.setItem(RMAUserStorageKey, JSON.stringify(appUser));
+       
         console.log("✅ Using validated token, proceeding with search");
         setStartSearching(true);
         toast.success("Searching contacts...");
       } else {
+        localStorage.removeItem(ConstantContactSearchEmailKey);
         toast.error(`Token is invalid or expired. Please Login again.`);
         setTimeout(() => {
           navigate(SideBarMenuName.LoggedOut.route);

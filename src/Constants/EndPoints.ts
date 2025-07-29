@@ -77,8 +77,8 @@ export const RMAManagerEnpoints = {
   ConfirmIfUserHasExistingValidToken: `${RMAAPINAME}/v1/ConstantContact/ConfirmIfUserHasExistingValidToken`,
   RMACreateEndpoints: `${RMAAPINAME}/v1/RMAs`,
   PackageReceivedEventsEndPoints: `${RMAAPINAME}/v1/PackageReceivedEvents`,
+  LabelSentEventsEndPoints: `${RMAAPINAME}/v1/LabelSentEvents`,
   RMANextNumberEndpoint: `${RMAAPINAME}/v1/RMANextNumbers`,
-
   TrackingGroupedRMAProduct: `${RMAAPINAME}/v1/RMATracking`,
   GetRMATrackingDetails: `${RMAAPINAME}/v1/RMATracking/TrackingReportDetail`,
 
