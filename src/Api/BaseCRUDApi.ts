@@ -20,7 +20,6 @@ const ProcessBlobResponse = async <T>(response: AxiosResponse<T>) => {
 
     return data;
   } catch (error) {
-   
     console.log("Processing Blob Error .....");
 
     throw await ProcessAxiosBlobErrorAsync(error);
@@ -184,7 +183,6 @@ const ProcessAxiosError = (error: unknown): NewProblemDetails => {
 //   return response;
 // };
 const ProcessAxiosBlobErrorAsync = async (error: unknown): Promise<ProblemDetails> => {
-  
   console.log("Processing Error ProcessAxiosBlobError.....");
 
   let response: ProblemDetails;
@@ -287,10 +285,24 @@ const ProcessAxiosBlobErrorAsync = async (error: unknown): Promise<ProblemDetail
 // };
 
 export const baseRequest = {
-  
   GetData: async <T>(axiosInstance: AxiosInstance, query: string) => {
     try {
+    
       const response = await axiosInstance.get<T>(query, {
+        withCredentials: true,
+      });
+
+      return await response.data;
+    } catch (error) {
+      throw ProcessAxiosError(error);
+    }
+  },
+
+  GetDataWithParams: async <T>(axiosInstance: AxiosInstance, params: object) => {
+    try {
+      console.log("GetDataWithParams called with params: ", params);
+      const response = await axiosInstance.get<T>("", {
+        params: params,
         withCredentials: true,
       });
 
@@ -306,7 +318,6 @@ export const baseRequest = {
       });
       return await response.data;
     } catch (error) {
-   
       throw await ProcessAxiosBlobErrorAsync(error);
     }
   },
@@ -316,7 +327,6 @@ export const baseRequest = {
 
       return await response.data;
     } catch (error) {
-    
       console.log("Error Occured and Found : " + error);
       throw await ProcessAxiosBlobErrorAsync(error);
     }
@@ -408,7 +418,6 @@ export const baseRequest = {
       });
       return ProcessBlobResponse<R>(response);
     } catch (error) {
- 
       throw await ProcessAxiosBlobErrorAsync(error);
     }
   },

@@ -14,7 +14,7 @@ import {
   AccordionDetails,
 } from "@mui/material";
 import { Search, ExpandMore } from "@mui/icons-material";
-import { RMASearchResponseDTO } from "../../../../Models/RMAManagerModels/Dto";
+import { RMAResponseDTO } from "../../../../Models/RMAManagerModels/Dto";
 import { standardInputSx } from "../../../../Constants/ComponentStyles";
 
 interface RMASearchSectionProps {
@@ -22,7 +22,7 @@ interface RMASearchSectionProps {
   onRmaNumberChange: (value: string) => void;
   onSearch: () => void;
   isSearching: boolean;
-  searchResults: RMASearchResponseDTO | null;
+  searchResults: RMAResponseDTO | null;
   searchError: string;
 }
 
@@ -92,70 +92,45 @@ const RMASearchSection: React.FC<RMASearchSectionProps> = ({
             <Accordion defaultExpanded sx={{ backgroundColor: "#f9f9f9", width: "100%" }}>
               <AccordionSummary expandIcon={<ExpandMore />} aria-controls="rma-details-content" id="rma-details-header">
                 <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                  RMA Details
+                  RMA Details...
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Box
-                  sx={{
-                    display: "grid",
-                    gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-                    gap: 3,
-                    width: "100%",
-                  }}
-                >
-                  <Box>
-                    <Box sx={{ mb: 2 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        Customer Name:
-                      </Typography>
-                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                        {searchResults.customerName}
-                      </Typography>
-                    </Box>
-
-                    <Box sx={{ mb: 2 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        Contact Email:
-                      </Typography>
-                      <Typography variant="body1">{searchResults.contactEmail}</Typography>
-                    </Box>
-
-                    <Box sx={{ mb: 2 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        Status:
-                      </Typography>
-                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                        {searchResults.status}
-                      </Typography>
-                    </Box>
+                <Box sx={{ width: "100%" }}>
+                  <Box sx={{ mb: 2 }}>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      Problem Description:
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        textAlign: "justify",
+                        wordWrap: "break-word",
+                        whiteSpace: "pre-wrap",
+                        width: "100%",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {searchResults.rmaProblemDescription || "N/A"}
+                    </Typography>
                   </Box>
 
-                  <Box>
-                    <Box sx={{ mb: 2 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        Product:
-                      </Typography>
-                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                        {searchResults.productDescription}
-                      </Typography>
-                    </Box>
-
-                    <Box sx={{ mb: 2 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        Issue Description:
-                      </Typography>
-                      <Typography variant="body1">{searchResults.issueDescription}</Typography>
-                    </Box>
-
-                    <Box sx={{ mb: 2 }}>
-                      <Typography variant="body2" color="text.secondary">
-                        Date Created:
-                      </Typography>
-                      <Typography variant="body1">
-                        {new Date(searchResults.dateCreated).toLocaleDateString()}
-                      </Typography>
-                    </Box>
+                  <Box sx={{ mb: 2 }}>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      Notes:
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        textAlign: "justify",
+                        wordWrap: "break-word",
+                        whiteSpace: "pre-wrap",
+                        width: "100%",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {searchResults.notes || "N/A"}
+                    </Typography>
                   </Box>
                 </Box>
               </AccordionDetails>

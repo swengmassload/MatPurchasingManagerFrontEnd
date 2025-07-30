@@ -9,8 +9,6 @@ import RMADetailsSection from "./Components/RMADetailsSection";
 import ContactOptionsSection from "./Components/ContactOptionsSection";
 import FormActions from "./Components/FormActions";
 import MailSenderModal from "./Components/MailSenderModal";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../Redux/store";
 
 interface CreateRMAFormProps {
   selectedContact?: Contact | null;
@@ -18,8 +16,6 @@ interface CreateRMAFormProps {
 }
 
 const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact, tokenValidationResult }) => {
-
-
   const {
     formData,
     errors,
@@ -65,12 +61,7 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact, tokenVal
 
         {/* Mail Sender Modal */}
         {showMailModal && createdRMA && (
-          <MailSenderModal
-            open={showMailModal}
-            onClose={handleCloseMailModal}
-            rmaData={createdRMA}
-           
-          />
+          <MailSenderModal open={showMailModal} onClose={handleCloseMailModal} rmaData={createdRMA} />
         )}
       </Paper>
     </Box>

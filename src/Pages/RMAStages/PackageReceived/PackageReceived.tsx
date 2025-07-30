@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Box, Card, CardContent, Typography, TextField, Button, Paper, Stack, Divider, Alert } from "@mui/material";
 import { Save } from "@mui/icons-material";
-import { PackageReceivedEventCreateRequestDTO, RMASearchResponseDTO } from "../../../Models/RMAManagerModels/Dto";
+import {
+  PackageReceivedEventCreateRequestDTO,
+  RMAResponseDTO,
+  RMAGetRequestByStage,
+} from "../../../Models/RMAManagerModels/Dto";
 import { useCreatePackageReceived } from "../../../Hooks/useCreatePackageReceived";
+import { useGetRMAByStage } from "../../../Hooks/useGetRMAByStage";
 import RMAListSection from "../AssessPackage/Components/RMAListSection";
 import toast from "react-hot-toast";
+import { DefaultRMAStages } from "../../../Constants/RMAStages";
 
-// Custom error interface for form validation
+
 interface PackageReceivedFormErrors {
   rMANumber?: string;
   timeStamp?: string;
@@ -15,77 +21,28 @@ interface PackageReceivedFormErrors {
 
 const PackageReceived = () => {
   const createPackageReceivedMutation = useCreatePackageReceived();
-
-  // RMA List state
-  const [rmaList, setRmaList] = useState<RMASearchResponseDTO[]>([]);
-  const [isLoadingList, setIsLoadingList] = useState<boolean>(false);
-  const [selectedRMA, setSelectedRMA] = useState<RMASearchResponseDTO | null>(null);
-
+  const rmaQueryParams: RMAGetRequestByStage = { Stage: DefaultRMAStages.LABELSENT.stage,};
+  const { data: rmaData, isLoading: isLoadingList, error: rmaError,refetch } = useGetRMAByStage(rmaQueryParams, true);
+  const [rmaList, setRmaList] = useState<RMAResponseDTO[]>([]);
+  const [selectedRMA, setSelectedRMA] = useState<RMAResponseDTO | null>(null);
   const [formData, setFormData] = useState<PackageReceivedEventCreateRequestDTO>({
-    rMANumber: 0,
-    //userName: "",
-    timeStamp: new Date(),
-    notes: "",
-    //    guidId: "",
-  });
+    rMANumber: 0, timeStamp: new Date(), notes: "", });
+   const [errors, setErrors] = useState<PackageReceivedFormErrors>({});
 
-  const [errors, setErrors] = useState<PackageReceivedFormErrors>({});
-
-  // Load RMA list on component mount
   useEffect(() => {
-    loadRMAList();
-  }, []);
-
-  const loadRMAList = async () => {
-    setIsLoadingList(true);
-    try {
-      // TODO: Replace with actual API call
-      // Simulating API call to get list of RMAs
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Mock RMA list data for Package Received stage
-      const mockRMAList: RMASearchResponseDTO[] = [
-        {
-          rmaNumber: 12345,
-          customerName: "Acme Corporation",
-          contactEmail: "jane@acme.com",
-          productDescription: "Model XYZ-1000 Router",
-          issueDescription: "Connectivity issues reported",
-          status: "In Transit",
-          dateCreated: new Date("2024-01-15"),
-          guidId: "mock-guid-1",
-        },
-        {
-          rmaNumber: 12346,
-          customerName: "Tech Solutions Ltd",
-          contactEmail: "support@techsolutions.com",
-          productDescription: "Model ABC-500 Switch",
-          issueDescription: "Power supply malfunction",
-          status: "Approved",
-          dateCreated: new Date("2024-01-18"),
-          guidId: "mock-guid-2",
-        },
-        {
-          rmaNumber: 12347,
-          customerName: "Global Networks Inc",
-          contactEmail: "rma@globalnetworks.com",
-          productDescription: "Model DEF-750 Firewall",
-          issueDescription: "Configuration reset required",
-          status: "In Transit",
-          dateCreated: new Date("2024-01-20"),
-          guidId: "mock-guid-3",
-        },
-      ];
-
-      setRmaList(mockRMAList);
-    } catch (error) {
-      toast.error("Failed to load RMA list");
-    } finally {
-      setIsLoadingList(false);
+    if (rmaData) {
+      setRmaList(rmaData);
     }
-  };
+  }, [rmaData]);
 
-  const handleSelectRMA = (rma: RMASearchResponseDTO) => {
+  // Handle errors from the RMA query
+  useEffect(() => {
+    if (rmaError) {
+      toast.error("Failed to load RMA list");
+    }
+  }, [rmaError]);
+
+  const handleSelectRMA = (rma: RMAResponseDTO) => {
     setSelectedRMA(rma);
     setFormData((prev) => ({
       ...prev,
@@ -150,16 +107,15 @@ const PackageReceived = () => {
 
     try {
       await createPackageReceivedMutation.mutateAsync(formData);
-      console.log("Package received event created successfully:", formData);
-      toast.success("Package received event recorded successfully!");
-
+          toast.success("Package received event recorded successfully!");
+     refetch();
       // Reset form after successful submission
       setFormData({
         rMANumber: 0,
-        //userName: "",
+
         timeStamp: new Date(),
         notes: "",
-        //guidId: "",
+ 
       });
       setErrors({});
       setSelectedRMA(null);
@@ -172,9 +128,9 @@ const PackageReceived = () => {
   return (
     <Box sx={{ maxWidth: 1600, margin: "0 auto", padding: 2 }}>
       <Paper elevation={3} sx={{ padding: 3 }}>
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 3, textAlign: "center" }}>
+        {/* <Typography variant="body1" color="text.secondary" sx={{ mb: 3, textAlign: "center" }}>
           Record when a package has been received for an RMA request.
-        </Typography>
+        </Typography> */}
 
         <Box sx={{ display: "flex", gap: 3, flexDirection: { xs: "column", md: "row" } }}>
           {/* Left Side - RMA List */}

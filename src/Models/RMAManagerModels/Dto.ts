@@ -91,7 +91,7 @@ export interface RMACreateRequestDTO {
   zipCode?: string | undefined;
   country?: string | undefined;
   phoneNumber?: string | undefined;
-  faxNumber?: string | undefined;
+
   notes?: string | undefined;
   pinDiameter?: number;
   guidId?: string;
@@ -265,7 +265,7 @@ export interface RMAResponseDTO {
   zipCode?: string;
   country?: string;
   phoneNumber?: string;
-  faxNumber?: string;
+
   notes: string;
   pinDiameter?: number;
   guidId: string; // UUID string
@@ -355,7 +355,7 @@ export interface RMAUpdateRequestDTO {
   zipCode?: string | undefined;
   country?: string | undefined;
   phoneNumber?: string | undefined;
-  faxNumber?: string | undefined;
+
   notes?: string | undefined;
   pinDiameter?: number;
   guidId?: string;
@@ -483,9 +483,8 @@ export interface BaseEventResponseDTO {
 export interface RMAAssessmentCreateRequestDTO {
   rmaNumber: number;
   products: ProductItemDTO[];
-  userName?: string;
-  timeStamp?: Date;
-  guidId?: string;
+  status: boolean;
+
 }
 
 export interface RepairItemDTO {
@@ -508,6 +507,8 @@ export interface ProductItemDTO {
   warrantyCheck: boolean;
   solutionType: string;
   solutionNotes: string;
+  problemType: string;
+  ProblemNotes: string;
   repairsDone: RepairItemDTO[];
   partsUsed: PartItemDTO[];
 }
@@ -526,23 +527,16 @@ export interface SolutionTypeResponseDTO {
   guidId: string;
 }
 
-export interface RMASearchResponseDTO {
+export interface LabelSentEventCreateRequestDTO {
+  senderEmail: string;
+  senderName: string;
+  receiverEmail: string;
+  subject: string;
+  message: string;
   rmaNumber: number;
-  customerName: string;
-  contactEmail: string;
-  productDescription: string;
-  issueDescription: string;
-  status: string;
-  dateCreated: Date;
-  guidId: string;
+  contactName: string;
 }
 
-export interface LabelSentEventCreateRequestDTO {
-    senderEmail: string;
-    senderName: string;
-    receiverEmail: string;
-    subject: string;
-    message: string;
-    rmaNumber: number;
-    contactName: string;
+export interface RMAGetRequestByStage {
+  Stage: string | undefined;
 }

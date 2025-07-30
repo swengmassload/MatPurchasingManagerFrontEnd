@@ -11,13 +11,15 @@ export const DefaultRMAFormValues: RMACreateRequestDTO = {
   salesPerson: "",
   companyName: "",
   contactName: "",
+  street: "",
   city: "",
   province: "",
   zipCode: "",
   country: "",
   phoneNumber: "",
-  faxNumber: "",
+
   notes: "",
+  pinDiameter: undefined,
   guidId: undefined,
   createContact: false,
 };

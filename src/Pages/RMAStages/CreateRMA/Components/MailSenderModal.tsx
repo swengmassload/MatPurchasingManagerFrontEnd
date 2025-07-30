@@ -1,16 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
   Button,
-  Box,
+  TextField,
   Typography,
+  Box,
   IconButton,
-  Alert,
-  CircularProgress,
   FormControlLabel,
   Switch,
   Paper,
@@ -19,25 +17,25 @@ import {
   FormControl,
   InputLabel,
   Divider,
+  Alert,
+  Tooltip,
+  Chip,
 } from "@mui/material";
-import {
-  Close,
-  Send,
-  FormatBold,
-  FormatItalic,
-  FormatUnderlined,
-  Preview,
-  FormatSize,
-  FormatColorText,
-  FormatAlignLeft,
-  FormatAlignCenter,
-  FormatAlignRight,
-} from "@mui/icons-material";
+import { FormatBold, FormatItalic, FormatUnderlined, FormatColorText, Close, Send } from "@mui/icons-material";
+
 import { LabelSentEventCreateRequestDTO, RMAResponseDTO } from "../../../../Models/RMAManagerModels/Dto";
-import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../Redux/store";
-import { useCreateSendLabel } from "../../../../Hooks/useCreateSendlabel";
+import toast from "react-hot-toast";
+import { useCreateSendLabel } from "../../../../Hooks/useCreateSendLabel";
+
+interface EmailData {
+  senderName: string;
+  senderEmail: string;
+  recipientEmail: string;
+  subject: string;
+  body: string;
+}
 
 interface MailSenderModalProps {
   open: boolean;
@@ -45,173 +43,171 @@ interface MailSenderModalProps {
   rmaData: RMAResponseDTO;
 }
 
-interface EmailData {
-  senderEmail: string;
-  senderName: string;
-  recipientEmail: string;
-  subject: string;
-  body: string;
-}
-
 const MailSenderModal: React.FC<MailSenderModalProps> = ({ open, onClose, rmaData }) => {
   const appEmail = useSelector((state: RootState) => state.loginUser).email;
   const appUser = useSelector((state: RootState) => state.loginUser).userName;
+  const { mutate: sendLabel, isPending } = useCreateSendLabel();
 
   const [emailData, setEmailData] = useState<EmailData>({
-    senderEmail: appEmail || "",
     senderName: appUser || "",
+    senderEmail: appEmail || "",
     recipientEmail: rmaData.customerEmail || "",
     subject: `RMA Request - RMA #${rmaData.rmaNumber}`,
     body: generateDefaultEmailBody(rmaData),
   });
 
   const [errors, setErrors] = useState<Partial<EmailData>>({});
-  const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [enableRichText, setEnableRichText] = useState(true);
+  const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [selectedFont, setSelectedFont] = useState("Arial");
-  const [selectedFontSize, setSelectedFontSize] = useState("14");
+  const [selectedFontSize, setSelectedFontSize] = useState(14);
   const [selectedTextColor, setSelectedTextColor] = useState("#000000");
-  const [editorRef, setEditorRef] = useState<HTMLDivElement | null>(null);
-  const { mutate: sendLabel, isPending } = useCreateSendLabel();
+
+  // Reset form when modal opens
+  useEffect(() => {
+    if (open) {
+      setEmailData({
+        senderName: appUser || "",
+        senderEmail: appEmail || "",
+        recipientEmail: rmaData.customerEmail || "",
+        subject: `RMA Request - RMA #${rmaData.rmaNumber}`,
+        body: generateDefaultEmailBody(rmaData),
+      });
+      setErrors({});
+      setIsPreviewMode(false);
+    }
+  }, [open, appUser, appEmail, rmaData]);
 
   // Font options
   const fontOptions = [
     "Arial",
     "Helvetica",
     "Times New Roman",
+    "Courier New",
     "Georgia",
     "Verdana",
+    "Calibri",
     "Tahoma",
-    "Trebuchet MS",
-    "Impact",
-    "Courier New",
-    "Lucida Console",
-    "Comic Sans MS",
-    "Palatino",
-    "Garamond",
-    "Bookman",
-    "Avant Garde",
   ];
 
-  const fontSizeOptions = ["10", "11", "12", "14", "16", "18", "20", "24", "28", "32", "36"];
+  const fontSizeOptions = [8, 9, 10, 11, 12, 14, 16, 18, 20, 24, 28, 32, 36];
 
   function generateDefaultEmailBody(rma: RMAResponseDTO): string {
     return `Dear ${rma.contactName || "Customer"},
 
-This is regarding your RMA request with the following details:
+Thank you for contacting us regarding your RMA request.
 
-RMA Number: ${rma.rmaNumber}
-Customer Email: ${rma.customerEmail}
-Company: ${rma.companyName}
-Contact Name: ${rma.contactName}
-Phone Number: ${rma.phoneNumber || "Not provided"}
-Status: ${rma.stage}
+**RMA Details:**
+- RMA Number: ${rma.rmaNumber}
+- Issue Description: ${rma.rmaProblemDescription || "N/A"}
+- Status: ${rma.stage || "In Process"}
 
-Problem Description:
-${rma.rmaProblemDescription || "Not specified"}
+We will process your request and keep you updated on the progress.
 
-${rma.notes ? `Additional Notes:\n${rma.notes}` : ""}
-
-Please let us know if you need any further assistance.
+If you have any questions, please don't hesitate to contact us.
 
 Best regards,
-${appUser || "Sales Team"}`;
+${appUser || "Customer Service Team"}`;
   }
 
-  const handleFieldChange =
-    (field: keyof EmailData) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setEmailData((prev) => ({ ...prev, [field]: event.target.value }));
-      // Clear error when user starts typing
-      if (errors[field]) {
-        setErrors((prev) => ({ ...prev, [field]: undefined }));
-      }
-    };
-
-  // Format text preservation helper - converts markdown and text formatting to HTML
+  // Format text preservation helper - converts plain text to HTML with formatting
   const formatTextToHtml = (text: string): string => {
+    if (!text) return "";
+
     return text
       .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Bold: **text** -> <strong>text</strong>
       .replace(/\*(.*?)\*/g, "<em>$1</em>") // Italic: *text* -> <em>text</em>
-      .replace(/<u>(.*?)<\/u>/g, "<u>$1</u>") // Underline: keep as is
+      .replace(/___(.*?)___/g, "<u>$1</u>") // Underline: ___text___ -> <u>text</u>
+      .replace(/\[FONT:(.*?)\](.*?)\[\/FONT\]/g, '<span style="font-family: $1">$2</span>') // Font
+      .replace(/\[SIZE:(.*?)\](.*?)\[\/SIZE\]/g, '<span style="font-size: $1px">$2</span>') // Size
+      .replace(/\[COLOR:(.*?)\](.*?)\[\/COLOR\]/g, '<span style="color: $1">$2</span>') // Color
       .replace(/\n/g, "<br />") // Line breaks
       .replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;") // Tabs
       .replace(/  /g, "&nbsp;&nbsp;"); // Double spaces
   };
 
-  // Convert HTML back to text for editing (for future use when loading saved drafts)
-  /*
-  const formatHtmlToText = (html: string): string => {
-    return html
-      .replace(/<br\s*\/?>/gi, '\n')
-      .replace(/&nbsp;/g, ' ')
-      .replace(/<[^>]*>/g, '');
-  };
-  */
-
-  // WYSIWYG Editor functions using document.execCommand
-  const execCommand = (command: string, value?: string) => {
-    document.execCommand(command, false, value);
-    updateEmailBodyFromEditor();
-  };
-
-  const updateEmailBodyFromEditor = () => {
-    if (editorRef) {
-      const htmlContent = editorRef.innerHTML;
-      setEmailData((prev) => ({ ...prev, body: htmlContent }));
-    }
-  };
-
+  // Simple formatting functions that work with textarea
   const insertFormatting = (format: string) => {
     if (!enableRichText || isPreviewMode) return;
 
+    const textarea = document.getElementById("email-body-textarea") as HTMLTextAreaElement;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = emailData.body.substring(start, end);
+    const beforeText = emailData.body.substring(0, start);
+    const afterText = emailData.body.substring(end);
+
+    let newText = "";
+    let cursorPos = start;
+
     switch (format) {
       case "bold":
-        execCommand("bold");
+        if (selectedText) {
+          newText = beforeText + `**${selectedText}**` + afterText;
+          cursorPos = start + selectedText.length + 4;
+        } else {
+          newText = beforeText + "****" + afterText;
+          cursorPos = start + 2;
+        }
         break;
       case "italic":
-        execCommand("italic");
+        if (selectedText) {
+          newText = beforeText + `*${selectedText}*` + afterText;
+          cursorPos = start + selectedText.length + 2;
+        } else {
+          newText = beforeText + "**" + afterText;
+          cursorPos = start + 1;
+        }
         break;
       case "underline":
-        execCommand("underline");
+        if (selectedText) {
+          newText = beforeText + `___${selectedText}___` + afterText;
+          cursorPos = start + selectedText.length + 6;
+        } else {
+          newText = beforeText + "______" + afterText;
+          cursorPos = start + 3;
+        }
         break;
       case "font":
-        execCommand("fontName", selectedFont);
+        if (selectedText) {
+          newText = beforeText + `[FONT:${selectedFont}]${selectedText}[/FONT]` + afterText;
+          cursorPos = start + selectedText.length + selectedFont.length + 15;
+        } else {
+          newText = beforeText + `[FONT:${selectedFont}][/FONT]` + afterText;
+          cursorPos = start + selectedFont.length + 8;
+        }
         break;
       case "fontSize":
-        execCommand("fontSize", "3"); // Standard size, we'll use CSS for px values
-        if (editorRef) {
-          const selection = window.getSelection();
-          if (selection && selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0);
-            const span = document.createElement("span");
-            span.style.fontSize = `${selectedFontSize}px`;
-            try {
-              range.surroundContents(span);
-            } catch (e) {
-              // If can't surround, insert at cursor
-              span.innerHTML = range.toString();
-              range.deleteContents();
-              range.insertNode(span);
-            }
-            updateEmailBodyFromEditor();
-          }
+        if (selectedText) {
+          newText = beforeText + `[SIZE:${selectedFontSize}]${selectedText}[/SIZE]` + afterText;
+          cursorPos = start + selectedText.length + selectedFontSize.toString().length + 15;
+        } else {
+          newText = beforeText + `[SIZE:${selectedFontSize}][/SIZE]` + afterText;
+          cursorPos = start + selectedFontSize.toString().length + 8;
         }
         break;
       case "color":
-        execCommand("foreColor", selectedTextColor);
-        break;
-      case "alignLeft":
-        execCommand("justifyLeft");
-        break;
-      case "alignCenter":
-        execCommand("justifyCenter");
-        break;
-      case "alignRight":
-        execCommand("justifyRight");
+        if (selectedText) {
+          newText = beforeText + `[COLOR:${selectedTextColor}]${selectedText}[/COLOR]` + afterText;
+          cursorPos = start + selectedText.length + selectedTextColor.length + 17;
+        } else {
+          newText = beforeText + `[COLOR:${selectedTextColor}][/COLOR]` + afterText;
+          cursorPos = start + selectedTextColor.length + 9;
+        }
         break;
       default:
-        break;
+        return;
     }
+
+    setEmailData((prev) => ({ ...prev, body: newText }));
+
+    // Restore cursor position
+    setTimeout(() => {
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = cursorPos;
+    }, 0);
   };
 
   const validateForm = (): boolean => {
@@ -224,22 +220,20 @@ ${appUser || "Sales Team"}`;
     if (!emailData.senderEmail.trim()) {
       newErrors.senderEmail = "Sender email is required";
     } else if (!/\S+@\S+\.\S+/.test(emailData.senderEmail)) {
-      newErrors.senderEmail = "Invalid sender email format";
+      newErrors.senderEmail = "Please enter a valid email address";
     }
 
     if (!emailData.recipientEmail.trim()) {
       newErrors.recipientEmail = "Recipient email is required";
     } else if (!/\S+@\S+\.\S+/.test(emailData.recipientEmail)) {
-      newErrors.recipientEmail = "Invalid recipient email format";
+      newErrors.recipientEmail = "Please enter a valid email address";
     }
 
     if (!emailData.subject.trim()) {
       newErrors.subject = "Subject is required";
     }
 
-    // For body validation, strip HTML tags to check actual content
-    const bodyText = emailData.body.replace(/<[^>]*>/g, "").trim();
-    if (!bodyText) {
+    if (!emailData.body.trim()) {
       newErrors.body = "Email body is required";
     }
 
@@ -247,29 +241,23 @@ ${appUser || "Sales Team"}`;
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSendEmail = () => {
+  const handleSend = () => {
     if (!validateForm()) {
-      toast.error("Please fix the validation errors before sending");
       return;
     }
 
-    // Clean up and prepare email body
     let emailBody = emailData.body;
 
+    // Convert markdown formatting to HTML if rich text is enabled
     if (enableRichText) {
-      // For rich text, ensure proper HTML formatting
       emailBody = formatTextToHtml(emailBody);
-    } else {
-      // For plain text, convert line breaks to HTML
-      emailBody = emailBody.replace(/\n/g, "<br>");
     }
 
-    // Convert to the expected DTO format
     const labelData: LabelSentEventCreateRequestDTO = {
       senderEmail: emailData.senderEmail,
+      senderName: emailData.senderName,
       receiverEmail: emailData.recipientEmail,
       subject: emailData.subject,
-      senderName: emailData.senderName,
       message: emailBody,
       rmaNumber: rmaData.rmaNumber,
       contactName: rmaData.contactName,
@@ -277,402 +265,258 @@ ${appUser || "Sales Team"}`;
 
     sendLabel(labelData, {
       onSuccess: () => {
-        // Success is already handled by the hook with toast
+        toast.success("Email sent successfully!");
         onClose();
       },
-      onError: () => {
-        // Error is already handled by the hook with toast
+      onError: (error: any) => {
+        console.error("Error sending email:", error);
+        toast.error("Failed to send email. Please try again.");
       },
     });
   };
 
-  // Reset template function
-  const handleResetTemplate = () => {
-    const newBody = generateDefaultEmailBody(rmaData);
-    setEmailData((prev) => ({ ...prev, body: newBody }));
-
-    // If in rich text mode and editor exists, update the editor content
-    if (enableRichText && editorRef) {
-      editorRef.innerHTML = formatTextToHtml(newBody);
-    }
-  };
-
-  // Handle keyboard shortcuts
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (enableRichText && !isPreviewMode && (event.ctrlKey || event.metaKey)) {
-      switch (event.key.toLowerCase()) {
-        case "b":
-          event.preventDefault();
-          insertFormatting("bold");
-          break;
-        case "i":
-          event.preventDefault();
-          insertFormatting("italic");
-          break;
-        case "u":
-          event.preventDefault();
-          insertFormatting("underline");
-          break;
-        case "l":
-          if (event.shiftKey) {
-            event.preventDefault();
-            insertFormatting("alignLeft");
-          }
-          break;
-        case "e":
-          if (event.shiftKey) {
-            event.preventDefault();
-            insertFormatting("alignCenter");
-          }
-          break;
-        case "r":
-          if (event.shiftKey) {
-            event.preventDefault();
-            insertFormatting("alignRight");
-          }
-          break;
-        default:
-          break;
-      }
-    }
-
-    // For plain text mode, allow normal behavior
-    if (!enableRichText && event.key === "Tab") {
-      event.preventDefault();
-      // Insert tab character in plain text mode
-      const target = event.target as HTMLTextAreaElement;
-      const start = target.selectionStart;
-      const end = target.selectionEnd;
-      const value = target.value;
-      const newValue = value.substring(0, start) + "\t" + value.substring(end);
-      setEmailData((prev) => ({ ...prev, body: newValue }));
-
-      // Reset cursor position
-      setTimeout(() => {
-        target.selectionStart = target.selectionEnd = start + 1;
-      }, 0);
-    }
-  };
-
   const handleClose = () => {
-    if (!isPending) {
-      onClose();
-    }
+    setErrors({});
+    setIsPreviewMode(false);
+    onClose();
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      maxWidth="md"
+      fullWidth
+      PaperProps={{
+        sx: { maxHeight: "90vh" },
+      }}
+    >
       <DialogTitle>
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Typography variant="h6">Send RMA Email</Typography>
-          <IconButton onClick={handleClose} disabled={isPending}>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Typography variant="h6">Send Email</Typography>
+          <IconButton onClick={handleClose} size="small">
             <Close />
           </IconButton>
         </Box>
       </DialogTitle>
 
-      <DialogContent>
-        <Alert severity="info" sx={{ mb: 3 }}>
-          RMA #{rmaData.rmaNumber} has been created successfully. Send notification email to the customer.
-        </Alert>
-
+      <DialogContent dividers>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          {/* Sender Name */}
-          <TextField
-            fullWidth
-            label="Sender Name *"
-            value={emailData.senderName}
-            onChange={handleFieldChange("senderName")}
-            error={Boolean(errors.senderName)}
-            helperText={errors.senderName || "Your name"}
-            disabled={isPending}
-          />
-
-          {/* Sender Email */}
-          <TextField
-            fullWidth
-            label="From (Sender Email) *"
-            value={emailData.senderEmail}
-            onChange={handleFieldChange("senderEmail")}
-            error={Boolean(errors.senderEmail)}
-            helperText={errors.senderEmail || "Enter your email address"}
-            disabled={isPending}
-          />
-
-          {/* Recipient Email */}
-          <TextField
-            fullWidth
-            label="To (Recipient Email) *"
-            value={emailData.recipientEmail}
-            onChange={handleFieldChange("recipientEmail")}
-            error={Boolean(errors.recipientEmail)}
-            helperText={errors.recipientEmail || "Customer's email address"}
-            disabled={isPending}
-          />
-
-          {/* Subject */}
-          <TextField
-            fullWidth
-            label="Subject *"
-            value={emailData.subject}
-            onChange={handleFieldChange("subject")}
-            error={Boolean(errors.subject)}
-            helperText={errors.subject}
-            disabled={isPending}
-          />
-
-          {/* Email Body with Rich Text Options */}
-          <Box>
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 1 }}>
-              <Typography variant="subtitle2">Email Body *</Typography>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={enableRichText}
-                      onChange={(e) => setEnableRichText(e.target.checked)}
-                      size="small"
-                    />
-                  }
-                  label="Rich Text"
-                  sx={{ fontSize: "0.875rem" }}
-                />
-                <Button size="small" variant="outlined" onClick={handleResetTemplate} disabled={isPending}>
-                  Reset Template
-                </Button>
-                <Button
-                  size="small"
-                  variant={isPreviewMode ? "contained" : "outlined"}
-                  startIcon={<Preview />}
-                  onClick={() => setIsPreviewMode(!isPreviewMode)}
-                  disabled={isPending}
-                >
-                  {isPreviewMode ? "Edit" : "Preview"}
-                </Button>
-              </Box>
+          {/* Email Form Fields */}
+          <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+            <Box sx={{ flex: "1 1 45%", minWidth: "250px" }}>
+              <TextField
+                fullWidth
+                label="Sender Name"
+                value={emailData.senderName}
+                onChange={(e) => setEmailData((prev) => ({ ...prev, senderName: e.target.value }))}
+                error={!!errors.senderName}
+                helperText={errors.senderName}
+                size="small"
+              />
             </Box>
+            <Box sx={{ flex: "1 1 45%", minWidth: "250px" }}>
+              <TextField
+                fullWidth
+                label="Sender Email"
+                type="email"
+                value={emailData.senderEmail}
+                onChange={(e) => setEmailData((prev) => ({ ...prev, senderEmail: e.target.value }))}
+                error={!!errors.senderEmail}
+                helperText={errors.senderEmail}
+                size="small"
+              />
+            </Box>
+          </Box>
 
-            {enableRichText && !isPreviewMode && (
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 1,
-                  mb: 1,
-                  border: "1px solid #e0e0e0",
-                  borderRadius: 1,
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: 1,
-                  alignItems: "center",
-                }}
-              >
-                {/* Font Family Selection */}
+          <TextField
+            fullWidth
+            label="To"
+            type="email"
+            value={emailData.recipientEmail}
+            onChange={(e) => setEmailData((prev) => ({ ...prev, recipientEmail: e.target.value }))}
+            error={!!errors.recipientEmail}
+            helperText={errors.recipientEmail}
+            size="small"
+          />
+
+          <TextField
+            fullWidth
+            label="Subject"
+            value={emailData.subject}
+            onChange={(e) => setEmailData((prev) => ({ ...prev, subject: e.target.value }))}
+            error={!!errors.subject}
+            helperText={errors.subject}
+            size="small"
+          />
+
+          {/* Rich Text Controls */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
+            <FormControlLabel
+              control={
+                <Switch checked={enableRichText} onChange={(e) => setEnableRichText(e.target.checked)} size="small" />
+              }
+              label="Rich Text"
+            />
+
+            <FormControlLabel
+              control={
+                <Switch checked={isPreviewMode} onChange={(e) => setIsPreviewMode(e.target.checked)} size="small" />
+              }
+              label="Preview"
+            />
+
+            {enableRichText && (
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
+                <Chip label="**Bold**" size="small" variant="outlined" color="primary" />
+                <Chip label="*Italic*" size="small" variant="outlined" color="secondary" />
+                <Chip label="___Underline___" size="small" variant="outlined" color="info" />
+              </Box>
+            )}
+          </Box>
+
+          {/* Formatting Toolbar */}
+          {enableRichText && !isPreviewMode && (
+            <Paper elevation={1} sx={{ p: 1 }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
+                <Tooltip title="Bold (Wrap text with **)">
+                  <IconButton size="small" onClick={() => insertFormatting("bold")} color="primary">
+                    <FormatBold />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="Italic (Wrap text with *)">
+                  <IconButton size="small" onClick={() => insertFormatting("italic")} color="primary">
+                    <FormatItalic />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="Underline (Wrap text with ___)">
+                  <IconButton size="small" onClick={() => insertFormatting("underline")} color="primary">
+                    <FormatUnderlined />
+                  </IconButton>
+                </Tooltip>
+
+                <Divider orientation="vertical" flexItem />
+
                 <FormControl size="small" sx={{ minWidth: 120 }}>
                   <InputLabel>Font</InputLabel>
-                  <Select
-                    value={selectedFont}
-                    label="Font"
-                    onChange={(e) => setSelectedFont(e.target.value)}
-                    sx={{ fontSize: "0.875rem" }}
-                  >
+                  <Select value={selectedFont} onChange={(e) => setSelectedFont(e.target.value)} label="Font">
                     {fontOptions.map((font) => (
-                      <MenuItem key={font} value={font} sx={{ fontFamily: font }}>
+                      <MenuItem key={font} value={font}>
                         {font}
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
 
-                {/* Font Size Selection */}
                 <FormControl size="small" sx={{ minWidth: 80 }}>
                   <InputLabel>Size</InputLabel>
                   <Select
                     value={selectedFontSize}
+                    onChange={(e) => setSelectedFontSize(Number(e.target.value))}
                     label="Size"
-                    onChange={(e) => setSelectedFontSize(e.target.value)}
-                    sx={{ fontSize: "0.875rem" }}
                   >
                     {fontSizeOptions.map((size) => (
                       <MenuItem key={size} value={size}>
-                        {size}px
+                        {size}
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
 
-                {/* Font Color Selection */}
-                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                  <input
-                    type="color"
-                    value={selectedTextColor}
-                    onChange={(e) => setSelectedTextColor(e.target.value)}
-                    style={{
-                      width: "32px",
-                      height: "32px",
-                      border: "none",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                    }}
-                    title="Text Color"
-                  />
-                  <IconButton size="small" onClick={() => insertFormatting("color")} title="Apply Text Color">
-                    <FormatColorText fontSize="small" />
-                  </IconButton>
-                </Box>
-
-                <Divider orientation="vertical" flexItem />
-
-                {/* Text Formatting Buttons */}
-                <IconButton size="small" onClick={() => insertFormatting("bold")} title="Bold (Ctrl+B)">
-                  <FormatBold fontSize="small" />
-                </IconButton>
-                <IconButton size="small" onClick={() => insertFormatting("italic")} title="Italic (Ctrl+I)">
-                  <FormatItalic fontSize="small" />
-                </IconButton>
-                <IconButton size="small" onClick={() => insertFormatting("underline")} title="Underline (Ctrl+U)">
-                  <FormatUnderlined fontSize="small" />
-                </IconButton>
-
-                <Divider orientation="vertical" flexItem />
-
-                {/* Font Style Buttons */}
-                <IconButton size="small" onClick={() => insertFormatting("font")} title="Apply Font Family">
-                  <FormatSize fontSize="small" />
-                </IconButton>
-                <IconButton size="small" onClick={() => insertFormatting("fontSize")} title="Apply Font Size">
-                  <FormatSize fontSize="small" />
-                </IconButton>
-
-                <Divider orientation="vertical" flexItem />
-
-                {/* Text Alignment Buttons */}
-                <IconButton
-                  size="small"
-                  onClick={() => insertFormatting("alignLeft")}
-                  title="Align Left (Ctrl+Shift+L)"
-                >
-                  <FormatAlignLeft fontSize="small" />
-                </IconButton>
-                <IconButton
-                  size="small"
-                  onClick={() => insertFormatting("alignCenter")}
-                  title="Align Center (Ctrl+Shift+E)"
-                >
-                  <FormatAlignCenter fontSize="small" />
-                </IconButton>
-                <IconButton
-                  size="small"
-                  onClick={() => insertFormatting("alignRight")}
-                  title="Align Right (Ctrl+Shift+R)"
-                >
-                  <FormatAlignRight fontSize="small" />
-                </IconButton>
-              </Paper>
-            )}
-
-            {isPreviewMode ? (
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 2,
-                  minHeight: 300,
-                  border: "1px solid #e0e0e0",
-                  borderRadius: 1,
-                  backgroundColor: "#fafafa",
-                  fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                  fontSize: "14px",
-                  lineHeight: 1.6,
-                  color: "#333",
-                  "& strong, & b": { fontWeight: "bold" },
-                  "& em, & i": { fontStyle: "italic" },
-                  "& u": { textDecoration: "underline" },
-                  "& div": { margin: "0.5em 0" },
-                  "& p": { margin: "0.5em 0" },
-                }}
-                dangerouslySetInnerHTML={{
-                  __html: formatTextToHtml(emailData.body),
-                }}
-              />
-            ) : enableRichText ? (
-              <Box>
-                <Box
-                  ref={setEditorRef}
-                  contentEditable
-                  suppressContentEditableWarning={true}
-                  onInput={updateEmailBodyFromEditor}
-                  onKeyDown={handleKeyDown}
-                  onBlur={updateEmailBodyFromEditor}
-                  dangerouslySetInnerHTML={{
-                    __html: formatTextToHtml(emailData.body),
-                  }}
-                  sx={{
-                    minHeight: 300,
-                    maxHeight: 500,
-                    border: errors.body ? "1px solid #d32f2f" : "1px solid #c4c4c4",
-                    borderRadius: 1,
-                    p: 2,
-                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                    fontSize: "14px",
-                    lineHeight: 1.6,
-                    color: "#333",
-                    backgroundColor: "#fff",
-                    overflowY: "auto",
-                    outline: "none",
-                    cursor: "text",
-                    "&:focus": {
-                      borderColor: "#1976d2",
-                      borderWidth: "2px",
-                    },
-                    "& strong, & b": { fontWeight: "bold" },
-                    "& em, & i": { fontStyle: "italic" },
-                    "& u": { textDecoration: "underline" },
-                    "& div": { margin: "0.25em 0" },
-                    "& p": { margin: "0.25em 0" },
-                    "& br": { lineHeight: "1.2" },
+                <input
+                  type="color"
+                  value={selectedTextColor}
+                  onChange={(e) => setSelectedTextColor(e.target.value)}
+                  style={{
+                    width: 40,
+                    height: 32,
+                    border: "1px solid #ccc",
+                    borderRadius: 4,
+                    cursor: "pointer",
                   }}
                 />
-                {(errors.body || true) && (
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      color: errors.body ? "#d32f2f" : "#666",
-                      mt: 0.5,
-                      fontSize: "0.75rem",
-                      display: "block",
-                    }}
-                  >
-                    {errors.body ||
-                      "WYSIWYG Editor - Use toolbar for formatting. Shortcuts: Ctrl+B (Bold), Ctrl+I (Italic), Ctrl+U (Underline), Ctrl+Shift+L/E/R (Align)"}
-                  </Typography>
-                )}
+
+                <Tooltip title="Apply Font">
+                  <IconButton size="small" onClick={() => insertFormatting("font")} color="primary">
+                    F
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="Apply Font Size">
+                  <IconButton size="small" onClick={() => insertFormatting("fontSize")} color="primary">
+                    T
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="Apply Text Color">
+                  <IconButton size="small" onClick={() => insertFormatting("color")} color="primary">
+                    <FormatColorText />
+                  </IconButton>
+                </Tooltip>
               </Box>
-            ) : (
-              <TextField
-                id="email-body-textarea"
-                fullWidth
-                multiline
-                rows={12}
-                value={emailData.body}
-                onChange={handleFieldChange("body")}
-                onKeyDown={handleKeyDown}
-                error={Boolean(errors.body)}
-                helperText={errors.body || "Plain text mode - Switch to Rich Text for formatting options"}
-                disabled={isPending}
-                sx={{
-                  "& .MuiInputBase-inputMultiline": {
-                    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                    fontSize: "14px",
-                    lineHeight: 1.6,
-                  },
+            </Paper>
+          )}
+
+          {/* Email Body */}
+          {isPreviewMode ? (
+            <Paper
+              elevation={1}
+              sx={{
+                p: 2,
+                minHeight: 200,
+                backgroundColor: "#f9f9f9",
+                border: "1px solid #ddd",
+              }}
+            >
+              <Typography variant="body2" color="text.secondary" gutterBottom>
+                Preview:
+              </Typography>
+              <Box
+                dangerouslySetInnerHTML={{
+                  __html: enableRichText ? formatTextToHtml(emailData.body) : emailData.body.replace(/\n/g, "<br />"),
                 }}
-                inputProps={{
-                  style: {
-                    resize: "vertical",
-                  },
+                sx={{
+                  minHeight: 150,
+                  "& p": { margin: 0 },
+                  "& br": { lineHeight: 1.5 },
                 }}
               />
-            )}
-          </Box>
+            </Paper>
+          ) : (
+            <TextField
+              id="email-body-textarea"
+              fullWidth
+              label="Email Body"
+              multiline
+              rows={8}
+              value={emailData.body}
+              onChange={(e) => setEmailData((prev) => ({ ...prev, body: e.target.value }))}
+              error={!!errors.body}
+              helperText={errors.body}
+              placeholder={
+                enableRichText
+                  ? "Use **bold**, *italic*, ___underline___ for formatting..."
+                  : "Enter your email content..."
+              }
+            />
+          )}
+
+          {enableRichText && (
+            <Alert severity="info" sx={{ mt: 1 }}>
+              <Typography variant="body2">
+                <strong>Formatting Guide:</strong>
+                <br />
+                • **Bold text** for bold
+                <br />
+                • *Italic text* for italics
+                <br />
+                • ___Underlined text___ for underline
+                <br />• Use the toolbar buttons to apply font, size, and color formatting
+              </Typography>
+            </Alert>
+          )}
         </Box>
       </DialogContent>
 
@@ -680,13 +524,7 @@ ${appUser || "Sales Team"}`;
         <Button onClick={handleClose} disabled={isPending}>
           Cancel
         </Button>
-        <Button
-          variant="contained"
-          startIcon={isPending ? <CircularProgress size={20} /> : <Send />}
-          onClick={handleSendEmail}
-          disabled={isPending}
-          sx={{ minWidth: 120 }}
-        >
+        <Button onClick={handleSend} variant="contained" disabled={isPending} startIcon={isPending ? <></> : <Send />}>
           {isPending ? "Sending..." : "Send Email"}
         </Button>
       </DialogActions>

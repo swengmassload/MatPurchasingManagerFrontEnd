@@ -1,90 +1,52 @@
 import { useState, useEffect } from "react";
-import { Box, Paper, Button, Stack } from "@mui/material";
-import { Save } from "@mui/icons-material";
+import { Box, Paper, Button, Stack, Checkbox, FormControlLabel } from "@mui/material";
+import { Save, Visibility } from "@mui/icons-material";
 import {
   RMAAssessmentCreateRequestDTO,
-  RMASearchResponseDTO,
+  RMAResponseDTO,
   ProductItemDTO,
+  RMAGetRequestByStage,
 } from "../../../Models/RMAManagerModels/Dto";
 import RMASearchSection from "./Components/RMASearchSection";
 import { RMAListSection, ProductSection } from "./Components";
+import AssessmentPreviewDialog from "./Components/AssessmentPreviewDialog";
 import toast from "react-hot-toast";
+import { useGetRMAByStage } from "../../../Hooks/useGetRMAByStage";
+import { DefaultRMAStages } from "../../../Constants/RMAStages";
 
 const AssessPackage = () => {
-  // RMA List state
-  const [rmaList, setRmaList] = useState<RMASearchResponseDTO[]>([]);
-  const [isLoadingList, setIsLoadingList] = useState<boolean>(false);
+  // RMA List state using the API hook
+  const rmaStageRequest: RMAGetRequestByStage = {
+    Stage: DefaultRMAStages.PACKAGERECEIVED.stage,
+  };
+
+  const { data: rmaList = [], isLoading: isLoadingList, error: rmaListError } = useGetRMAByStage(rmaStageRequest, true);
 
   // Search state
   const [rmaNumber, setRmaNumber] = useState<string>("");
-  const [searchResults, setSearchResults] = useState<RMASearchResponseDTO | null>(null);
+  const [searchResults, setSearchResults] = useState<RMAResponseDTO | null>(null);
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [searchError, setSearchError] = useState<string>("");
 
   // Assessment form state
   const [products, setProducts] = useState<ProductItemDTO[]>([]);
   const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
+  const [showPreview, setShowPreview] = useState<boolean>(false);
 
   // Form validation
   const [errors, setErrors] = useState<{
     products?: string;
   }>({});
 
-  // Load RMA list on component mount
+  // Show error toast if RMA list fails to load
   useEffect(() => {
-    loadRMAList();
-  }, []);
-
-  const loadRMAList = async () => {
-    setIsLoadingList(true);
-    try {
-      // TODO: Replace with actual API call
-      // Simulating API call to get list of RMAs
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Mock RMA list data
-      const mockRMAList: RMASearchResponseDTO[] = [
-        {
-          rmaNumber: 12345,
-          customerName: "Acme Corporation",
-          contactEmail: "jane@acme.com",
-          productDescription: "Model XYZ-1000 Router",
-          issueDescription: "Connectivity issues reported",
-          status: "Package Received",
-          dateCreated: new Date("2024-01-15"),
-          guidId: "mock-guid-1",
-        },
-        {
-          rmaNumber: 12346,
-          customerName: "Tech Solutions Ltd",
-          contactEmail: "support@techsolutions.com",
-          productDescription: "Model ABC-500 Switch",
-          issueDescription: "Power supply malfunction",
-          status: "Package Received",
-          dateCreated: new Date("2024-01-18"),
-          guidId: "mock-guid-2",
-        },
-        {
-          rmaNumber: 12347,
-          customerName: "Global Networks Inc",
-          contactEmail: "rma@globalnetworks.com",
-          productDescription: "Model DEF-750 Firewall",
-          issueDescription: "Configuration reset required",
-          status: "Package Received",
-          dateCreated: new Date("2024-01-20"),
-          guidId: "mock-guid-3",
-        },
-      ];
-
-      setRmaList(mockRMAList);
-    } catch (error) {
+    if (rmaListError) {
       toast.error("Failed to load RMA list");
-    } finally {
-      setIsLoadingList(false);
     }
-  };
+  }, [rmaListError]);
 
-  const handleSelectRMA = (rma: RMASearchResponseDTO) => {
+  const handleSelectRMA = (rma: RMAResponseDTO) => {
     setSearchResults(rma);
     setRmaNumber(rma.rmaNumber.toString());
     setSearchError("");
@@ -107,14 +69,16 @@ const AssessPackage = () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Mock successful search result
-      const mockResult: RMASearchResponseDTO = {
+      const mockResult: RMAResponseDTO = {
         rmaNumber: parseInt(rmaNumber),
-        customerName: "Acme Corporation",
-        contactEmail: "jane@acme.com",
-        productDescription: "Model XYZ-1000 Router",
-        issueDescription: "Connectivity issues reported",
-        status: "Package Received",
-        dateCreated: new Date(),
+        customerEmail: "jane@acme.com",
+        dateIssued: new Date(),
+        rmaProblemDescription: "Connectivity issues reported",
+        stage: "Package Received",
+        salesPerson: "John Doe",
+        companyName: "Acme Corporation",
+        contactName: "Jane Smith",
+        notes: "Search result - ready for assessment",
         guidId: "mock-guid",
       };
 
@@ -134,6 +98,15 @@ const AssessPackage = () => {
     if (products.length === 0) {
       newErrors.products = "At least one product is required";
     } else {
+      // Check if all products have required problem fields
+      const productsWithMissingProblemInfo = products.filter(
+        (product) => !product.problemType?.trim() || !product.ProblemNotes?.trim()
+      );
+
+      if (productsWithMissingProblemInfo.length > 0) {
+        newErrors.products = "All products must have problem type and problem notes";
+      }
+
       // Check if all products have required solution fields
       const productsWithMissingSolution = products.filter(
         (product) => !product.solutionType?.trim() || !product.solutionNotes?.trim()
@@ -174,18 +147,18 @@ const AssessPackage = () => {
       const assessmentData: RMAAssessmentCreateRequestDTO = {
         rmaNumber: searchResults.rmaNumber,
         products,
-        userName: "Current User", // TODO: Get from user context
-        timeStamp: new Date(),
+        status: isCompleted, // Use checkbox state for completed/draft status
       };
 
       // TODO: Replace with actual API call
       console.log("Saving assessment:", assessmentData);
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      toast.success("Assessment saved successfully!");
+      toast.success(`Assessment saved ${isCompleted ? "as completed" : "as draft"} successfully!`);
 
       // Reset form
       setProducts([]);
+      setIsCompleted(false);
       setErrors({});
     } catch (error) {
       console.error("Error saving assessment:", error);
@@ -193,6 +166,20 @@ const AssessPackage = () => {
     } finally {
       setIsSaving(false);
     }
+  };
+
+  const handlePreview = () => {
+    if (!validateForm()) {
+      toast.error("Please fix validation errors before previewing");
+      return;
+    }
+
+    if (!searchResults) {
+      toast.error("Please search for an RMA first");
+      return;
+    }
+
+    setShowPreview(true);
   };
 
   return (
@@ -228,7 +215,27 @@ const AssessPackage = () => {
                 <ProductSection products={products} onProductsChange={setProducts} error={errors.products} />
 
                 {/* Action Buttons */}
-                <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 4 }}>
+                <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 2, mt: 4 }}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={isCompleted}
+                        onChange={(e) => setIsCompleted(e.target.checked)}
+                        color="primary"
+                      />
+                    }
+                    label="Mark as Completed"
+                    sx={{ mr: 2 }}
+                  />
+                  <Button
+                    variant="outlined"
+                    startIcon={<Visibility />}
+                    onClick={handlePreview}
+                    disabled={products.length === 0}
+                    sx={{ minWidth: 120 }}
+                  >
+                    Preview
+                  </Button>
                   <Button
                     variant="contained"
                     startIcon={<Save />}
@@ -236,7 +243,7 @@ const AssessPackage = () => {
                     disabled={isSaving}
                     sx={{ minWidth: 140 }}
                   >
-                    {isSaving ? "Saving..." : "Save Assessment"}
+                    {isSaving ? "Saving..." : `Save ${isCompleted ? "Completed" : "Draft"}`}
                   </Button>
                 </Box>
               </Stack>
@@ -244,6 +251,25 @@ const AssessPackage = () => {
           </Box>
         </Box>
       </Paper>
+
+      {/* Assessment Preview Dialog */}
+      {showPreview && searchResults && (
+        <AssessmentPreviewDialog
+          open={showPreview}
+          onClose={() => setShowPreview(false)}
+          assessmentData={{
+            rmaNumber: searchResults.rmaNumber,
+            products: products,
+            status: isCompleted,
+          }}
+          rmaDetails={{
+            companyName: searchResults.companyName,
+            contactName: searchResults.contactName,
+            customerEmail: searchResults.customerEmail,
+            rmaProblemDescription: searchResults.rmaProblemDescription,
+          }}
+        />
+      )}
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -52,6 +52,8 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
     modelNo: "",
     calibrationType: "Tension",
     warrantyCheck: false,
+    problemType: "",
+    ProblemNotes: "",
     solutionType: "",
     solutionNotes: "",
     repairsDone: [],
@@ -63,9 +65,63 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
     productUnit?: string;
     serialNo?: string;
     modelNo?: string;
+    problemType?: string;
+    ProblemNotes?: string;
   }>({});
 
   const [isSearching, setIsSearching] = useState<boolean>(false);
+
+  // Migration mapping for old problem types to new ones
+  const problemTypeMigrationMap: Record<string, string> = {
+    "Mechanical Damage": "Physical Damage",
+    "Electrical Failure": "Hardware Failure",
+    "Calibration Issue": "Calibration Error",
+    Corrosion: "Environmental Damage",
+    Overload: "Physical Damage",
+    "Wear and Tear": "Physical Damage",
+  };
+
+  // Migration mapping for old solution types to new ones
+  const solutionTypeMigrationMap: Record<string, string> = {
+    Repair: "Repair Existing Component",
+    Replace: "Replace Component",
+    Calibrate: "Software Update",
+    Clean: "Repair Existing Component",
+    "No Action Required": "No Fault Found",
+    "Beyond Repair": "Return as Defective",
+    Other: "Return as Defective",
+  };
+
+  // Migrate existing products with old problem/solution types
+  useEffect(() => {
+    if (products.length > 0) {
+      const migratedProducts = products.map((product) => {
+        const migratedProduct = { ...product };
+
+        // Migrate problem type if it's an old value
+        if (problemTypeMigrationMap[product.problemType]) {
+          migratedProduct.problemType = problemTypeMigrationMap[product.problemType];
+        }
+
+        // Migrate solution type if it's an old value
+        if (solutionTypeMigrationMap[product.solutionType]) {
+          migratedProduct.solutionType = solutionTypeMigrationMap[product.solutionType];
+        }
+
+        return migratedProduct;
+      });
+
+      // Check if any migration was needed
+      const needsMigration = migratedProducts.some(
+        (product, index) =>
+          product.problemType !== products[index].problemType || product.solutionType !== products[index].solutionType
+      );
+
+      if (needsMigration) {
+        onProductsChange(migratedProducts);
+      }
+    }
+  }, [products, onProductsChange]);
 
   // Common units for product capacity
   const productUnits = ["lbs", "kg", "N", "kN", "tons", "grams", "ounces", "pounds"];
@@ -164,6 +220,14 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
       errors.modelNo = "Model number is required";
     }
 
+    if (!newProduct.problemType.trim()) {
+      errors.problemType = "Problem type is required";
+    }
+
+    if (!newProduct.ProblemNotes.trim()) {
+      errors.ProblemNotes = "Problem notes are required";
+    }
+
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -178,12 +242,17 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
         modelNo: "",
         calibrationType: "Tension",
         warrantyCheck: false,
+        problemType: "",
+        ProblemNotes: "",
         solutionType: "",
         solutionNotes: "",
         repairsDone: [],
         partsUsed: [],
       });
       setValidationErrors({});
+      toast.success("Product added successfully!");
+    } else {
+      toast.error("Please fill in all required fields");
     }
   };
 
@@ -349,6 +418,94 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
             </Box>
           </Box>
 
+          {/* Third Row - Problem Details */}
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 2, alignItems: "flex-start" }}>
+            <FormControl
+              sx={{
+                flex: 1,
+                minWidth: 200,
+                ...standardFormControlSx,
+              }}
+              error={Boolean(validationErrors.problemType)}
+            >
+              <InputLabel id="problem-type-select-label">Problem Type *</InputLabel>
+              <Select
+                labelId="problem-type-select-label"
+                value={newProduct.problemType}
+                label="Problem Type *"
+                onChange={(e) => setNewProduct({ ...newProduct, problemType: e.target.value })}
+              >
+                <MenuItem value="Hardware Failure">Hardware Failure</MenuItem>
+                <MenuItem value="Software Issue">Software Issue</MenuItem>
+                <MenuItem value="Calibration Error">Calibration Error</MenuItem>
+                <MenuItem value="Physical Damage">Physical Damage</MenuItem>
+                <MenuItem value="Connection Problem">Connection Problem</MenuItem>
+                <MenuItem value="Performance Degradation">Performance Degradation</MenuItem>
+                <MenuItem value="Manufacturing Defect">Manufacturing Defect</MenuItem>
+                <MenuItem value="User Error">User Error</MenuItem>
+                <MenuItem value="Environmental Damage">Environmental Damage</MenuItem>
+                <MenuItem value="Other">Other</MenuItem>
+              </Select>
+              {validationErrors.problemType && <FormHelperText>{validationErrors.problemType}</FormHelperText>}
+            </FormControl>
+
+            <TextField
+              label="Problem Notes *"
+              value={newProduct.ProblemNotes}
+              onChange={(e) => setNewProduct({ ...newProduct, ProblemNotes: e.target.value })}
+              error={Boolean(validationErrors.ProblemNotes)}
+              helperText={validationErrors.ProblemNotes}
+              multiline
+              rows={3}
+              sx={{
+                flex: 2,
+                minWidth: 300,
+                ...standardInputSx,
+              }}
+            />
+          </Box>
+
+          {/* Fourth Row - Solution Details */}
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 2, alignItems: "flex-start" }}>
+            <FormControl
+              sx={{
+                flex: 1,
+                minWidth: 200,
+                ...standardFormControlSx,
+              }}
+            >
+              <InputLabel id="solution-type-select-label">Solution Type</InputLabel>
+              <Select
+                labelId="solution-type-select-label"
+                value={newProduct.solutionType}
+                label="Solution Type"
+                onChange={(e) => setNewProduct({ ...newProduct, solutionType: e.target.value })}
+              >
+                <MenuItem value="Replace Component">Replace Component</MenuItem>
+                <MenuItem value="Repair Existing Component">Repair Existing Component</MenuItem>
+                <MenuItem value="Software Update">Software Update</MenuItem>
+                <MenuItem value="Firmware Update">Firmware Update</MenuItem>
+                <MenuItem value="Complete Unit Replacement">Complete Unit Replacement</MenuItem>
+                <MenuItem value="No Fault Found">No Fault Found</MenuItem>
+                <MenuItem value="Customer Error">Customer Error</MenuItem>
+                <MenuItem value="Return as Defective">Return as Defective</MenuItem>
+              </Select>
+            </FormControl>
+
+            <TextField
+              label="Solution Notes"
+              value={newProduct.solutionNotes}
+              onChange={(e) => setNewProduct({ ...newProduct, solutionNotes: e.target.value })}
+              multiline
+              rows={3}
+              sx={{
+                flex: 2,
+                minWidth: 300,
+                ...standardInputSx,
+              }}
+            />
+          </Box>
+
           {/* Search and Add Buttons Row */}
           <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
             <Button
@@ -421,7 +578,6 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
                     onDeleteRepair={handleDeleteRepair}
                     onAddPart={handleAddPart}
                     onDeletePart={handleDeletePart}
-                    onUpdateProduct={handleUpdateProduct}
                   />
                 </AccordionDetails>
               </Accordion>
@@ -443,7 +599,6 @@ interface ProductDetailsPanelProps {
   onDeleteRepair: (productIndex: number, repairIndex: number) => void;
   onAddPart: (productIndex: number, part: PartItemDTO) => void;
   onDeletePart: (productIndex: number, partIndex: number) => void;
-  onUpdateProduct: (productIndex: number, updatedProduct: ProductItemDTO) => void;
 }
 
 const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
@@ -453,7 +608,6 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
   onDeleteRepair,
   onAddPart,
   onDeletePart,
-  onUpdateProduct,
 }) => {
   const [newRepair, setNewRepair] = useState<RepairItemDTO>({
     description: "",
@@ -557,54 +711,6 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
             </Typography>
             <Typography variant="body1">{product.calibrationType}</Typography>
           </Box>
-        </Box>
-      </Box>
-
-      {/* Solution Section */}
-      <Box sx={{ mb: 3, p: 2, bgcolor: "#f0f7ff", borderRadius: 1, border: "1px solid #e3f2fd" }}>
-        <Typography variant="h6" gutterBottom color="primary">
-          Solution Details
-        </Typography>
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          {/* Solution Type */}
-          <FormControl fullWidth>
-            <InputLabel>Solution Type *</InputLabel>
-            <Select
-              value={product.solutionType || ""}
-              onChange={(e) =>
-                onUpdateProduct(productIndex, {
-                  ...product,
-                  solutionType: e.target.value,
-                })
-              }
-              label="Solution Type *"
-            >
-              <MenuItem value="Replace Component">Replace Component</MenuItem>
-              <MenuItem value="Repair Existing Component">Repair Existing Component</MenuItem>
-              <MenuItem value="Software Update">Software Update</MenuItem>
-              <MenuItem value="Firmware Update">Firmware Update</MenuItem>
-              <MenuItem value="Complete Unit Replacement">Complete Unit Replacement</MenuItem>
-              <MenuItem value="No Fault Found">No Fault Found</MenuItem>
-              <MenuItem value="Customer Error">Customer Error</MenuItem>
-              <MenuItem value="Return as Defective">Return as Defective</MenuItem>
-            </Select>
-          </FormControl>
-
-          {/* Solution Notes */}
-          <TextField
-            fullWidth
-            label="Solution Notes *"
-            multiline
-            rows={3}
-            value={product.solutionNotes || ""}
-            onChange={(e) =>
-              onUpdateProduct(productIndex, {
-                ...product,
-                solutionNotes: e.target.value,
-              })
-            }
-            placeholder="Describe the solution implemented, diagnosis results, and any relevant details..."
-          />
         </Box>
       </Box>
 

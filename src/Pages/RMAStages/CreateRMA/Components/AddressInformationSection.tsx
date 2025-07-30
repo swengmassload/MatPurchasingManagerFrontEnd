@@ -22,7 +22,7 @@ const AddressInformationSection: React.FC<AddressInformationSectionProps> = ({ f
           <TextField
             fullWidth
             label="Street Address"
-            value={formData.street}
+            value={formData.street || ""}
             onChange={onFieldChange("street")}
             helperText="Enter the complete street address"
           />
@@ -31,14 +31,14 @@ const AddressInformationSection: React.FC<AddressInformationSectionProps> = ({ f
             <TextField
               sx={{ flex: 1, minWidth: 250 }}
               label="City"
-              value={formData.city}
+              value={formData.city || ""}
               onChange={onFieldChange("city")}
             />
 
             <TextField
               sx={{ flex: 1, minWidth: 250 }}
               label="Province/State"
-              value={formData.province}
+              value={formData.province || ""}
               onChange={onFieldChange("province")}
             />
           </Box>
@@ -47,14 +47,14 @@ const AddressInformationSection: React.FC<AddressInformationSectionProps> = ({ f
             <TextField
               sx={{ flex: 1, minWidth: 250 }}
               label="Zip/Postal Code"
-              value={formData.zipCode}
+              value={formData.zipCode || ""}
               onChange={onFieldChange("zipCode")}
             />
 
             <TextField
               sx={{ flex: 1, minWidth: 250 }}
               label="Country"
-              value={formData.country}
+              value={formData.country || ""}
               onChange={onFieldChange("country")}
             />
           </Box>
