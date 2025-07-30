@@ -37,7 +37,7 @@ const RMAListSection: React.FC<RMAListSectionProps> = ({
   return (
     <Card sx={{ width: "100%", height: "fit-content" }}>
       <CardContent>
-        <Typography variant="h6" gutterBottom color="primary">
+        <Typography variant="h6" gutterBottom sx={{ color: "black" }}>
           Available RMAs
         </Typography>
         <Divider sx={{ mb: 2 }} />
@@ -54,6 +54,7 @@ const RMAListSection: React.FC<RMAListSectionProps> = ({
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             {sortedRmaList.map((rma) => {
               const isExpanded = expandedRMAs.has(rma.rmaNumber);
+              console.log(`RMA #${rma.rmaNumber} draftAssessment:`, rma.draftAssessment); // Debug log
               return (
                 <Card
                   key={rma.rmaNumber}
@@ -73,17 +74,31 @@ const RMAListSection: React.FC<RMAListSectionProps> = ({
                     {/* RMA Number Header with Expand/Collapse */}
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
                       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        <Assignment color="primary" />
-                        <Typography variant="h6" color="primary">
+                        <Assignment sx={{ color: "black" }} />
+                        <Typography variant="h6" sx={{ color: "black" }}>
                           RMA #{rma.rmaNumber}
                         </Typography>
+                        {rma.draftAssessment && (
+                          <Chip
+                            label="DRAFT"
+                            size="small"
+                            sx={{
+                              backgroundColor: "green",
+                              color: "white",
+                              fontWeight: "bold",
+                            }}
+                          />
+                        )}
                         {selectedRMANumber === rma.rmaNumber && <Chip label="Selected" size="small" color="primary" />}
                       </Box>
                       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                         <Chip
                           label={rma.dateIssued ? new Date(rma.dateIssued).toLocaleDateString() : "N/A"}
                           size="small"
-                          color="primary"
+                          sx={{
+                            color: "black",
+                            borderColor: "black",
+                          }}
                           variant="outlined"
                         />
                         <IconButton size="small" onClick={() => toggleExpand(rma.rmaNumber)} sx={{ ml: 1 }}>
@@ -97,55 +112,55 @@ const RMAListSection: React.FC<RMAListSectionProps> = ({
                       <Box sx={{ mb: 2 }}>
                         {/* Company Name */}
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-                          <Person fontSize="small" color="action" />
-                          <Typography variant="body2" color="text.secondary">
+                          <Person fontSize="small" sx={{ color: "black" }} />
+                          <Typography variant="body2" sx={{ color: "black" }}>
                             Company:
                           </Typography>
-                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                          <Typography variant="body2" sx={{ fontWeight: 500, color: "black" }}>
                             {rma.companyName}
                           </Typography>
                         </Box>
 
                         {/* Contact Name */}
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-                          <Person fontSize="small" color="action" />
-                          <Typography variant="body2" color="text.secondary">
+                          <Person fontSize="small" sx={{ color: "black" }} />
+                          <Typography variant="body2" sx={{ color: "black" }}>
                             Contact:
                           </Typography>
-                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                          <Typography variant="body2" sx={{ fontWeight: 500, color: "black" }}>
                             {rma.contactName || "N/A"}
                           </Typography>
                         </Box>
 
                         {/* Phone Number */}
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-                          <Phone fontSize="small" color="action" />
-                          <Typography variant="body2" color="text.secondary">
+                          <Phone fontSize="small" sx={{ color: "black" }} />
+                          <Typography variant="body2" sx={{ color: "black" }}>
                             Phone:
                           </Typography>
-                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                          <Typography variant="body2" sx={{ fontWeight: 500, color: "black" }}>
                             {rma.phoneNumber || "N/A"}
                           </Typography>
                         </Box>
 
                         {/* Email */}
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-                          <Email fontSize="small" color="action" />
-                          <Typography variant="body2" color="text.secondary">
+                          <Email fontSize="small" sx={{ color: "black" }} />
+                          <Typography variant="body2" sx={{ color: "black" }}>
                             Email:
                           </Typography>
-                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                          <Typography variant="body2" sx={{ fontWeight: 500, color: "black" }}>
                             {rma.customerEmail || "N/A"}
                           </Typography>
                         </Box>
 
                         {/* Problem Description */}
                         <Box sx={{ display: "flex", alignItems: "flex-start", gap: 1, mb: 2 }}>
-                          <Description fontSize="small" color="action" sx={{ mt: 0.5 }} />
-                          <Typography variant="body2" color="text.secondary">
+                          <Description fontSize="small" sx={{ color: "black", mt: 0.5 }} />
+                          <Typography variant="body2" sx={{ color: "black" }}>
                             Problem:
                           </Typography>
-                          <Typography variant="body2" sx={{ flex: 1 }}>
+                          <Typography variant="body2" sx={{ flex: 1, color: "black" }}>
                             {rma.rmaProblemDescription
                               ? rma.rmaProblemDescription.length > 100
                                 ? `${rma.rmaProblemDescription.substring(0, 100)}...`

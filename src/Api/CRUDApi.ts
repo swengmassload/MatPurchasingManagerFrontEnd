@@ -133,7 +133,7 @@ function ConvertToQueryString(data: object) {
     .filter(([_, value]) => value !== null) // Filter out null values
     .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
     .join('&');
- console.log("queryParams",queryParams);
+
   return "?"+queryParams;
 }
   // addData: (data: TestingModeGroupCreateRequestDTO) => {  return baseRequest.postData(axiosInstance, data); },

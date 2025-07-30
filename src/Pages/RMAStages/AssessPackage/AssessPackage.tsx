@@ -18,6 +18,7 @@ const AssessPackage = () => {
   // RMA List state using the API hook
   const rmaStageRequest: RMAGetRequestByStage = {
     Stage: DefaultRMAStages.PACKAGERECEIVED.stage,
+    DraftAssessment: true, // Include draft assessments to see the DRAFT label
   };
 
   const { data: rmaList = [], isLoading: isLoadingList, error: rmaListError } = useGetRMAByStage(rmaStageRequest, true);
@@ -47,6 +48,8 @@ const AssessPackage = () => {
   }, [rmaListError]);
 
   const handleSelectRMA = (rma: RMAResponseDTO) => {
+    console.log("Selected RMA for assessment:", rma);
+    console.log("RMA draftAssessment value:", rma.draftAssessment); // Debug log
     setSearchResults(rma);
     setRmaNumber(rma.rmaNumber.toString());
     setSearchError("");
@@ -79,6 +82,14 @@ const AssessPackage = () => {
         companyName: "Acme Corporation",
         contactName: "Jane Smith",
         notes: "Search result - ready for assessment",
+        street: "123 Main St",
+        city: "Springfield",
+        province: "IL",
+        zipCode: "62701",
+        phoneNumber: "555-1234",
+        country: "USA",
+        draftAssessment: true, // Changed to true to see the DRAFT label
+        pinDiameter: 5,
         guidId: "mock-guid",
       };
 

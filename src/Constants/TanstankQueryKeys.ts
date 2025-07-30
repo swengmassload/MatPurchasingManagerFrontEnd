@@ -16,7 +16,7 @@ export const QueryKeys = {
 
   useGetRMAByStage: {
     mainKey: "useGetRMAByStage",
-    subKeys: (params: { req: RMAGetRequestByStage }) => [params.req.stage],
+    subKeys: (params: { req: RMAGetRequestByStage }) => [params.req.Stage],
   },
 
   

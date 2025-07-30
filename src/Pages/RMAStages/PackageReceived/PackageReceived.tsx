@@ -21,7 +21,7 @@ interface PackageReceivedFormErrors {
 
 const PackageReceived = () => {
   const createPackageReceivedMutation = useCreatePackageReceived();
-  const rmaQueryParams: RMAGetRequestByStage = { Stage: DefaultRMAStages.LABELSENT.stage,};
+  const rmaQueryParams: RMAGetRequestByStage = { Stage: DefaultRMAStages.LABELSENT.stage,DraftAssessment:true};
   const { data: rmaData, isLoading: isLoadingList, error: rmaError,refetch } = useGetRMAByStage(rmaQueryParams, true);
   const [rmaList, setRmaList] = useState<RMAResponseDTO[]>([]);
   const [selectedRMA, setSelectedRMA] = useState<RMAResponseDTO | null>(null);

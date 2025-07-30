@@ -19,7 +19,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { Print, Close, Assignment, Build, Inventory } from "@mui/icons-material";
-import { RMAAssessmentCreateRequestDTO, ProductItemDTO } from "../../../../Models/RMAManagerModels/Dto";
+import { RMAAssessmentCreateRequestDTO,  } from "../../../../Models/RMAManagerModels/Dto";
 
 interface AssessmentPreviewDialogProps {
   open: boolean;

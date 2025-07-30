@@ -265,9 +265,9 @@ export interface RMAResponseDTO {
   zipCode?: string;
   country?: string;
   phoneNumber?: string;
-
   notes: string;
   pinDiameter?: number;
+  draftAssessment: boolean;
   guidId: string; // UUID string
 }
 
@@ -539,4 +539,5 @@ export interface LabelSentEventCreateRequestDTO {
 
 export interface RMAGetRequestByStage {
   Stage: string | undefined;
+  DraftAssessment: boolean;
 }
