@@ -19,12 +19,12 @@ import {
   IconButton,
 } from "@mui/material";
 import { Print, Close, Assignment, Build, Inventory } from "@mui/icons-material";
-import { RMAAssessmentCreateRequestDTO,  } from "../../../../Models/RMAManagerModels/Dto";
+import { ProductAssessedEventCreateRequestDTO } from "../../../../Models/RMAManagerModels/Dto";
 
 interface AssessmentPreviewDialogProps {
   open: boolean;
   onClose: () => void;
-  assessmentData: RMAAssessmentCreateRequestDTO;
+  assessmentData: ProductAssessedEventCreateRequestDTO;
   rmaDetails?: {
     companyName?: string;
     contactName?: string;

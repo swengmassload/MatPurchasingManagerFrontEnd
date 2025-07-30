@@ -480,11 +480,10 @@ export interface BaseEventResponseDTO {
 }
 
 // Assessment DTOs
-export interface RMAAssessmentCreateRequestDTO {
+export interface ProductAssessedEventCreateRequestDTO {
   rmaNumber: number;
   products: ProductItemDTO[];
   status: boolean;
-
 }
 
 export interface RepairItemDTO {
@@ -513,13 +512,13 @@ export interface ProductItemDTO {
   partsUsed: PartItemDTO[];
 }
 
-export interface RMAAssessmentResponseDTO {
-  rmaNumber: number;
-  products: ProductItemDTO[];
-  userName: string;
-  timeStamp: Date;
-  guidId: string;
-}
+// export interface RMAAssessmentResponseDTO {
+//   rmaNumber: number;
+//   products: ProductItemDTO[];
+//   userName: string;
+//   timeStamp: Date;
+//   guidId: string;
+// }
 
 export interface SolutionTypeResponseDTO {
   solutionType: string;

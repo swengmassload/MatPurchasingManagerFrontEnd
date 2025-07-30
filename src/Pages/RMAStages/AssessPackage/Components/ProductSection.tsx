@@ -685,31 +685,18 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
           Product Details
         </Typography>
         <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 2 }}>
+          
           <Box>
             <Typography variant="body2" color="text.secondary">
-              Serial No:
+              Problem Type:
             </Typography>
-            <Typography variant="body1">{product.serialNo}</Typography>
+            <Typography variant="body1">{product.problemType}</Typography>
           </Box>
           <Box>
             <Typography variant="body2" color="text.secondary">
-              Model:
+              Solution Type:
             </Typography>
-            <Typography variant="body1">{product.modelNo}</Typography>
-          </Box>
-          <Box>
-            <Typography variant="body2" color="text.secondary">
-              Capacity:
-            </Typography>
-            <Typography variant="body1">
-              {product.productCapacity} {product.productUnit}
-            </Typography>
-          </Box>
-          <Box>
-            <Typography variant="body2" color="text.secondary">
-              Calibration:
-            </Typography>
-            <Typography variant="body1">{product.calibrationType}</Typography>
+            <Typography variant="body1">{product.solutionType}</Typography>
           </Box>
         </Box>
       </Box>
