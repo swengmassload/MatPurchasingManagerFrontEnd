@@ -480,25 +480,29 @@ export interface BaseEventResponseDTO {
 }
 
 // Assessment DTOs
+
 export interface ProductAssessedEventCreateRequestDTO {
   rmaNumber: number;
   products: ProductItemDTO[];
-  status: boolean;
+  notes: string | undefined;
+  assessmentStatus: boolean;
 }
 
 export interface RepairItemDTO {
+  repairItemId: number;
   description: string;
   date: Date;
   hoursUsed: number;
 }
 
 export interface PartItemDTO {
+  partItemId: number;
   description: string;
   quantity: number;
 }
 
 export interface ProductItemDTO {
-  productCapacity: string;
+  productCapacity: number;
   productUnit: string;
   serialNo: string;
   modelNo: string;

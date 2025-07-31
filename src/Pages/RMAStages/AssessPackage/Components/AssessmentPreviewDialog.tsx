@@ -184,6 +184,18 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
 
         <Divider sx={{ my: 3 }} />
 
+        {/* Assessment Notes */}
+        {assessmentData.notes && (
+          <Paper sx={{ p: 2, backgroundColor: "#e3f2fd", mb: 3 }}>
+            <Typography variant="h6" gutterBottom color="primary">
+              Assessment Notes
+            </Typography>
+            <Typography variant="body1" sx={{ lineHeight: 1.6 }}>
+              {assessmentData.notes}
+            </Typography>
+          </Paper>
+        )}
+
         {/* Products Assessment */}
         <Typography variant="h5" gutterBottom sx={{ color: "#1976d2", mb: 3 }}>
           Product Assessment Details ({assessmentData.products.length} Products)
@@ -317,6 +329,7 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
                   <Table size="small">
                     <TableHead>
                       <TableRow>
+                        <TableCell sx={{ fontWeight: "bold" }}>Serial No</TableCell>
                         <TableCell sx={{ fontWeight: "bold" }}>Description</TableCell>
                         <TableCell sx={{ fontWeight: "bold" }}>Date</TableCell>
                         <TableCell sx={{ fontWeight: "bold" }}>Hours Used</TableCell>
@@ -325,6 +338,7 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
                     <TableBody>
                       {product.repairsDone.map((repair, repairIndex) => (
                         <TableRow key={repairIndex}>
+                          <TableCell>{repair.serialNo}</TableCell>
                           <TableCell>{repair.description}</TableCell>
                           <TableCell>{formatDate(repair.date)}</TableCell>
                           <TableCell>{repair.hoursUsed} hours</TableCell>
@@ -349,6 +363,7 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
                   <Table size="small">
                     <TableHead>
                       <TableRow>
+                        <TableCell sx={{ fontWeight: "bold" }}>Serial No</TableCell>
                         <TableCell sx={{ fontWeight: "bold" }}>Description</TableCell>
                         <TableCell sx={{ fontWeight: "bold" }}>Quantity</TableCell>
                       </TableRow>
@@ -356,6 +371,7 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
                     <TableBody>
                       {product.partsUsed.map((part, partIndex) => (
                         <TableRow key={partIndex}>
+                          <TableCell>{part.serialNo}</TableCell>
                           <TableCell>{part.description}</TableCell>
                           <TableCell>{part.quantity}</TableCell>
                         </TableRow>

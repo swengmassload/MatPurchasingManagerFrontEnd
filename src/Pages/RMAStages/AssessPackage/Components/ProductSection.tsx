@@ -269,7 +269,15 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
 
   const handleAddRepair = (productIndex: number, repair: RepairItemDTO) => {
     const updatedProduct = { ...products[productIndex] };
-    updatedProduct.repairsDone = [...updatedProduct.repairsDone, repair];
+    const nextId =
+      (updatedProduct.repairsDone.length > 0 ? Math.max(...updatedProduct.repairsDone.map((r) => r.repairItemId)) : 0) +
+      1;
+    const repairWithId = {
+      ...repair,
+      repairItemId: nextId,
+      serialNo: String(nextId),
+    };
+    updatedProduct.repairsDone = [...updatedProduct.repairsDone, repairWithId];
     handleUpdateProduct(productIndex, updatedProduct);
   };
 
@@ -281,7 +289,14 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
 
   const handleAddPart = (productIndex: number, part: PartItemDTO) => {
     const updatedProduct = { ...products[productIndex] };
-    updatedProduct.partsUsed = [...updatedProduct.partsUsed, part];
+    const nextId =
+      (updatedProduct.partsUsed.length > 0 ? Math.max(...updatedProduct.partsUsed.map((p) => p.partItemId)) : 0) + 1;
+    const partWithId = {
+      ...part,
+      partItemId: nextId,
+      serialNo: String(nextId),
+    };
+    updatedProduct.partsUsed = [...updatedProduct.partsUsed, partWithId];
     handleUpdateProduct(productIndex, updatedProduct);
   };
 
@@ -610,12 +625,16 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
   onDeletePart,
 }) => {
   const [newRepair, setNewRepair] = useState<RepairItemDTO>({
+    repairItemId: 0,
+    serialNo: "",
     description: "",
     date: new Date(),
     hoursUsed: 0,
   });
 
   const [newPart, setNewPart] = useState<PartItemDTO>({
+    partItemId: 0,
+    serialNo: "",
     description: "",
     quantity: 1,
   });
@@ -658,6 +677,8 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
     if (validateRepair()) {
       onAddRepair(productIndex, { ...newRepair });
       setNewRepair({
+        repairItemId: 0,
+        serialNo: "",
         description: "",
         date: new Date(),
         hoursUsed: 0,
@@ -670,6 +691,8 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
     if (validatePart()) {
       onAddPart(productIndex, { ...newPart });
       setNewPart({
+        partItemId: 0,
+        serialNo: "",
         description: "",
         quantity: 1,
       });
@@ -685,7 +708,6 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
           Product Details
         </Typography>
         <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 2 }}>
-          
           <Box>
             <Typography variant="body2" color="text.secondary">
               Problem Type:
