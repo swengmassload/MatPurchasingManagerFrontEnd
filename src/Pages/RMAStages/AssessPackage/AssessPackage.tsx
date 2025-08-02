@@ -23,7 +23,7 @@ const AssessPackage = () => {
     DraftAssessment: true, // Include draft assessments to see the DRAFT label
   };
 
-  const { data: rmaList = [], isLoading: isLoadingList, error: rmaListError } = useGetRMAByStage(rmaStageRequest, true);
+  const { data: rmaList = [], isLoading: isLoadingList, error: rmaListError,refetch } = useGetRMAByStage(rmaStageRequest, true);
 
   // Search state
   const [rmaNumber, setRmaNumber] = useState<string>("");
@@ -50,43 +50,54 @@ const AssessPackage = () => {
     }
   }, [rmaListError]);
 
-  const [assessmentRmaNumber, setAssessmentRmaNumber] = useState<string | undefined>(undefined);
+  const [selectedRmaNumber, setSelectedRmaNumber] = useState<string | undefined>(undefined);
   const { data: existingAssessment, isLoading: isLoadingAssessment } = useGetAssessmentByRmaNumber(
-    assessmentRmaNumber,
-    !!assessmentRmaNumber
+    selectedRmaNumber,
+    !!selectedRmaNumber
   );
 
   const handleSelectRMA = (rma: RMAResponseDTO) => {
-    console.log("Selected RMA for assessment:", rma);
-    console.log("RMA draftAssessment value:", rma.draftAssessment); // Debug log
+    rma.draftAssessment ? console.log("Selected RMA for assessment:", rma) : <></>;
+    // If draftAssessment is true, we can proceed with the assessment
 
     setSearchResults(rma);
-    setRmaNumber(rma.rmaNumber.toString());
+    setSelectedRmaNumber(rma.rmaNumber.toString()); // Set the RMA number for the hook to check for existing assessment
     setSearchError("");
 
+    // Show loading message while checking for existing assessment
     if (rma.draftAssessment) {
-      setAssessmentRmaNumber(rma.rmaNumber.toString());
+      toast.success(`RMA #${rma.rmaNumber} selected - Checking for existing assessment...`);
+    }
+  };
+
+  // Effect to handle the assessment loading after the hook fetches data
+  useEffect(() => {
+    if (selectedRmaNumber && !isLoadingAssessment && searchResults?.draftAssessment) {
       if (existingAssessment) {
+   
+        toast.success(`RMA #${selectedRmaNumber} selected - Loading existing assessment data`);
         console.log("Found existing draft assessment via API:", existingAssessment);
         setProducts(existingAssessment.products);
         setIsCompleted(existingAssessment.assessmentStatus);
         setNote(existingAssessment.notes || "");
-        toast.success(`RMA #${rma.rmaNumber} selected - Loading draft assessment data`);
-      } else if (isLoadingAssessment) {
-        toast.success(`RMA #${rma.rmaNumber} selected - Loading draft assessment data...`);
+        toast.success(`RMA #${selectedRmaNumber} selected - Loading draft assessment data`);
       } else {
+        console.log("No existing assessment found for RMA:", selectedRmaNumber);
+        // Reset form for new assessment
         setProducts([]);
         setIsCompleted(false);
         setNote("");
-        toast.success(`RMA #${rma.rmaNumber} selected for assessment`);
+        toast.success(`RMA #${selectedRmaNumber} selected - Ready for new assessment`);
       }
-    } else {
+    } else if (selectedRmaNumber && !isLoadingAssessment && !searchResults?.draftAssessment) {
+      // RMA without draft assessment - reset form for new assessment
+      console.log("RMA has no draft assessment, starting fresh:", selectedRmaNumber);
       setProducts([]);
       setIsCompleted(false);
       setNote("");
-      toast.success(`RMA #${rma.rmaNumber} selected for assessment`);
+      toast.success(`RMA #${selectedRmaNumber} selected - Ready for new assessment`);
     }
-  };
+  }, [selectedRmaNumber, existingAssessment, isLoadingAssessment, searchResults?.draftAssessment]);
 
   const handleSearch = async () => {
     if (!rmaNumber.trim()) {
@@ -105,9 +116,7 @@ const AssessPackage = () => {
 
       // Mock successful search result - using RMA number
       const searchedRmaNumber = parseInt(rmaNumber);
-      // Use API to determine if draft assessment exists
-      setAssessmentRmaNumber(searchedRmaNumber.toString());
-      // Wait for API response in handleSelectRMA
+      // The API hook will determine if draft assessment exists
       const mockResult: RMAResponseDTO = {
         rmaNumber: searchedRmaNumber,
         customerEmail: "jane@acme.com",
@@ -124,8 +133,9 @@ const AssessPackage = () => {
         zipCode: "62701",
         phoneNumber: "555-1234",
         country: "USA",
-        draftAssessment: !!existingAssessment,
+        draftAssessment: false, // Will be determined by the API hook
         pinDiameter: 5,
+        salesOrderId: "mock-sales-order-id",
         guidId: "mock-guid",
       };
 
@@ -140,6 +150,7 @@ const AssessPackage = () => {
   };
 
   const validateForm = (): boolean => {
+    debugger
     const newErrors: typeof errors = {};
 
     if (products.length === 0) {
@@ -147,7 +158,12 @@ const AssessPackage = () => {
     } else {
       // Check if all products have required problem fields
       const productsWithMissingProblemInfo = products.filter(
-        (product) => !product.problemType?.trim() || !product.ProblemNotes?.trim()
+        (product) => {
+          debugger
+          console.log("Validating product:", product);
+          const result = !product.problemType?.trim() || !product.problemNotes?.trim();
+          return result;
+        }
       );
 
       if (productsWithMissingProblemInfo.length > 0) {
@@ -206,6 +222,7 @@ const AssessPackage = () => {
       setIsCompleted(false);
       setNote("");
       setErrors({});
+      refetch();
     } catch (error) {
       // Error handling is already done in the hook
     } finally {

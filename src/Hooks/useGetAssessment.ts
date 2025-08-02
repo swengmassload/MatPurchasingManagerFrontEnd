@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import CRUDApi from "../Api/CRUDApi";
@@ -11,7 +10,10 @@ export interface useGetAssessmentByRMANumberProps {
   RmaNumber: number;
 }
 
-export const useGetAssessmentByRMANumber = (data: useGetAssessmentByRMANumberProps | undefined, startSearching: boolean) => {
+export const useGetAssessmentByRMANumber = (
+  data: useGetAssessmentByRMANumberProps | undefined,
+  startSearching: boolean
+) => {
   const queryResult = useQuery<ProductAssessedEventCreateRequestDTO | undefined, Error>({
     queryKey: [QueryKeys.useGetContactByEmailKey.mainKey, data?.RmaNumber],
     queryFn: () => {
@@ -22,6 +24,10 @@ export const useGetAssessmentByRMANumber = (data: useGetAssessmentByRMANumberPro
         BASEAPIURL + RMAManagerEnpoints.SearchContactEndPoint
       ).getDataSinglewtQryParams(data);
     },
+
+    gcTime: 0, // Do not cache
+    staleTime: 0, // Always stale, always refetch
+    refetchOnMount: true,
     enabled: !!data?.RmaNumber && startSearching, // Only run the query if email exists and search is enabled
   });
 
@@ -34,6 +40,3 @@ export const useGetAssessmentByRMANumber = (data: useGetAssessmentByRMANumberPro
 
   return queryResult;
 };
-
-
-

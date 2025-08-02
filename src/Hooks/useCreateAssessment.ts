@@ -17,8 +17,7 @@ export const useCreateAssessment = () => {
     onSuccess: (data) => {
      toast.success(`Assessment created successfully! RMA Number: ${data?.rmaNumber ? data.rmaNumber : "N/A"}`);
        queryClient.invalidateQueries({ queryKey: [data?.rmaNumber] });
-
-      queryClient.invalidateQueries({ queryKey: [QueryKeys.useGetRMAByStage.mainKey] });
+       queryClient.invalidateQueries({ queryKey: [QueryKeys.useGetRMAByStage.mainKey] });
     }
     ,
     onError: (error: any) => {

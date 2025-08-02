@@ -59,6 +59,7 @@ export interface CRUDApiInterface<CreateType, ResponseType> {
       getAllData: () => baseRequest.GetAllData<TResponseDTO>(axiosInstance),
       getData: (query?: string) =>
         {  
+
           if(query==undefined  || query=="-") {
 
             return Promise.reject(new Error("No Query Provided"));}

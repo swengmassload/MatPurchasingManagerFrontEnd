@@ -8,6 +8,7 @@
     "intranet": "vite --host  --port 5175",
     "build": "tsc && vite build",
     "build:staging": "tsc && vite build  --mode staging",
+      "build:production": "tsc && vite build  --mode production",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview --port 5175  --strictPort",
     "test": "vitest --coverage",

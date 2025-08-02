@@ -46,14 +46,14 @@ interface ProductSectionProps {
 
 const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsChange, error }) => {
   const [newProduct, setNewProduct] = useState<ProductItemDTO>({
-    productCapacity: "",
+    productCapacity:0,
     productUnit: "",
     serialNo: "",
     modelNo: "",
     calibrationType: "Tension",
     warrantyCheck: false,
     problemType: "",
-    ProblemNotes: "",
+    problemNotes: "",
     solutionType: "",
     solutionNotes: "",
     repairsDone: [],
@@ -186,7 +186,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
       if (foundProduct) {
         setNewProduct({
           ...newProduct,
-          productCapacity: foundProduct.productCapacity,
+          productCapacity: Number(foundProduct.productCapacity),
           productUnit: foundProduct.productUnit,
           modelNo: foundProduct.modelNo,
         });
@@ -204,7 +204,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
   const validateNewProduct = (): boolean => {
     const errors: typeof validationErrors = {};
 
-    if (!newProduct.productCapacity.trim()) {
+    if (!newProduct.productCapacity) {
       errors.productCapacity = "Product capacity is required";
     }
 
@@ -224,7 +224,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
       errors.problemType = "Problem type is required";
     }
 
-    if (!newProduct.ProblemNotes.trim()) {
+    if (!newProduct.problemNotes.trim()) {
       errors.ProblemNotes = "Problem notes are required";
     }
 
@@ -236,14 +236,14 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
     if (validateNewProduct()) {
       onProductsChange([...products, { ...newProduct }]);
       setNewProduct({
-        productCapacity: "",
+        productCapacity: 0,
         productUnit: "",
         serialNo: "",
         modelNo: "",
         calibrationType: "Tension",
         warrantyCheck: false,
         problemType: "",
-        ProblemNotes: "",
+        problemNotes: "",
         solutionType: "",
         solutionNotes: "",
         repairsDone: [],
@@ -325,7 +325,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
             <TextField
               label="Product Capacity *"
               value={newProduct.productCapacity}
-              onChange={(e) => setNewProduct({ ...newProduct, productCapacity: e.target.value })}
+              onChange={(e) => setNewProduct({ ...newProduct, productCapacity:Number( e.target.value) })}
               error={Boolean(validationErrors.productCapacity)}
               helperText={validationErrors.productCapacity}
               sx={{
@@ -466,11 +466,11 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
 
             <TextField
               label="Problem Notes *"
-              value={newProduct.ProblemNotes}
-              onChange={(e) => setNewProduct({ ...newProduct, ProblemNotes: e.target.value })}
+              value={newProduct.problemNotes}
+              onChange={(e) => setNewProduct({ ...newProduct, problemNotes: e.target.value })}
               error={Boolean(validationErrors.ProblemNotes)}
               helperText={validationErrors.ProblemNotes}
-              multiline
+              //multiline
               rows={3}
               sx={{
                 flex: 2,
@@ -511,7 +511,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
               label="Solution Notes"
               value={newProduct.solutionNotes}
               onChange={(e) => setNewProduct({ ...newProduct, solutionNotes: e.target.value })}
-              multiline
+              //multiline
               rows={3}
               sx={{
                 flex: 2,
@@ -626,7 +626,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
 }) => {
   const [newRepair, setNewRepair] = useState<RepairItemDTO>({
     repairItemId: 0,
-    serialNo: "",
+  
     description: "",
     date: new Date(),
     hoursUsed: 0,
@@ -634,7 +634,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
 
   const [newPart, setNewPart] = useState<PartItemDTO>({
     partItemId: 0,
-    serialNo: "",
+
     description: "",
     quantity: 1,
   });
@@ -678,7 +678,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
       onAddRepair(productIndex, { ...newRepair });
       setNewRepair({
         repairItemId: 0,
-        serialNo: "",
+      
         description: "",
         date: new Date(),
         hoursUsed: 0,
@@ -692,7 +692,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
       onAddPart(productIndex, { ...newPart });
       setNewPart({
         partItemId: 0,
-        serialNo: "",
+       
         description: "",
         quantity: 1,
       });

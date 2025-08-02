@@ -268,6 +268,7 @@ export interface RMAResponseDTO {
   notes: string;
   pinDiameter?: number;
   draftAssessment: boolean;
+  salesOrderId?: string;
   guidId: string; // UUID string
 }
 
@@ -385,6 +386,24 @@ export interface PackageReceivedEventCreateRequestDTO {
   timeStamp?: Date;
 }
 
+export interface CloseRMAEventCreateRequestDTO {
+  rMANumber: number;
+  notes: string | undefined;
+ 
+}
+
+
+export interface SalesOrderAddedEventCreateRequestDTO {
+  rMANumber: number;
+  salesOrderId: string;
+  notes: string | undefined;
+}
+
+export interface RepairInProgressEventCreateRequestDTO {
+  rMANumber: number;
+  notes: string | undefined;
+}
+
 export interface TrackingGroupedProductDTO {
   //ModelName: string ;
   stage: string;
@@ -437,6 +456,7 @@ export interface ProductAssessedEventResponseDTO {
 
 export interface SalesOrderAddedEventResponseDTO {
   rmaNumber: number;
+
   userName: string;
   timeStamp: Date; // ISO date string
   notes: string;
@@ -511,7 +531,7 @@ export interface ProductItemDTO {
   solutionType: string;
   solutionNotes: string;
   problemType: string;
-  ProblemNotes: string;
+  problemNotes: string;
   repairsDone: RepairItemDTO[];
   partsUsed: PartItemDTO[];
 }
@@ -543,4 +563,10 @@ export interface LabelSentEventCreateRequestDTO {
 export interface RMAGetRequestByStage {
   Stage: string | undefined;
   DraftAssessment: boolean;
+}
+
+export interface ProductMovingEventCreateRequestDTO {
+  productsToMove: ProductsToMoveDTO[];
+  destinationStage: string;
+  movingNotes: string;
 }

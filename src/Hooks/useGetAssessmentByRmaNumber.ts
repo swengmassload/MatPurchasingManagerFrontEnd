@@ -16,7 +16,8 @@ const finalResult = result && enabledGetProduct;
 };
 
 export const useGetAssessmentByRmaNumber = (rmaNumber: string | undefined, enabledGetProduct: boolean) => {
-  return useQuery<ProductAssessedEventCreateRequestDTO | undefined, Error>({
+
+    return useQuery<ProductAssessedEventCreateRequestDTO | undefined, Error>({
 
     queryKey: [],
     queryFn: () => {

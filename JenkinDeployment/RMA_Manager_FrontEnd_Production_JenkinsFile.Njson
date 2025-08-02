@@ -1,0 +1,93 @@
+pipeline {
+    agent any
+    tools {
+        nodejs 'NodejsFromConfigurationTools23'
+    }
+
+    environment {
+        PROJECT_FOLDER_NAME = "RMAMANAGERFRONTEND" // Define the project folder name as an environment variable
+        GIT_REPO_URL = "https://github.com/swengmassload/RMAManagerFrontEnd.git"
+        GIT_CREDENTIALS_ID = "userpassoladejiAtmassload"
+        GIT_BRANCH = "main"
+        SOURCE_DIR = "dist"
+        DEST_DIR = "C:\\MASSFUSION2DEPLOYMENTS\\FRONTENDS\\${PROJECT_FOLDER_NAME}"
+        BK_DIR = "C:\\MASSFUSION2DEPLOYMENTS\\FRONTENDS\\BACKUPS"
+        JSON_PATH = "C:\\MASSFUSION2DEPLOYMENTS\\FRONTENDS\\CONFIGURATIONFILES\\${PROJECT_FOLDER_NAME}"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: "${env.GIT_BRANCH}", 
+                    credentialsId: "${env.GIT_CREDENTIALS_ID}", 
+                    url: "${env.GIT_REPO_URL}"
+            }
+        }
+
+        stage('Build') {
+            steps {
+                bat "npm install --force"
+                bat "npm run build:staging"
+            }
+        }
+           stage('Test') {
+            steps {
+                bat "npm run test"
+            }
+        }
+        stage('Backup') {
+            steps {
+                script {
+                    bat '''
+                        @echo off
+                        setlocal EnableDelayedExpansion
+                        
+                        REM Check if BK_DIR exists, if not, create it
+                        if not exist "%BK_DIR%" (
+                            mkdir "%BK_DIR%"
+                        )
+                        
+                        REM Check if DEST_DIR exists
+                        if exist "%DEST_DIR%" (
+                            REM Create a timestamp
+                            set "timestamp="
+                            for /f "tokens=1-4 delims=/ " %%a in ('date /t') do (
+                                set "timestamp=%%d%%b%%c"
+                            )
+                            for /f "tokens=1-3 delims=:." %%a in ('time /t') do (
+                                set "timestamp=!timestamp!_%%a%%b"
+                            )
+                            
+                            REM Form the backup path with the project folder name and timestamp
+                            set "BACKUP_PATH=%BK_DIR%\\%PROJECT_FOLDER_NAME%_backup_!timestamp!"
+                            echo Moving "%DEST_DIR%" to "!BACKUP_PATH!"
+                            move "%DEST_DIR%" "!BACKUP_PATH!"
+                            
+                            if !errorlevel! neq 0 (
+                                echo Backup failed
+                                exit /b 1
+                            ) else (
+                                echo Backup successful
+                            )
+                        ) else (
+                            echo No folder found at %DEST_DIR%
+                        )
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                bat """
+                    if exist "%DEST_DIR%" (
+                        rmdir /s /q "%DEST_DIR%"
+                    )
+                    mkdir "%DEST_DIR%"
+                    xcopy "%SOURCE_DIR%\\*.*" "%DEST_DIR%" /s /e /y
+                    xcopy /Y /F "%JSON_PATH%\\web.config" "%DEST_DIR%" 
+                """
+            }
+        }
+    }
+}

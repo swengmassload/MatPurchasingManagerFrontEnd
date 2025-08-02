@@ -29,6 +29,7 @@ interface RepairsDoneSectionProps {
 const RepairsDoneSection: React.FC<RepairsDoneSectionProps> = ({ repairsDone, onRepairsDoneChange, error }) => {
   const [newRepair, setNewRepair] = useState<RepairItemDTO>({
     description: "",
+    repairItemId: 0,
     date: new Date(),
     hoursUsed: 0,
   });
@@ -57,6 +58,7 @@ const RepairsDoneSection: React.FC<RepairsDoneSectionProps> = ({ repairsDone, on
     if (validateNewRepair()) {
       onRepairsDoneChange([...repairsDone, { ...newRepair }]);
       setNewRepair({
+        repairItemId: 0,
         description: "",
         date: new Date(),
         hoursUsed: 0,

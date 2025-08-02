@@ -114,7 +114,7 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
 
   // Handlers
   const handleSearch = async () => {
-    debugger;
+   
     // Prevent search if token validation not complete
     if (!tokenValidationComplete) {
       toast.error("Please wait for token validation to complete");

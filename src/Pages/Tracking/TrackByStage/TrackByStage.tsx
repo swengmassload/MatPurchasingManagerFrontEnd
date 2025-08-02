@@ -25,12 +25,12 @@ function ConvertTrackingGroupedProductDTOToTrackReport(data: TrackingGroupedProd
   //   .filter((value, index, self) => self.indexOf(value) === index);
 
  // distincModels.forEach((element) => {
-    debugger
+   
   //  const trackedModelData = data.filter((item) => item.modelName === element);
     const trackReport = GetTrackReportForRMA(data);
 
     result.push(trackReport);
-    debugger;
+
  // });
   return result;
 }

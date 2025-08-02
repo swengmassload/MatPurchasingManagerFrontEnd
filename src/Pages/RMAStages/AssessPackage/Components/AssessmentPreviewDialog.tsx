@@ -125,8 +125,8 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
                     Assessment Status:
                   </Typography>
                   <Chip
-                    label={assessmentData.status ? "Completed" : "Draft"}
-                    color={assessmentData.status ? "success" : "warning"}
+                    label={assessmentData.assessmentStatus ? "Completed" : "Draft"}
+                    color={assessmentData.assessmentStatus ? "success" : "warning"}
                     size="small"
                   />
                 </Box>
@@ -285,7 +285,7 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
                     Problem Notes:
                   </Typography>
                   <Typography variant="body1" sx={{ lineHeight: 1.6 }}>
-                    {product.ProblemNotes}
+                    {product.problemNotes}
                   </Typography>
                 </Box>
               </Box>
@@ -338,7 +338,7 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
                     <TableBody>
                       {product.repairsDone.map((repair, repairIndex) => (
                         <TableRow key={repairIndex}>
-                          <TableCell>{repair.serialNo}</TableCell>
+                          <TableCell>{repair.repairItemId}</TableCell>
                           <TableCell>{repair.description}</TableCell>
                           <TableCell>{formatDate(repair.date)}</TableCell>
                           <TableCell>{repair.hoursUsed} hours</TableCell>
@@ -371,7 +371,7 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
                     <TableBody>
                       {product.partsUsed.map((part, partIndex) => (
                         <TableRow key={partIndex}>
-                          <TableCell>{part.serialNo}</TableCell>
+                          <TableCell>{part.partItemId}</TableCell>
                           <TableCell>{part.description}</TableCell>
                           <TableCell>{part.quantity}</TableCell>
                         </TableRow>

@@ -1,6 +1,6 @@
 // import { RegistrationAPINAME, MODELAPINAME, PRODUCTAPINAME, COMPRESSIONTESTERAPINAME } from "./APINames";
 
-import { RMAAPINAME } from "./APINames";
+import { PRODUCTAPINAME, RMAAPINAME } from "./APINames";
 
 // export const RegistrationEnpoints = {
 //   UsersEndpoint: `${RegistrationAPINAME}/v1/Users`,
@@ -25,7 +25,7 @@ import { RMAAPINAME } from "./APINames";
 //   ViewSpecificModelVersionEndpoint: `${MODELAPINAME}/v1/ModelVersions/ViewSpecificVersion`,
 // };
 
-// export const ProductManagerEnpoints = {
+export const ProductManagerEnpoints = {
 
 //   GetProductByStage: `${PRODUCTAPINAME}/v1/Products/Stage`,
 //   UpdateProductByStage: `${PRODUCTAPINAME}/v1/Products/Stage`,
@@ -56,7 +56,7 @@ import { RMAAPINAME } from "./APINames";
 //   GetProductById: `${PRODUCTAPINAME}/v1/Products/`,
 //   GetProductBySerialNoOrBatchNo: `${PRODUCTAPINAME}/v1/Products/SerialNoOrBatcNo`,
 //   NCRLogs: `${PRODUCTAPINAME}/v1/NCRLogs`,
-//   ProductMovingEvents: `${PRODUCTAPINAME}/v1/ProductMovingEvents`,
+   ProductMovingEvents: `${PRODUCTAPINAME}/v1/ProductMovingEvents`,
 //   ReferenceCellStandardEndPoint: `${PRODUCTAPINAME}/v1/ReferenceCellStandards`,
 //   TrackingGroupedProduct: `${PRODUCTAPINAME}/v1/ProductsTracking`,
 //   GetTrackingReportDetails: `${PRODUCTAPINAME}/v1/ProductsTracking/TrackingReportDetail`,
@@ -68,7 +68,7 @@ import { RMAAPINAME } from "./APINames";
 //   TransmitterModelEndpoint: `${PRODUCTAPINAME}/v1/TransmitterModels`,
 //   GetReportsEndpoint: `${PRODUCTAPINAME}/v1/ProductsTracking`,
 
-// };
+ };
 
 export const RMAManagerEnpoints = {
   ExchangeEndPoint: `${RMAAPINAME}/v1/ConstantContact/exchangeCode`,
@@ -78,6 +78,9 @@ export const RMAManagerEnpoints = {
   RMAEndpoints: `${RMAAPINAME}/v1/RMAs`,
 
   ProductAssessedEventsEndPoints: `${RMAAPINAME}/v1/ProductAssessedEvents`,
+  SalesOrderAddedEventsEndPoints: `${RMAAPINAME}/v1/SalesOrderAddedEvents`,
+  RepairInProgressEventsEndPoints: `${RMAAPINAME}/v1/RepairInProgressEvents`,
+  CloseRMAEventsEndPoints: `${RMAAPINAME}/v1/CloseRMAEvents`,
   RMAProductByStage: `${RMAAPINAME}/v1/RMAs/Stage`,
   PackageReceivedEventsEndPoints: `${RMAAPINAME}/v1/PackageReceivedEvents`,
   LabelSentEventsEndPoints: `${RMAAPINAME}/v1/LabelSentEvents`,

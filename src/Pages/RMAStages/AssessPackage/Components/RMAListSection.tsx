@@ -54,8 +54,7 @@ const RMAListSection: React.FC<RMAListSectionProps> = ({
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             {sortedRmaList.map((rma) => {
               const isExpanded = expandedRMAs.has(rma.rmaNumber);
-              console.log(`RMA #${rma.rmaNumber} draftAssessment:`, rma.draftAssessment); // Debug log
-              return (
+                    return (
                 <Card
                   key={rma.rmaNumber}
                   variant="outlined"
