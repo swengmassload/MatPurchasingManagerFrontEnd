@@ -1,12 +1,11 @@
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import {  useMutation } from "@tanstack/react-query";
 import CRUDApi from "../Api/CRUDApi";
 import { ProductManagerEnpoints } from "../Constants/EndPoints";
 import { BASEAPIURL } from "../Constants/FixValues";
-import { QueryKeys } from "../Constants/TanstankQueryKeys";
-import { ProductMovingEventCreateRequestDTO } from "../Models/ProductmanagerModels/Dto";
+import { ProductMovingEventCreateRequestDTO } from "../Models/RMAManagerModels/Dto";
 
 export const useCreateProductMovingEvent = () => {
-  const queryClient = useQueryClient();
+ // const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: ProductMovingEventCreateRequestDTO) =>

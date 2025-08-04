@@ -22,6 +22,7 @@ import '../src/assets/fonts/Inter-MediumItalic.woff2';
 import '../src/assets/fonts/Inter-SemiBoldItalic.woff2';
 import '../src/assets/fonts/Inter-ThinItalic.woff2';
 import { Toaster } from 'react-hot-toast';
+import { ConfigInitializer } from './Components/Common/ConfigInitializer';
 
 const globalStyles={
   a:{
@@ -33,13 +34,12 @@ const globalStyles={
 }
 function App() {
   return (
-   <>
-    <CssBaseline/>
-    <GlobalStyles styles={globalStyles}/>
-    <Toaster />
-    <RouterProvider  router={router}/> 
-
-   </>
+    <ConfigInitializer>
+      <CssBaseline />
+      <GlobalStyles styles={globalStyles} />
+      <Toaster />
+      <RouterProvider router={router} />
+    </ConfigInitializer>
   );
 }
 

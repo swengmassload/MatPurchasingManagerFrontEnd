@@ -565,6 +565,11 @@ export interface RMAGetRequestByStage {
   DraftAssessment: boolean;
 }
 
+export interface ProductsToMoveDTO {
+  unknownYet: string | undefined;
+  
+}
+
 export interface ProductMovingEventCreateRequestDTO {
   productsToMove: ProductsToMoveDTO[];
   destinationStage: string;

@@ -1,36 +1,39 @@
-import { AUTHAPINAME, COMPRESSIONTESTERAPINAME, RegistrationAPINAME } from "./APINames";
+import { AUTHAPINAME, RegistrationAPINAME } from "./APINames";
+import { configService, AppConfig } from "../Services/ConfigService";
 
-const GateWayServerIp = import.meta.env.VITE_GATEWAYSERVERIP ;
-const serverProtocol = import.meta.env.VITE_SERVERPROTOCOL;
-const frontEndProtocol = import.meta.env.VITE_FRONTENDPROTOCOL;
-
-
-const GateWay_Port = import.meta.env.VITE_GATEWAY_PORT;
-const RegistrationFront_Port = import.meta.env.VITE_REGISTRATIONFRONT_PORT;
-const ModelManagerFront_Port = import.meta.env.VITE_MODELMANAGERFRONT_PORT;
-const ProductManagerFront_Port = import.meta.env.VITE_PRODUCTMANAGERFRONT_PORT;
-const DashBoardFront_Port = import.meta.env.VITE_DASHBOARD_PORT
-
-
-export const BASEAPIURL            = `${serverProtocol}${GateWayServerIp}${GateWay_Port}`;
-export const DashBoardFrontUrl = `${frontEndProtocol}${GateWayServerIp}${DashBoardFront_Port}`;
-export const RegistrationFrontURL = `${frontEndProtocol}${GateWayServerIp}${RegistrationFront_Port}`;
-export const ModelManagerFrontURL = `${frontEndProtocol}${GateWayServerIp}${ModelManagerFront_Port}`;
-export const ProductManagerFrontURL = `${frontEndProtocol}${GateWayServerIp}${ProductManagerFront_Port}`;
-
-
-
-export const FronUrls = {
-  REGISTRATIONMANAGER_FRONTURL: `${RegistrationFrontURL}`,
-  MASSLOADDASBOARD_FRONTURL: `${DashBoardFrontUrl}`,
-  MODEL_MANAGER_FRONTURL: `${ModelManagerFrontURL}`,
-  PRODUCT_MANAGER_FRONTURL: `${ProductManagerFrontURL}`,
+// Initialize with hardcoded defaults - will be updated by initializeConfig
+let currentConfig: AppConfig = {
+  //ENVIRONMENT:import.meta.env.VITE_ENVIRONMENT,
+  APPLICATIONSTAGE: "LOCAL",
+  GATEWAYSERVERIP: "localhost",
+  SERVERPROTOCOL: "https://",
+  FRONTENDPROTOCOL: "http://",
+  DASHBOARD_PORT: ":5170",
+  REGISTRATIONFRONT_PORT: ":5171",
+  MODELMANAGERFRONT_PORT: ":5172",
+  PRODUCTMANAGERFRONT_PORT: ":5173",
+  RMAMANAGERFRONT_PORT: ":5175",
+  GATEWAY_PORT: ":7179",
 };
 
+// Exports for backward compatibility (will be updated by initializeConfig)
+export let APPLICATIONSTAGE = currentConfig.APPLICATIONSTAGE;
+export let BASEAPIURL = `${currentConfig.SERVERPROTOCOL}${currentConfig.GATEWAYSERVERIP}${currentConfig.GATEWAY_PORT}`;
+export let DashBoardFrontUrl = `${currentConfig.FRONTENDPROTOCOL}${currentConfig.GATEWAYSERVERIP}${currentConfig.DASHBOARD_PORT}`;
+export let RegistrationFrontURL = `${currentConfig.FRONTENDPROTOCOL}${currentConfig.GATEWAYSERVERIP}${currentConfig.REGISTRATIONFRONT_PORT}`;
+export let ModelManagerFrontURL = `${currentConfig.FRONTENDPROTOCOL}${currentConfig.GATEWAYSERVERIP}${currentConfig.MODELMANAGERFRONT_PORT}`;
+export let RMAManagerFrontURL = `${currentConfig.FRONTENDPROTOCOL}${currentConfig.GATEWAYSERVERIP}${currentConfig.RMAMANAGERFRONT_PORT}`;
+export let ProductManagerFrontURL = `${currentConfig.FRONTENDPROTOCOL}${currentConfig.GATEWAYSERVERIP}${currentConfig.PRODUCTMANAGERFRONT_PORT}`;
 
+export let FronUrls = {
+  REGISTRATIONMANAGER_FRONTURL: RegistrationFrontURL,
+  MASSLOADDASBOARD_FRONTURL: DashBoardFrontUrl,
+  PRODUCT_MANAGER_FRONTURL: ProductManagerFrontURL,
+  MODEL_MANAGER_FRONTURL: ModelManagerFrontURL,
+  RMA_MANAGER_FRONTURL: RMAManagerFrontURL,
+};
 
-
-export const AuthUrls = {
+export let AuthUrls = {
   APPLICATIONTOKEN_BASEURL: `${BASEAPIURL}/${AUTHAPINAME}/access_token`,
   DASHBOARDTOKEN_BASEURL: `${BASEAPIURL}/${AUTHAPINAME}/dashboard_token`,
   RevalidateValidateUser_BASEURL: `${BASEAPIURL}/${AUTHAPINAME}/validLoginCredentials`,
@@ -38,123 +41,107 @@ export const AuthUrls = {
   REFRESH_BASEURL: `${BASEAPIURL}/${AUTHAPINAME}/refresh_token`,
 };
 
-//export const defaultButtonRadius = 15;
-export const Fixedvalues = {
+export let Fixedvalues = {
   DASHBOARD_NAME: `MASSFUSION   -${import.meta.env.VITE_ENVIRONMENT} `,
   HubServerConnectionUrl: `${BASEAPIURL}${RegistrationAPINAME}/theHub`,
-  //VerificationSignalConnectionUrl: `${BASEAPIURL}${PRODUCTAPINAME}/verificationSignalHub`,
-   VerificationSignalConnectionUrl: `${BASEAPIURL}${COMPRESSIONTESTERAPINAME}/verificationSignalHub`,
-
-
   CopyRight: "© Massload Technologies Inc.",
 };
 
-export interface APP {
-  theindex: number;
-  appName: string;
-  appCode: string;
-  appDescription: string;
-  appUrl: string;
-  appVersion: string;
+/**
+ * Initialize configuration from config.json
+ * This should be called early in the application lifecycle
+ */
+export async function initializeConfig(): Promise<void> {
+  try {
+    const config = await configService.getFullConfig();
+    updateConfigValues(config);
+  } catch (error) {
+    console.warn("Failed to load runtime configuration, using fallback values:", error);
+  }
 }
 
-//REMEMBER TO SYCRONIZE THESE WITH RegistrationManager.Infrastructure.Persistence.EntitiesConfig
+/**
+ * Update all exported values with new configuration
+ */
+function updateConfigValues(config: AppConfig): void {
+  currentConfig = config;
 
-export const Applications: APP[] = [
-  {
-    theindex: 1,
-    appName: `Manage Users`,
-    appCode: `APP01`,
-    appDescription: `This is the description for app 1.`,
-    appUrl: FronUrls.REGISTRATIONMANAGER_FRONTURL,
-    appVersion: "1.0",
-  },
-  {
-    theindex: 2,
-    appName: `Model Manager`,
-    appCode: `APP02`,
-    appDescription: `This is the description for app 2.`,
-    appUrl: FronUrls.MODEL_MANAGER_FRONTURL,
-    appVersion: "1.0",
-  },
-  {
-    theindex: 3,
-    appName: `Product Manager`,
-    appCode: `APP03`,
-    appDescription: `This is the description for app 3.`,
-    appUrl: "",
-    appVersion: "1.0",
-  },
-  {
-    theindex: 4,
-    appName: `Document Manager`,
-    appCode: `APP04`,
-    appDescription: `This is the description for app 4.`,
-    appUrl: "",
-    appVersion: "1.0",
-  },
-  {
-    theindex: 5,
-    appName: `Time Registry`,
-    appCode: `APP05`,
-    appDescription: `This is the description for app 5.`,
-    appUrl: "",
-    appVersion: "1.0",
-  },
-  {
-    theindex: 6,
-    appName: `Custom Quote`,
-    appCode: `APP06`,
-    appDescription: `Customer Quotes`,
-    appUrl: "",
-    appVersion: "1.0",
-  },
-  {
-    theindex: 7,
-    appName: `Sales Orders`,
-    appCode: `APP07`,
-    appDescription: `Materials Purchasing Manager.`,
-    appUrl: "",
-    appVersion: "1.0",
-  },
-  {
-    theindex: 8,
-    appName: `Purchase Orders`,
-    appCode: `APP08`,
-    appDescription: `MMF Production Scheduler.`,
-    appUrl: "",
-    appVersion: "1.0",
-  },
-  {
-    theindex: 9,
-    appName: `Purchasing`,
-    appCode: `APP09`,
-    appDescription: `Massload Purchasing`,
-    appUrl: "",
-    appVersion: "1.0",
-  },
-  {
-    theindex: 10,
-    appName: `RMA Manager`,
-    appCode: `APP10`,
-    appDescription: `Massload Production Scheduler`,
-    appUrl: "",
-    appVersion: "1.0",
-  },
-  {
-    theindex: 11,
-    appName: `Custom Designs`,
-    appCode: `APP11`,
-    appDescription: `Massload Production Scheduler`,
-    appUrl: "",
-    appVersion: "1.0",
-  },
-  {
-    theindex: 12,
-    appName: `.`,
-    appCode: `00000`,
-    appDescription: `Massload Production Scheduler`,
-    appUrl: "",
-    appVersion: "1.0",
-  },
-];
+  // Update application stage
+  APPLICATIONSTAGE = config.APPLICATIONSTAGE;
+
+  // Update base URLs
+  BASEAPIURL = `${config.SERVERPROTOCOL}${config.GATEWAYSERVERIP}${config.GATEWAY_PORT}`;
+  DashBoardFrontUrl = `${config.FRONTENDPROTOCOL}${config.GATEWAYSERVERIP}${config.DASHBOARD_PORT}`;
+  RegistrationFrontURL = `${config.FRONTENDPROTOCOL}${config.GATEWAYSERVERIP}${config.REGISTRATIONFRONT_PORT}`;
+  ModelManagerFrontURL = `${config.FRONTENDPROTOCOL}${config.GATEWAYSERVERIP}${config.MODELMANAGERFRONT_PORT}`;
+  RMAManagerFrontURL = `${config.FRONTENDPROTOCOL}${config.GATEWAYSERVERIP}${config.RMAMANAGERFRONT_PORT}`;
+
+  // Update front URLs
+  FronUrls = {
+    REGISTRATIONMANAGER_FRONTURL: RegistrationFrontURL,
+    MASSLOADDASBOARD_FRONTURL: DashBoardFrontUrl,
+    MODEL_MANAGER_FRONTURL: ModelManagerFrontURL,
+    RMA_MANAGER_FRONTURL: RMAManagerFrontURL,
+    PRODUCT_MANAGER_FRONTURL: ProductManagerFrontURL,
+  };
+
+  // Update auth URLs
+  AuthUrls = {
+    APPLICATIONTOKEN_BASEURL: `${BASEAPIURL}/${AUTHAPINAME}/access_token`,
+    DASHBOARDTOKEN_BASEURL: `${BASEAPIURL}/${AUTHAPINAME}/dashboard_token`,
+    RevalidateValidateUser_BASEURL: `${BASEAPIURL}/${AUTHAPINAME}/validLoginCredentials`,
+    FLIGHTTOKEN_BASEURL: `${BASEAPIURL}/${AUTHAPINAME}/flight_token`,
+    REFRESH_BASEURL: `${BASEAPIURL}/${AUTHAPINAME}/refresh_token`,
+  };
+
+  // Update fixed values
+  Fixedvalues = {
+     DASHBOARD_NAME: `MASSFUSION   -${import.meta.env.VITE_ENVIRONMENT} `,
+
+    HubServerConnectionUrl: `${BASEAPIURL}${RegistrationAPINAME}/theHub`,
+    CopyRight: "© Massload Technologies Inc.",
+  };
+}
+
+/**
+ * Reactive configuration utilities for components
+ */
+export class ConfigurableUrls {
+  static async getBaseApiUrl(): Promise<string> {
+    return await configService.buildGatewayUrl();
+  }
+
+  static async getDashboardUrl(path?: string): Promise<string> {
+    return await configService.buildFrontendUrl("DASHBOARD_PORT", path);
+  }
+
+  static async getRegistrationUrl(path?: string): Promise<string> {
+    return await configService.buildFrontendUrl("REGISTRATIONFRONT_PORT", path);
+  }
+
+  static async getModelManagerUrl(path?: string): Promise<string> {
+    return await configService.buildFrontendUrl("MODELMANAGERFRONT_PORT", path);
+  }
+
+  static async getAuthUrls() {
+    const baseUrl = await this.getBaseApiUrl();
+    return {
+      APPLICATIONTOKEN_BASEURL: `${baseUrl}/${AUTHAPINAME}/access_token`,
+      DASHBOARDTOKEN_BASEURL: `${baseUrl}/${AUTHAPINAME}/dashboard_token`,
+      RevalidateValidateUser_BASEURL: `${baseUrl}/${AUTHAPINAME}/validLoginCredentials`,
+      FLIGHTTOKEN_BASEURL: `${baseUrl}/${AUTHAPINAME}/flight_token`,
+      REFRESH_BASEURL: `${baseUrl}/${AUTHAPINAME}/refresh_token`,
+    };
+  }
+
+  static async getHubConnectionUrl(): Promise<string> {
+    const baseUrl = await this.getBaseApiUrl();
+    return `${baseUrl}${RegistrationAPINAME}/theHub`;
+  }
+
+
+}
+
+
+
+
