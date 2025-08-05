@@ -11,8 +11,9 @@ import {
 } from "../../../../../Hooks/useGetConfirmIfUserHasExistingValidToken";
 import { IsTokenValid } from "../../../../../Utils/IsTokenValidAndFunctionClaimInToken";
 import { Contact, DetailContact } from "../../../../../Models/ConstantContactModels/ConstantContactDTO";
-import { authUrl, ConstantContactSearchEmailKey, RMAUserStorageKey } from "../../../../../Constants/APINames";
+import {   ConstantContactSearchEmailKey, RMAUserStorageKey } from "../../../../../Constants/APINames";
 import { SideBarMenuName } from "../../../../../Constants/SideBarMenuNames";
+import { getConfig } from "../../../../../Services/ConfigService";
 
 export const useSearchConstantContact = (onContactSelected?: (contact: Contact | null) => void) => {
   // State management
@@ -112,9 +113,41 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
     }
   }, [detailResult, detailError, fetchingContactId, loadingToastId]);
 
+
+  const getAuthUrl = async () => {
+    const clientId = await getConfig("CLIENTID");
+    const redirectRoute = await getConfig("REDIRECTROUTE");
+    const frontEndPortocol = await getConfig("RMAMANAGERFRONT_PORT");
+    const gateWay = await getConfig("GATEWAYSERVERIP");
+    const frontEndProtocol = await getConfig("FRONTENDPROTOCOL");
+    const redirectUri = `${frontEndProtocol}${gateWay}${frontEndPortocol}${redirectRoute}`;
+    const state = Math.random().toString(36).substring(2);
+     const constantAuthUrl = await getConfig("CONSTANTAUTHURL");
+    const authUrl = `${constantAuthUrl}?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=contact_data%20offline_access&state=${state}`;
+    console.log("🔗 Generated auth URL:", authUrl);
+    return authUrl;
+    //alert(`Client ID: ${id}\nRedirect Route: ${redirect}\nAuth URL: ${auth}`);
+
+
+
+
+
+//export  const clientId = "a861af35-d728-4e4b-8151-5b1f048db025";
+//export  const redirectUri = "http://localhost:5175/oauth/callback";
+
+
+//export  const authUrl = `https://authz.constantcontact.com/oauth2/default/v1/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(
+  //    redirectUri)}&response_type=code&scope=contact_data%20offline_access&state=${state}`;
+
+
+
+    
+  }
   // Handlers
   const handleSearch = async () => {
    
+
+
     // Prevent search if token validation not complete
     if (!tokenValidationComplete) {
       toast.error("Please wait for token validation to complete");
@@ -127,6 +160,10 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
       // store login user and search email in localStorage b4 it will redirect
       localStorage.setItem(RMAUserStorageKey, JSON.stringify(appUser));
       localStorage.setItem(ConstantContactSearchEmailKey, searchEmail);
+
+     const authUrl = await getAuthUrl();
+      console.log("🔗 Redirecting to OAuth URL:", authUrl);
+      debugger;
       window.location.href = authUrl;
       return;
     }
