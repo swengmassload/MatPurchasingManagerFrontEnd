@@ -1,16 +1,18 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
-import { ConfigurableUrls } from "../../Constants/FixValues";
 import { SideBarMenuName } from "../../Constants/SideBarMenuNames";
 import { useCreateApplicationToken } from "../../Hooks/useCreateApplicationToken";
+
+import { AUTHAPINAME } from "../../Constants/APINames";
+import { getConfig } from "../../Services/ConfigService";
 
 export const useGetAppToken = () => {
   console.count("GeneralLanding Counting");
   const navigate = useNavigate();
   const location = useLocation();
   const queryString = new URLSearchParams(location.search);
-  console.log(queryString.toString());
+
   const flightToken = queryString.get("ctx");
   const appCode = queryString.get("key");
   const request = useCreateApplicationToken();
@@ -25,12 +27,12 @@ export const useGetAppToken = () => {
       }
 
       try {
-        const AuthUrl = await ConfigurableUrls.getAuthUrls();
-        console.log("GeneralLanding Count1-flightToken found", flightToken, appCode);
-        console.log("GeneralLanding Count1-flightToken found", AuthUrl.APPLICATIONTOKEN_BASEURL);
+        const newAuthUrlBase = await getConfig("GATEWAYSERVERIP");
+        const newAuthUrl = `${newAuthUrlBase}/${AUTHAPINAME}/access_token`;
+
         axios.interceptors.request.use((config) => {
           // config.baseURL =  AuthUrls.APPLICATIONTOKEN_BASEURL; // base url for your api.
-          config.baseURL = AuthUrl.APPLICATIONTOKEN_BASEURL; // base url for your api.
+          config.baseURL = newAuthUrl; // base url for your api.
           config.headers.Authorization = `Bearer ${flightToken}`;
           config.withCredentials = true;
           return config;
@@ -57,7 +59,7 @@ export const useGetAppToken = () => {
     };
 
     setupAuthAndRequest();
-  }, [flightToken, appCode, navigate,]);
+  }, [flightToken, appCode, navigate]);
 
   return { request };
 };
