@@ -32,6 +32,8 @@ export const useAddAppTokenAndLoadApp = ({request}:useAddAppTokenAndLoadAppProps
            const decoded = decodedresult.decoded! as JwtAccessTokenFormat;
            const apptoken = request.data!.token!;
              const AuthUrl = await ConfigurableUrls.getAuthUrls();
+             alert(AuthUrl.APPLICATIONTOKEN_BASEURL);
+             console.log("GeneralLanding Count3- apptoken found",AuthUrl);
            axios.interceptors.request.use(
             (config) => {
               config.baseURL =  AuthUrl.APPLICATIONTOKEN_BASEURL; // base url for your api.
