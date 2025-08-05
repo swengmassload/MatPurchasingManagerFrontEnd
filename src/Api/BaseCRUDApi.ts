@@ -88,25 +88,7 @@ const ProcessAxiosError = (error: unknown): NewProblemDetails => {
           type: "Connection Timeout",
           instance: "",
         };
-      }
-
-      //
-
-      //       err = "Connection Problems.. Check your network connection and try again";
-      //     } else if (error.code === "ERR_BAD_REQUEST") {
-      //       err = "Bad Request Error.. Check your Parameter";
-      //     } else if (error.code === "ERR_CANCELED") {
-      //       err = "Connection cancelled..";
-      //     } else if (error.code === "ECONNABORTED") {
-      //       err = "Connection timeout.. Please try again later";
-      //     } else {
-      //       err = `${JSON.stringify(
-      //         error.response?.data?.errors
-      //       )} please check and try again`;
-      //     }
-
-      //
-      else {
+      } else {
         response = {
           title: errorResponse.title,
           status: errorResponse.status,
@@ -138,50 +120,7 @@ const ProcessAxiosError = (error: unknown): NewProblemDetails => {
   console.log(response);
   return response;
 };
-// const ProcessAxiosErrortoogeneric = (error: unknown): NewProblemDetails => {
-//   console.log("Processing Error??.....");
-//   console.log(error);
 
-//   let response: NewProblemDetails;
-
-//   if (axios.isAxiosError(error)) {
-//     console.log("Processing Axios Error.....");
-//     console.log(error);
-
-//     try {
-//       const errorResponse = error.response?.data as unknown as NewProblemDetails;
-//       // First try thoe you know
-
-//       response = {
-//         title: errorResponse.title,
-//         status: errorResponse.status,
-//         detail: errorResponse.detail,
-//         type: errorResponse.type,
-//         instance: "",
-//       };
-//     } catch (error) {
-//       console.log("Error Response : " + error);
-
-//       response = {
-//         title: "Bad Request Error",
-//         status: 400,
-//         detail: "Bad Request Error.. Check your Parameter",
-//         type: "Bad Request Error",
-//         instance: "",
-//       };
-//     }
-//   } else {
-//     response = {
-//       title: "Error ....",
-//       status: 500,
-//       detail: "An error occurred, please try again later. " + error,
-//       type: "Error",
-//       instance: "",
-//     };
-//   }
-//   console.log(response);
-//   return response;
-// };
 const ProcessAxiosBlobErrorAsync = async (error: unknown): Promise<ProblemDetails> => {
   console.log("Processing Error ProcessAxiosBlobError.....");
 
@@ -217,77 +156,10 @@ const ProcessAxiosBlobErrorAsync = async (error: unknown): Promise<ProblemDetail
 
   return response;
 };
-// const ProcessAxiosErrorNowDropped = async (error: unknown) => {
-//   console.log("Processing Error ProcessAxiosError.....");
-
-//   let response = {} as ProblemDetails;
-//   if (axios.isAxiosError(error)) {
-//     const errorResponse1 = await error.response?.data.text();
-//     const errorResponse = JSON.parse(errorResponse1) as NewProblemDetails;
-//     response = {
-//       title: errorResponse.title,
-//       status: errorResponse.status,
-//       detail: errorResponse.detail,
-//     } as ProblemDetails;
-//   } else
-//     response = {
-//       title: "An Error Occurred  ....",
-//       status: 500,
-//       detail: "An error occured please try again later" + error,
-//     } as ProblemDetails;
-//   console.log("Error Response : " + response);
-//   console.log(response);
-//   return response;
-// };
-
-// const ProcessErrorb4 = (error: unknown) => {
-//   console.log("Processing Error.....");
-//   if (axios.isAxiosError(error)) {
-//     let err = "An error occured while trying to login, please try again later";
-//     if (error.code === "ERR_NETWORK") {
-//       err = "Connection Problems.. Check your network connection and try again";
-//     } else if (error.code === "ERR_BAD_REQUEST") {
-//       err = "Bad Request Error.. Check your Parameter";
-//     } else if (error.code === "ERR_CANCELED") {
-//       err = "Connection cancelled..";
-//     } else if (error.code === "ECONNABORTED") {
-//       err = "Connection timeout.. Please try again later";
-//     } else {
-//       err = `${JSON.stringify(
-//         error.response?.data?.errors
-//       )} please check and try again`;
-//     }
-//     try {
-//       console.log(err);
-
-//       const errorResponse = error.response
-//         ?.data as unknown as NewProblemDetails;
-//       console.log("Error Response : " + errorResponse);
-//     } catch (error) {
-//       console.log("Error Response : " + error);
-//     }
-//     const resp = {
-//       title: error.response?.data?.title,
-//       status: error.response?.data?.status,
-//       detail: error.response?.data?.detail,
-//     } as ProblemDetails;
-
-//     return resp;
-//   } else {
-//     const probresponse = {
-//       title: "Error  ....",
-//       status: 500,
-//       detail: "An error occured please try again later" + error,
-//     } as ProblemDetails;
-
-//     return probresponse;
-//   }
-// };
 
 export const baseRequest = {
   GetData: async <T>(axiosInstance: AxiosInstance, query: string) => {
     try {
-    
       const response = await axiosInstance.get<T>(query, {
         withCredentials: true,
       });

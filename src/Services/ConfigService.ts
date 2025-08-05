@@ -10,6 +10,10 @@ export interface AppConfig {
   PRODUCTMANAGERFRONT_PORT: string;
   RMAMANAGERFRONT_PORT: string;
   GATEWAY_PORT: string;
+  CLIENTID: string;
+  REDIRECTROUTE: string;
+  CONSTANTAUTHURL: string;
+
 }
 
 class ConfigService {
@@ -66,6 +70,9 @@ class ConfigService {
       "PRODUCTMANAGERFRONT_PORT",
       "RMAMANAGERFRONT_PORT",
       "GATEWAY_PORT",
+      "CLIENTID",
+      "REDIRECTROUTE",
+      "CONSTANTAUTHURL",  
     ];
 
     for (const field of requiredFields) {
@@ -90,6 +97,9 @@ class ConfigService {
       PRODUCTMANAGERFRONT_PORT: ":5173",
       RMAMANAGERFRONT_PORT: ":5175",
       GATEWAY_PORT: ":7179",
+      CLIENTID: "UNKNOWN_CLIENT_ID",
+      REDIRECTROUTE: "UNKNWOWN_REDIRECT_ROUTE",
+      CONSTANTAUTHURL: "UNKNOWN_CONSTANT_AUTH_URL",
     };
   }
 
