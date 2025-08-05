@@ -9,6 +9,8 @@ import { TryJwtDecode } from "../../Utils/TryJwtDecode";
 import { JwtAccessTokenFormat } from "../../Models/JWTModels/JwtAccessTokenFormat";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import { getConfig } from "../../Services/ConfigService";
+import { AUTHAPINAME } from "../../Constants/APINames";
 
 interface useAddAppTokenAndLoadAppProps {
     request: UseMutationResult<ITokenGenerationResponse | undefined, Error, AccessTokenRequest, unknown>
@@ -32,11 +34,15 @@ export const useAddAppTokenAndLoadApp = ({request}:useAddAppTokenAndLoadAppProps
            const decoded = decodedresult.decoded! as JwtAccessTokenFormat;
            const apptoken = request.data!.token!;
              const AuthUrl = await ConfigurableUrls.getAuthUrls();
-             alert(AuthUrl.APPLICATIONTOKEN_BASEURL);
-             console.log("GeneralLanding Count3- apptoken found",AuthUrl);
+             const newAuthUrlBase =await getConfig("GATEWAYSERVERIP");
+             const newAuthUrl = `${newAuthUrlBase}/${AUTHAPINAME}/access_token`;
+          
+             alert(newAuthUrl);
+             console.log("GeneralLanding Count3- apptoken AuthUrl",AuthUrl);
+             console.log("GeneralLanding Count3- apptoken newAuthUrl",newAuthUrl);
            axios.interceptors.request.use(
             (config) => {
-              config.baseURL =  AuthUrl.APPLICATIONTOKEN_BASEURL; // base url for your api.
+              config.baseURL =  newAuthUrl; // base url for your api.
               config.headers.Authorization = `Bearer ${apptoken}`;
               config.withCredentials = true;
               return config;

@@ -140,8 +140,9 @@ class ConfigService {
   async buildFrontendUrl(
     port: keyof Pick<
       AppConfig,
-      "DASHBOARD_PORT" | "REGISTRATIONFRONT_PORT" | "MODELMANAGERFRONT_PORT" | "PRODUCTMANAGERFRONT_PORT" | "RMAMANAGERFRONT_PORT"
-    >,
+     "DASHBOARD_PORT" | "REGISTRATIONFRONT_PORT" | "MODELMANAGERFRONT_PORT" | "PRODUCTMANAGERFRONT_PORT" | "RMAMANAGERFRONT_PORT"
+    //| "GATEWAY_PORT"| "CLIENTID" | "CONSTANTAUTHURL"| "REDIRECTROUTE"   
+     >,
     path: string = ""
   ): Promise<string> {
     const config = await this.loadConfig();
@@ -161,6 +162,8 @@ export const buildFrontendUrl = (
   port: keyof Pick<
     AppConfig,
     "DASHBOARD_PORT" | "REGISTRATIONFRONT_PORT" | "MODELMANAGERFRONT_PORT" | "PRODUCTMANAGERFRONT_PORT" | "RMAMANAGERFRONT_PORT"
+  //  | "GATEWAY_PORT"| "CLIENTID" | "CONSTANTAUTHURL"| "REDIRECTROUTE"
+    
   >,
   path?: string
 ) => configService.buildFrontendUrl(port, path);
