@@ -1,7 +1,7 @@
 import { UseMutationResult } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect } from "react";
-import { AuthUrls } from "../../Constants/FixValues";
+import {  ConfigurableUrls } from "../../Constants/FixValues";
 import { SideBarMenuName } from "../../Constants/SideBarMenuNames";
 import { ITokenGenerationResponse, AccessTokenRequest } from "../../Models/JWTModels/TokenGenerationRequest";
 import { setTokenNameBarcode } from "../../Redux/State/LoginUserSlice";
@@ -20,7 +20,8 @@ export const useAddAppTokenAndLoadApp = ({request}:useAddAppTokenAndLoadAppProps
      const dispatch = useDispatch();
     useEffect(() => {
   
-        if (request.isSuccess) {
+      const setupAuthAndRequest = async () => {
+                if (request.isSuccess) {
      
           const decodedresult= TryJwtDecode<JwtAccessTokenFormat>(request.data!.token);
             if (!decodedresult.result || "" === decodedresult.decoded) {
@@ -30,15 +31,18 @@ export const useAddAppTokenAndLoadApp = ({request}:useAddAppTokenAndLoadAppProps
             }
            const decoded = decodedresult.decoded! as JwtAccessTokenFormat;
            const apptoken = request.data!.token!;
+             const AuthUrl = await ConfigurableUrls.getAuthUrls();
            axios.interceptors.request.use(
             (config) => {
-              config.baseURL =  AuthUrls.APPLICATIONTOKEN_BASEURL; // base url for your api.
+              config.baseURL =  AuthUrl.APPLICATIONTOKEN_BASEURL; // base url for your api.
               config.headers.Authorization = `Bearer ${apptoken}`;
               config.withCredentials = true;
               return config;
             },
           );
         
+         
+         
           axios.interceptors.response.use(
             (response) => response,
             async (error) => {
@@ -59,7 +63,11 @@ export const useAddAppTokenAndLoadApp = ({request}:useAddAppTokenAndLoadAppProps
           console.count("GeneralLanding Count5 - error in fetching apptoken");
           navigate(SideBarMenuName.NoAuthPage.route);
         }
-      }, [request.isSuccess,request.isError]);
-    
+      }
+          setupAuthAndRequest();
+    }, [request.isSuccess, request.isError]);
+
+
+
     return {};
 };
