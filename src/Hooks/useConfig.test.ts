@@ -30,6 +30,10 @@ describe("useConfig Hook", () => {
     PRODUCTMANAGERFRONT_PORT: ":3003",
     RMAMANAGERFRONT_PORT: ":3004",
     GATEWAY_PORT: ":8080",
+    CLIENTID: "test-client-id",
+    REDIRECTROUTE: "/oauth/callback",
+    CONSTANTAUTHURL: "https://auth.example.com/oauth2/default/v1/authorize",
+
   };
 
   beforeEach(() => {
@@ -133,6 +137,9 @@ describe("useConfigUrls Hook", () => {
     PRODUCTMANAGERFRONT_PORT: ":3003",
     RMAMANAGERFRONT_PORT: ":3004",
     GATEWAY_PORT: ":8080",
+    CLIENTID: "test-client-id",
+    REDIRECTROUTE: "/oauth/callback",
+    CONSTANTAUTHURL: "https://auth.example.com/oauth2/default/v1/authorize",
   };
 
   beforeEach(() => {

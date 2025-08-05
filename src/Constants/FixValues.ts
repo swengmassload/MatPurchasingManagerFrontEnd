@@ -14,6 +14,9 @@ let currentConfig: AppConfig = {
   PRODUCTMANAGERFRONT_PORT: ":5173",
   RMAMANAGERFRONT_PORT: ":5175",
   GATEWAY_PORT: ":7179",
+  CLIENTID: "UNKNOWN_CLIENT_ID", // Default client ID
+  REDIRECTROUTE: "/oauth/callback", // Default redirect route
+  CONSTANTAUTHURL: "UNKNOWN_CONSTANT_AUTH_URL", // Default auth URL
 };
 
 // Exports for backward compatibility (will be updated by initializeConfig)
