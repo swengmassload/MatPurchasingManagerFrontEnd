@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { vi } from "vitest";
 import GeneralLanding from "./GeneralLanding";
-import { setTokenNameBarcode } from "../../Redux/State/LoginUserSlice";
+//import { setTokenNameBarcode } from "../../Redux/State/LoginUserSlice";
 import { JwtAccessToken } from "../../Models/JWTModels/JwtAccessTokenFormat";
 import { SideBarMenuName } from "../../Constants/SideBarMenuNames";
 
