@@ -60,6 +60,8 @@ export const useAddAppTokenAndLoadApp = ({request}:useAddAppTokenAndLoadAppProps
             navigate(SideBarMenuName.dashBoard.route);
         }
         if (request.isError) {
+          console.error("Error in useAddAppTokenAndLoadApp:", request.error);
+          console.log(request);
           console.count("GeneralLanding Count5 - error in fetching apptoken");
           navigate(SideBarMenuName.NoAuthPage.route);
         }

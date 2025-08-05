@@ -26,7 +26,8 @@ export const useGetAppToken = () => {
 
       try {
         const AuthUrl = await ConfigurableUrls.getAuthUrls();
-
+        console.log("GeneralLanding Count1-flightToken found", flightToken, appCode);
+        console.log("GeneralLanding Count1-flightToken found", AuthUrl.APPLICATIONTOKEN_BASEURL);
         axios.interceptors.request.use((config) => {
           // config.baseURL =  AuthUrls.APPLICATIONTOKEN_BASEURL; // base url for your api.
           config.baseURL = AuthUrl.APPLICATIONTOKEN_BASEURL; // base url for your api.
