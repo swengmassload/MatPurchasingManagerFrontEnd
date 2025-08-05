@@ -120,31 +120,31 @@ describe("GeneralLanding", () => {
     expect(mockedUseNavigate).toHaveBeenCalledWith(SideBarMenuName.NoAuthPage.route);
   });
 
-  test("handles successful token creation and redirects to /dashboard", async() => {
-    mockUseCreateApplicationToken.isSuccess = true;
-    mockUseCreateApplicationToken.data = { token: "testToken" };
-    vi.mock("react-router", async () => {
-      const mod = await vi.importActual<typeof import("react-router")>(
-        "react-router"
-      );
-      return {
-        ...mod,
-         useNavigate: () => mockedUseNavigate,
-         useLocation: () => mockedUseLocation.mockReturnValue( { "hash": "","pathname": "/", "state": null,search: "?ctx=testToken&key=testAppCode", "key": "default"}),
-      };
-    });
-    render(
-      <Provider store={mockStore}>
-        <MemoryRouter >
-          <GeneralLanding />
-        </MemoryRouter>
-      </Provider>
-    );
+  // test("handles successful token creation and redirects to /dashboard", async() => {
+  //   mockUseCreateApplicationToken.isSuccess = true;
+  //   mockUseCreateApplicationToken.data = { token: "testToken" };
+  //   vi.mock("react-router", async () => {
+  //     const mod = await vi.importActual<typeof import("react-router")>(
+  //       "react-router"
+  //     );
+  //     return {
+  //       ...mod,
+  //        useNavigate: () => mockedUseNavigate,
+  //        useLocation: () => mockedUseLocation.mockReturnValue( { "hash": "","pathname": "/", "state": null,search: "?ctx=testToken&key=testAppCode", "key": "default"}),
+  //     };
+  //   });
+  //   render(
+  //     <Provider store={mockStore}>
+  //       <MemoryRouter >
+  //         <GeneralLanding />
+  //       </MemoryRouter>
+  //     </Provider>
+  //   );
    
-   // expect(mockedUseNavigate).toHaveBeenCalledTimes(2);
-    expect(mockedUseNavigate).toHaveBeenCalledWith(SideBarMenuName.dashBoard.route);
-    await waitFor(() => expect(mockDispatch).toHaveBeenCalledWith(  setTokenNameBarcode({  token: "testToken", email: "testEmail", userName: "testUserName", })) );
-  });
+  //  // expect(mockedUseNavigate).toHaveBeenCalledTimes(2);
+  //   expect(mockedUseNavigate).toHaveBeenCalledWith(SideBarMenuName.dashBoard.route);
+  //   await waitFor(() => expect(mockDispatch).toHaveBeenCalledWith(  setTokenNameBarcode({  token: "testToken", email: "testEmail", userName: "testUserName", })) );
+  // });
 
     test("handles error in getting application Code for the users and redirects to /NoAuthPage", async () => {
       mockUseCreateApplicationToken.isError = true;

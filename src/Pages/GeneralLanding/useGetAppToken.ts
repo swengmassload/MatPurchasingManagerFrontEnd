@@ -56,7 +56,7 @@ export const useGetAppToken = () => {
     };
 
     setupAuthAndRequest();
-  }, [flightToken, appCode, navigate, request]);
+  }, [flightToken, appCode, navigate,]);
 
   return { request };
 };
