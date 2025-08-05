@@ -47,6 +47,7 @@ export const useAddAppTokenAndLoadApp = ({request}:useAddAppTokenAndLoadAppProps
           );
         
           axios.defaults.headers.common["Authorization" ] = `Bearer ${apptoken}`;
+          console.log("GeneralLanding Count4= apptoken found added and kept in store",apptoken);
     
             dispatch(
               setTokenNameBarcode({ token: request.data!.token!,   email: decoded["Email"],  userName: decoded["UserName"]})

@@ -109,6 +109,8 @@ function updateConfigValues(config: AppConfig): void {
 /**
  * Reactive configuration utilities for components
  */
+
+
 export class ConfigurableUrls {
   static async getBaseApiUrl(): Promise<string> {
     return await configService.buildGatewayUrl();
