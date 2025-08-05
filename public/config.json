@@ -9,5 +9,10 @@
   "PRODUCTMANAGERFRONT_PORT": ":5173",
 
   "RMAMANAGERFRONT_PORT": ":5175",
-  "GATEWAY_PORT": ":7179"
+  "GATEWAY_PORT": ":7179",
+  "CLIENTID": "a861af35-d728-4e4b-8151-5b1f048db025",
+  "REDIRECTROUTE": "http://localhost:5175/oauth/callback",
+  "CONSTANTAUTHURL": "https://authz.constantcontact.com/oauth2/default/v1/authorize?client_id=a861af35-d728-4e4b-8151-5b1f048db025&redirect_uri=http%3A%2F%2Flocalhost%3A5175%2Foauth%2Fcallback&response_type=code&scope=contact_data%20offline_access&state="
 }
+
+
