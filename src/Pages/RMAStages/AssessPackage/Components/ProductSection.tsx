@@ -58,6 +58,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
     solutionNotes: "",
     repairsDone: [],
     partsUsed: [],
+     verificateStage: "",
   });
 
   const [validationErrors, setValidationErrors] = useState<{
@@ -248,6 +249,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
         solutionNotes: "",
         repairsDone: [],
         partsUsed: [],
+        verificateStage: "", // Default value for new products
       });
       setValidationErrors({});
       toast.success("Product added successfully!");

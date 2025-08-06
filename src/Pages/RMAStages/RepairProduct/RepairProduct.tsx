@@ -16,7 +16,7 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from "@mui/material";
-import { Save, Build, Inventory, ExpandMore } from "@mui/icons-material";
+import { Save, Build, Inventory, ExpandMore, VerifiedUser } from "@mui/icons-material";
 import {
   RepairInProgressEventCreateRequestDTO,
   RMAResponseDTO,
@@ -30,6 +30,7 @@ import { useGetRMAByStage } from "../../../Hooks/useGetRMAByStage";
 import { useCreateRepairProduct } from "../../../Hooks/useCreateRepairProduct";
 import { useGetAssessmentByRmaNumber } from "../../../Hooks/useGetAssessmentByRmaNumber";
 import { DefaultRMAStages } from "../../../Constants/RMAStages";
+import VerificationStageDialog from "./VerificationStageDialog";
 
 // Component to display products as cards (read-only)
 const ProductDisplayCard: React.FC<{ product: ProductItemDTO; index: number }> = ({ product, index }) => {
@@ -206,6 +207,10 @@ const RepairProduct = () => {
     notes?: string;
   }>({});
 
+  // Verification stage dialog state
+  const [verificationDialogOpen, setVerificationDialogOpen] = useState<boolean>(false);
+  const [verificationStages, setVerificationStages] = useState<{ [serialNo: string]: string }>({});
+
   // Show error toast if RMA list fails to load
   useEffect(() => {
     if (rmaListError) {
@@ -312,6 +317,33 @@ const RepairProduct = () => {
 
   const { mutateAsync: createRepairProductMutation } = useCreateRepairProduct();
 
+  // Verification stage handlers
+  const handleOpenVerificationDialog = () => {
+    const initialStages: { [serialNo: string]: string } = {};
+    products.forEach((product) => {
+      initialStages[product.serialNo] = product.verificateStage || "";
+    });
+    setVerificationStages(initialStages);
+    setVerificationDialogOpen(true);
+  };
+
+  const handleVerificationStageChange = (serialNo: string, stage: string) => {
+    setVerificationStages((prev) => ({
+      ...prev,
+      [serialNo]: stage,
+    }));
+  };
+
+  const handleSaveVerificationStages = () => {
+    const updatedProducts = products.map((product) => ({
+      ...product,
+      verificateStage: verificationStages[product.serialNo] || product.verificateStage,
+    }));
+    setProducts(updatedProducts);
+    setVerificationDialogOpen(false);
+    toast.success("Verification stages updated successfully");
+  };
+
   const handleSave = async () => {
     if (!validateForm()) {
       toast.error("Please fix validation errors before saving");
@@ -375,9 +407,19 @@ const RepairProduct = () => {
                 {/* Products Display Section */}
                 {products.length > 0 ? (
                   <Box>
-                    <Typography variant="h6" gutterBottom color="primary">
-                      Products for Repair ({products.length})
-                    </Typography>
+                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+                      <Typography variant="h6" color="primary">
+                        Products for Repair: ({products.length})
+                      </Typography>
+                      <Button
+                        variant="outlined"
+                        startIcon={<VerifiedUser />}
+                        onClick={handleOpenVerificationDialog}
+                        sx={{ minWidth: 200 }}
+                      >
+                        Change Verification Stage
+                      </Button>
+                    </Box>
                     {products.map((product, index) => (
                       <ProductDisplayCard key={index} product={product} index={index} />
                     ))}
@@ -437,6 +479,16 @@ const RepairProduct = () => {
           </Box>
         </Box>
       </Paper>
+
+      {/* Verification Stage Dialog */}
+      <VerificationStageDialog
+        open={verificationDialogOpen}
+        onClose={() => setVerificationDialogOpen(false)}
+        products={products}
+        verificationStages={verificationStages}
+        onStageChange={handleVerificationStageChange}
+        onSave={handleSaveVerificationStages}
+      />
     </Box>
   );
 };

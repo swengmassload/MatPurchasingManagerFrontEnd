@@ -534,6 +534,7 @@ export interface ProductItemDTO {
   problemNotes: string;
   repairsDone: RepairItemDTO[];
   partsUsed: PartItemDTO[];
+  verificateStage: string;
 }
 
 // export interface RMAAssessmentResponseDTO {
