@@ -32,3 +32,4 @@ const ContactBasicInfo: React.FC<ContactBasicInfoProps> = ({ contact }) => {
 };
 
 export default ContactBasicInfo;
+//custom_fields?: CustomField[];

@@ -23,6 +23,9 @@ export interface DetailContact {
   source?: Source;
   opt_out_reason?: string;
   update_source?: string;
+
+  // problemDescription?: string;
+  // solution?: string;
 }
 
 export interface Source {
@@ -53,10 +56,8 @@ export interface Contact {
   list_memberships?: string[];
   phone_numbers?: PhoneNumber[];
   street_addresses?: Address[];
+  custom_fields?: CustomField[];
 }
-
-
-
 
 export interface Address {
   kind?: string; // e.g., 'work', 'home'
@@ -93,7 +94,7 @@ export interface EnhancedEmailAddress {
 }
 export interface CustomField {
   custom_field_id: string;
-  name?: string;
+  //name?: string;
   value: string;
 }
 

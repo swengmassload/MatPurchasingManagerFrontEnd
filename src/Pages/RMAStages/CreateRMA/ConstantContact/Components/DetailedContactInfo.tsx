@@ -9,6 +9,7 @@ interface DetailedContactInfoProps {
 }
 
 const DetailedContactInfo: React.FC<DetailedContactInfoProps> = ({ contactDetails }) => {
+  console.log("🔄 DetailedContactInfo component rendered", contactDetails);
   return (
     <Stack spacing={1.5}>
       <ContactDetailField label="Contact ID" value={contactDetails.contact_id} />

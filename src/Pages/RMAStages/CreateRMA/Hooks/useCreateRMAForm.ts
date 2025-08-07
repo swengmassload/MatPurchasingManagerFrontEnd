@@ -26,6 +26,25 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
         contactName: `${selectedContact.first_name || ""} ${selectedContact.last_name || ""}`.trim(),
         companyName: selectedContact.company_name || "",
         phoneNumber: selectedContact.phone_numbers?.filter((phone) => phone.kind === "work")[0]?.phone_number || "",
+
+        // Handle custom_fields based on array length
+        rMAProblemDescription: (() => {
+          console.log("🔄 Populating problemDescription from custom fields", selectedContact.custom_fields);
+          const customFields = selectedContact.custom_fields || [];
+              console.log("🔄 Populating problemDescription from custom fields",customFields);
+   
+          if (customFields.length === 0) return "";
+          if (customFields.length === 1) return customFields[0].value || "";
+          if (customFields.length >= 2) return customFields[0].value || "";
+          return "";
+        })(),
+        notes: (() => {
+          const customFields = selectedContact.custom_fields || [];
+          if (customFields.length === 0) return "";
+          if (customFields.length === 1) return "";
+          if (customFields.length >= 2) return customFields[1].value || "";
+          return "";
+        })(),
       }));
       toast.success(`Form populated with contact: ${selectedContact.first_name} ${selectedContact.last_name}`);
     }
