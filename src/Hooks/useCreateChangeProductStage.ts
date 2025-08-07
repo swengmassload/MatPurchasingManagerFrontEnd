@@ -4,19 +4,20 @@ import CRUDApi from "../Api/CRUDApi";
 import { RMAManagerEnpoints } from "../Constants/EndPoints";
 import { BASEAPIURL } from "../Constants/FixValues";
 import { QueryKeys } from "../Constants/TanstankQueryKeys";
-import { RepairInProgressEventCreateRequestDTO } from "../Models/RMAManagerModels/Dto";
+import { ProductRepairQueryDTO } from "../Models/RMAManagerModels/Dto";
 //ProductRepairQueryDTO[]
-export const useCreateRepairProduct = () => {
+export const useCreateChangeProductStage = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (rmaData: RepairInProgressEventCreateRequestDTO) =>
-      CRUDApi<RepairInProgressEventCreateRequestDTO, RepairInProgressEventCreateRequestDTO>(
-        BASEAPIURL + RMAManagerEnpoints.RepairInProgressEventsEndPoints
+    mutationFn: (rmaData: ProductRepairQueryDTO[]) =>
+      CRUDApi<ProductRepairQueryDTO[], unknown>(
+        BASEAPIURL + RMAManagerEnpoints.CreateChangeProductStageEndPoints
       ).addData(rmaData),
-    onSuccess: (data) => {
-      toast.success(`Repair in progress created successfully! RMA Number: ${data?.rMANumber ? data.rMANumber : "N/A"}`);
-      queryClient.invalidateQueries({ queryKey: [data?.rMANumber] });
+    onSuccess: () => {
+     // toast.success(`Repair in progress created successfully! RMA Number: ${data?.rMANumber ? data.rMANumber : "N/A"}`);
+     // queryClient.invalidateQueries({ queryKey: [data?.rMANumber] });
+     alert("Verification stages updated successfully, what should I invalidate");
       queryClient.invalidateQueries({ queryKey: [QueryKeys.useGetRMAByStage.mainKey] });
     },
     onError: (error: any) => {

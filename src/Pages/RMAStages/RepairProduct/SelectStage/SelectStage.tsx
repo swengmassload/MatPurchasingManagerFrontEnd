@@ -54,7 +54,7 @@ const SelectStage: React.FC<SelectStageProps> = ({ selectedStage, setSelectedSta
       }}
       label={label}
     >
-      {[...DefaultProductionStages.AllStages].map((option) => (
+      {DefaultProductionStages.AllStages.map((option) => (
         <option key={option.code} value={option.code}>
           {option.stage}
         </option>

@@ -508,6 +508,22 @@ export interface ProductAssessedEventCreateRequestDTO {
   assessmentStatus: boolean;
 }
 
+
+
+
+
+
+export interface ProductRepairQueryDTO {
+  rmaNumber: number;
+  productId: string;
+  verificateStage: string;
+}
+
+
+
+
+
+
 export interface RepairItemDTO {
   repairItemId: number;
   description: string;

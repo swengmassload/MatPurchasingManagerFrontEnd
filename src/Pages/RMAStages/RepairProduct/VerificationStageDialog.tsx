@@ -15,6 +15,8 @@ import {
   Select,
   MenuItem,
   FormControl,
+  CircularProgress,
+  Box,
 } from "@mui/material";
 import { ProductItemDTO } from "../../../Models/RMAManagerModels/Dto";
 import { DefaultProductionStages } from "../../../Constants/ProductionStages";
@@ -26,6 +28,7 @@ interface VerificationStageDialogProps {
   verificationStages: { [serialNo: string]: string };
   onStageChange: (serialNo: string, stage: string) => void;
   onSave: () => void;
+  isSaving?: boolean;
 }
 
 const VerificationStageDialog: React.FC<VerificationStageDialogProps> = ({
@@ -35,6 +38,7 @@ const VerificationStageDialog: React.FC<VerificationStageDialogProps> = ({
   verificationStages,
   onStageChange,
   onSave,
+  isSaving = false,
 }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
@@ -58,8 +62,15 @@ const VerificationStageDialog: React.FC<VerificationStageDialogProps> = ({
                         value={verificationStages[product.serialNo] || ""}
                         onChange={(e) => onStageChange(product.serialNo, e.target.value)}
                       >
-                        {DefaultProductionStages.AllStages.map((stage) => (
-                          <MenuItem key={stage.stage} value={stage.stage}>
+                        {[
+                          {
+                            stage: "Not Applicable",
+                            code: "Not_Applicable",
+                            priority: -2,
+                          },
+                          ...DefaultProductionStages.AllStages,
+                        ].map((stage) => (
+                          <MenuItem key={stage.stage} value={stage.code}>
                             {stage.stage}
                           </MenuItem>
                         ))}
@@ -73,9 +84,16 @@ const VerificationStageDialog: React.FC<VerificationStageDialogProps> = ({
         </TableContainer>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={onSave} variant="contained">
-          Save Changes
+        <Button onClick={onClose} disabled={isSaving}>
+          Cancel
+        </Button>
+        <Button onClick={onSave} variant="contained" disabled={isSaving}>
+          {isSaving && (
+            <Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
+              <CircularProgress size={16} color="inherit" />
+            </Box>
+          )}
+          {isSaving ? "Saving..." : "Apply Changes"}
         </Button>
       </DialogActions>
     </Dialog>

@@ -22,12 +22,14 @@ import {
   RMAResponseDTO,
   ProductItemDTO,
   RMAGetRequestByStage,
+  ProductRepairQueryDTO,
 } from "../../../Models/RMAManagerModels/Dto";
 import RMASearchSection from "../AssessPackage/Components/RMASearchSection";
 import { RMAListSection } from "../AssessPackage/Components";
 import toast from "react-hot-toast";
 import { useGetRMAByStage } from "../../../Hooks/useGetRMAByStage";
 import { useCreateRepairProduct } from "../../../Hooks/useCreateRepairProduct";
+import { useCreateChangeProductStage } from "../../../Hooks/useCreateChangeProductStage";
 import { useGetAssessmentByRmaNumber } from "../../../Hooks/useGetAssessmentByRmaNumber";
 import { DefaultRMAStages } from "../../../Constants/RMAStages";
 import VerificationStageDialog from "./VerificationStageDialog";
@@ -210,6 +212,7 @@ const RepairProduct = () => {
   // Verification stage dialog state
   const [verificationDialogOpen, setVerificationDialogOpen] = useState<boolean>(false);
   const [verificationStages, setVerificationStages] = useState<{ [serialNo: string]: string }>({});
+  const [isSavingVerificationStages, setIsSavingVerificationStages] = useState<boolean>(false);
 
   // Show error toast if RMA list fails to load
   useEffect(() => {
@@ -316,6 +319,7 @@ const RepairProduct = () => {
   };
 
   const { mutateAsync: createRepairProductMutation } = useCreateRepairProduct();
+  const { mutateAsync: createChangeProductStageMutation } = useCreateChangeProductStage();
 
   // Verification stage handlers
   const handleOpenVerificationDialog = () => {
@@ -334,16 +338,43 @@ const RepairProduct = () => {
     }));
   };
 
-  const handleSaveVerificationStages = () => {
+  const handleSaveVerificationStages = async () => {
     const updatedProducts = products.map((product) => ({
       ...product,
       verificateStage: verificationStages[product.serialNo] || product.verificateStage,
     }));
-    setProducts(updatedProducts);
-    setVerificationDialogOpen(false);
-    toast.success("Verification stages updated successfully");
-  };
 
+    const newlist: ProductRepairQueryDTO[] = updatedProducts
+      .filter((product) => product.verificateStage !== "Not_Applicable")
+      .map((product) => ({
+        productId: product.serialNo,
+        rmaNumber: existingAssessment?.rmaNumber || 0,
+        verificateStage: product.verificateStage,
+      }));
+
+    console.log("Updated products with verification stages:", newlist);
+    setProducts(updatedProducts);
+
+    // Show loading state
+    setIsSavingVerificationStages(true);
+
+    try {
+      // Only mutate if there are items to process
+      if (newlist.length > 0) {
+        await createChangeProductStageMutation(newlist);
+      }
+
+      // Only close dialog if mutation was successful
+      setVerificationDialogOpen(false);
+      toast.success("Verification stages updated successfully");
+    } catch (error) {
+      console.error("Error updating verification stages:", error);
+      toast.error("Failed to update verification stages. Please try again.");
+    } finally {
+      // Always hide loading state
+      setIsSavingVerificationStages(false);
+    }
+  };
   const handleSave = async () => {
     if (!validateForm()) {
       toast.error("Please fix validation errors before saving");
@@ -488,6 +519,7 @@ const RepairProduct = () => {
         verificationStages={verificationStages}
         onStageChange={handleVerificationStageChange}
         onSave={handleSaveVerificationStages}
+        isSaving={isSavingVerificationStages}
       />
     </Box>
   );
