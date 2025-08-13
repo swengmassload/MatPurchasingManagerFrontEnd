@@ -46,7 +46,7 @@ interface ProductSectionProps {
 
 const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsChange, error }) => {
   const [newProduct, setNewProduct] = useState<ProductItemDTO>({
-    productCapacity:0,
+    productCapacity: 0,
     productUnit: "",
     serialNo: "",
     modelNo: "",
@@ -58,7 +58,8 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
     solutionNotes: "",
     repairsDone: [],
     partsUsed: [],
-     verificateStage: "",
+    productionStage: "",
+    pinDiameter: 0,
   });
 
   const [validationErrors, setValidationErrors] = useState<{
@@ -68,6 +69,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
     modelNo?: string;
     problemType?: string;
     ProblemNotes?: string;
+    pinDiameter?: string;
   }>({});
 
   const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -249,7 +251,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
         solutionNotes: "",
         repairsDone: [],
         partsUsed: [],
-        verificateStage: "", // Default value for new products
+        productionStage: "", // Default value for new products
       });
       setValidationErrors({});
       toast.success("Product added successfully!");
@@ -317,224 +319,343 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
         <Divider sx={{ mb: 2 }} />
 
         {/* Add New Product Form */}
-        <Box sx={{ mb: 3, p: 2, border: "1px solid #e0e0e0", borderRadius: 1 }}>
-          <Typography variant="subtitle2" gutterBottom>
-            Add New Product
-          </Typography>
-
-          {/* First Row */}
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 2, alignItems: "flex-start" }}>
-            <TextField
-              label="Product Capacity *"
-              value={newProduct.productCapacity}
-              onChange={(e) => setNewProduct({ ...newProduct, productCapacity:Number( e.target.value) })}
-              error={Boolean(validationErrors.productCapacity)}
-              helperText={validationErrors.productCapacity}
-              sx={{
-                flex: 1,
-                minWidth: 200,
-                ...standardInputSx,
-              }}
-            />
-
-            <FormControl
-              sx={{
-                flex: 1,
-                minWidth: 160,
-                ...standardFormControlSx,
-              }}
-              error={Boolean(validationErrors.productUnit)}
-            >
-              <InputLabel id="product-unit-select-label">Product Unit *</InputLabel>
-              <Select
-                labelId="product-unit-select-label"
-                value={newProduct.productUnit}
-                label="Product Unit *"
-                onChange={(e) => setNewProduct({ ...newProduct, productUnit: e.target.value })}
-              >
-                {productUnits.map((unit) => (
-                  <MenuItem key={unit} value={unit}>
-                    {unit}
-                  </MenuItem>
-                ))}
-              </Select>
-              {validationErrors.productUnit && <FormHelperText>{validationErrors.productUnit}</FormHelperText>}
-            </FormControl>
-
-            <TextField
-              label="Serial No *"
-              value={newProduct.serialNo}
-              onChange={(e) => setNewProduct({ ...newProduct, serialNo: e.target.value })}
-              error={Boolean(validationErrors.serialNo)}
-              helperText={
-                validationErrors.serialNo || "Enter serial number and click 'Search Product' to auto-populate details"
-              }
-              sx={{
-                flex: 1,
-                minWidth: 200,
-                ...standardInputSx,
-              }}
-            />
+        <Box
+          sx={{
+            mb: 4,
+            p: 3,
+            border: "2px solid #e3f2fd",
+            borderRadius: 2,
+            background: "linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
+            <Add sx={{ color: "primary.main", fontSize: 28 }} />
+            <Typography variant="h5" sx={{ fontWeight: 600, color: "primary.main" }}>
+              Add New Product
+            </Typography>
           </Box>
 
-          {/* Second Row */}
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 2, alignItems: "flex-start" }}>
-            <TextField
-              label="Model No *"
-              value={newProduct.modelNo}
-              onChange={(e) => setNewProduct({ ...newProduct, modelNo: e.target.value })}
-              error={Boolean(validationErrors.modelNo)}
-              helperText={validationErrors.modelNo}
-              sx={{
-                flex: 1,
-                minWidth: 200,
-                ...standardInputSx,
-              }}
-            />
-
-            <FormControl
-              sx={{
-                flex: 1,
-                minWidth: 180,
-                ...standardFormControlSx,
-              }}
-            >
-              <InputLabel id="calibration-type-select-label">Calibration Type</InputLabel>
-              <Select
-                labelId="calibration-type-select-label"
-                value={newProduct.calibrationType}
-                label="Calibration Type"
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, calibrationType: e.target.value as "Tension" | "Compression" })
-                }
-              >
-                <MenuItem value="Tension">Tension</MenuItem>
-                <MenuItem value="Compression">Compression</MenuItem>
-              </Select>
-            </FormControl>
-
+          {/* Product Specifications Section */}
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "text.secondary" }}>
+              📋 Product Specifications
+            </Typography>
             <Box
               sx={{
-                flex: 1,
-                minWidth: 180,
-                display: "flex",
-                alignItems: "center",
-                height: STANDARD_COMPONENT_HEIGHT,
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr", md: "1fr 1fr 1fr" },
+                gap: 3,
+                p: 2,
+                bgcolor: "white",
+                borderRadius: 1,
+                border: "1px solid #e0e0e0",
               }}
             >
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={newProduct.warrantyCheck}
-                    onChange={(e) => setNewProduct({ ...newProduct, warrantyCheck: e.target.checked })}
-                    color="primary"
-                  />
-                }
-                label="Warranty Check"
+              <TextField
+                label="Product Capacity *"
+                type="number"
+                value={newProduct.productCapacity}
+                onChange={(e) => setNewProduct({ ...newProduct, productCapacity: Number(e.target.value) })}
+                error={Boolean(validationErrors.productCapacity)}
+                helperText={validationErrors.productCapacity}
+                variant="outlined"
+                fullWidth
+                sx={standardInputSx}
+              />
+
+              <FormControl fullWidth error={Boolean(validationErrors.productUnit)} sx={standardFormControlSx}>
+                <InputLabel>Product Unit *</InputLabel>
+                <Select
+                  value={newProduct.productUnit}
+                  label="Product Unit *"
+                  onChange={(e) => setNewProduct({ ...newProduct, productUnit: e.target.value })}
+                >
+                  {productUnits.map((unit) => (
+                    <MenuItem key={unit} value={unit}>
+                      {unit}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {validationErrors.productUnit && <FormHelperText>{validationErrors.productUnit}</FormHelperText>}
+              </FormControl>
+
+              <TextField
+                label="Pin Diameter"
+                type="number"
+                value={newProduct.pinDiameter || ""}
+                onChange={(e) => setNewProduct({ ...newProduct, pinDiameter: Number(e.target.value) || undefined })}
+                error={Boolean(validationErrors.pinDiameter)}
+                helperText={validationErrors.pinDiameter || "Optional specification"}
+                variant="outlined"
+                fullWidth
+                sx={standardInputSx}
               />
             </Box>
           </Box>
 
-          {/* Third Row - Problem Details */}
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 2, alignItems: "flex-start" }}>
-            <FormControl
+          {/* Product Identification Section */}
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "text.secondary" }}>
+              🔍 Product Identification
+            </Typography>
+            <Box
               sx={{
-                flex: 1,
-                minWidth: 200,
-                ...standardFormControlSx,
-              }}
-              error={Boolean(validationErrors.problemType)}
-            >
-              <InputLabel id="problem-type-select-label">Problem Type *</InputLabel>
-              <Select
-                labelId="problem-type-select-label"
-                value={newProduct.problemType}
-                label="Problem Type *"
-                onChange={(e) => setNewProduct({ ...newProduct, problemType: e.target.value })}
-              >
-                <MenuItem value="Hardware Failure">Hardware Failure</MenuItem>
-                <MenuItem value="Software Issue">Software Issue</MenuItem>
-                <MenuItem value="Calibration Error">Calibration Error</MenuItem>
-                <MenuItem value="Physical Damage">Physical Damage</MenuItem>
-                <MenuItem value="Connection Problem">Connection Problem</MenuItem>
-                <MenuItem value="Performance Degradation">Performance Degradation</MenuItem>
-                <MenuItem value="Manufacturing Defect">Manufacturing Defect</MenuItem>
-                <MenuItem value="User Error">User Error</MenuItem>
-                <MenuItem value="Environmental Damage">Environmental Damage</MenuItem>
-                <MenuItem value="Other">Other</MenuItem>
-              </Select>
-              {validationErrors.problemType && <FormHelperText>{validationErrors.problemType}</FormHelperText>}
-            </FormControl>
-
-            <TextField
-              label="Problem Notes *"
-              value={newProduct.problemNotes}
-              onChange={(e) => setNewProduct({ ...newProduct, problemNotes: e.target.value })}
-              error={Boolean(validationErrors.ProblemNotes)}
-              helperText={validationErrors.ProblemNotes}
-              //multiline
-              rows={3}
-              sx={{
-                flex: 2,
-                minWidth: 300,
-                ...standardInputSx,
-              }}
-            />
-          </Box>
-
-          {/* Fourth Row - Solution Details */}
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mb: 2, alignItems: "flex-start" }}>
-            <FormControl
-              sx={{
-                flex: 1,
-                minWidth: 200,
-                ...standardFormControlSx,
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "2fr 2fr 1fr" },
+                gap: 3,
+                p: 2,
+                bgcolor: "white",
+                borderRadius: 1,
+                border: "1px solid #e0e0e0",
               }}
             >
-              <InputLabel id="solution-type-select-label">Solution Type</InputLabel>
-              <Select
-                labelId="solution-type-select-label"
-                value={newProduct.solutionType}
-                label="Solution Type"
-                onChange={(e) => setNewProduct({ ...newProduct, solutionType: e.target.value })}
-              >
-                <MenuItem value="Replace Component">Replace Component</MenuItem>
-                <MenuItem value="Repair Existing Component">Repair Existing Component</MenuItem>
-                <MenuItem value="Software Update">Software Update</MenuItem>
-                <MenuItem value="Firmware Update">Firmware Update</MenuItem>
-                <MenuItem value="Complete Unit Replacement">Complete Unit Replacement</MenuItem>
-                <MenuItem value="No Fault Found">No Fault Found</MenuItem>
-                <MenuItem value="Customer Error">Customer Error</MenuItem>
-                <MenuItem value="Return as Defective">Return as Defective</MenuItem>
-              </Select>
-            </FormControl>
+              <TextField
+                label="Serial Number *"
+                value={newProduct.serialNo}
+                onChange={(e) => setNewProduct({ ...newProduct, serialNo: e.target.value })}
+                error={Boolean(validationErrors.serialNo)}
+                helperText={validationErrors.serialNo || "Enter serial number for product lookup"}
+                variant="outlined"
+                fullWidth
+                sx={standardInputSx}
+              />
 
-            <TextField
-              label="Solution Notes"
-              value={newProduct.solutionNotes}
-              onChange={(e) => setNewProduct({ ...newProduct, solutionNotes: e.target.value })}
-              //multiline
-              rows={3}
-              sx={{
-                flex: 2,
-                minWidth: 300,
-                ...standardInputSx,
-              }}
-            />
+              <TextField
+                label="Model Number *"
+                value={newProduct.modelNo}
+                onChange={(e) => setNewProduct({ ...newProduct, modelNo: e.target.value })}
+                error={Boolean(validationErrors.modelNo)}
+                helperText={validationErrors.modelNo}
+                variant="outlined"
+                fullWidth
+                sx={standardInputSx}
+              />
+
+              <Button
+                variant="contained"
+                startIcon={isSearching ? <CircularProgress size={20} color="inherit" /> : <Search />}
+                onClick={handleSearchProduct}
+                disabled={!newProduct.serialNo.trim() || isSearching}
+                fullWidth
+                sx={{
+                  height: "56px",
+                  background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+                  boxShadow: "0 3px 5px 2px rgba(33, 203, 243, .3)",
+                }}
+              >
+                {isSearching ? "Searching..." : "Search"}
+              </Button>
+            </Box>
           </Box>
 
-          {/* Search and Add Buttons Row */}
-          <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+          {/* Product Configuration Section */}
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "text.secondary" }}>
+              ⚙️ Product Configuration
+            </Typography>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+                gap: 3,
+                p: 2,
+                bgcolor: "white",
+                borderRadius: 1,
+                border: "1px solid #e0e0e0",
+              }}
+            >
+              <FormControl fullWidth sx={standardFormControlSx}>
+                <InputLabel>Calibration Type</InputLabel>
+                <Select
+                  value={newProduct.calibrationType}
+                  label="Calibration Type"
+                  onChange={(e) =>
+                    setNewProduct({ ...newProduct, calibrationType: e.target.value as "Tension" | "Compression" })
+                  }
+                >
+                  <MenuItem value="Tension">Tension</MenuItem>
+                  <MenuItem value="Compression">Compression</MenuItem>
+                </Select>
+              </FormControl>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  p: 2,
+                  border: "1px dashed #ccc",
+                  borderRadius: 1,
+                  bgcolor: "#fafafa",
+                }}
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={newProduct.warrantyCheck}
+                      onChange={(e) => setNewProduct({ ...newProduct, warrantyCheck: e.target.checked })}
+                      color="primary"
+                      size="medium"
+                    />
+                  }
+                  label={
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      Warranty Coverage
+                    </Typography>
+                  }
+                />
+              </Box>
+            </Box>
+          </Box>
+
+          {/* Problem Analysis Section */}
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "text.secondary" }}>
+              🔧 Problem Analysis
+            </Typography>
+            <Box
+              sx={{
+                p: 2,
+                bgcolor: "white",
+                borderRadius: 1,
+                border: "1px solid #e0e0e0",
+              }}
+            >
+              <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 2fr" }, gap: 3, mb: 2 }}>
+                <FormControl fullWidth error={Boolean(validationErrors.problemType)} sx={standardFormControlSx}>
+                  <InputLabel>Problem Type *</InputLabel>
+                  <Select
+                    value={newProduct.problemType}
+                    label="Problem Type *"
+                    onChange={(e) => setNewProduct({ ...newProduct, problemType: e.target.value })}
+                  >
+                    <MenuItem value="Hardware Failure">Hardware Failure</MenuItem>
+                    <MenuItem value="Software Issue">Software Issue</MenuItem>
+                    <MenuItem value="Calibration Error">Calibration Error</MenuItem>
+                    <MenuItem value="Physical Damage">Physical Damage</MenuItem>
+                    <MenuItem value="Connection Problem">Connection Problem</MenuItem>
+                    <MenuItem value="Performance Degradation">Performance Degradation</MenuItem>
+                    <MenuItem value="Manufacturing Defect">Manufacturing Defect</MenuItem>
+                    <MenuItem value="User Error">User Error</MenuItem>
+                    <MenuItem value="Environmental Damage">Environmental Damage</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                  </Select>
+                  {validationErrors.problemType && <FormHelperText>{validationErrors.problemType}</FormHelperText>}
+                </FormControl>
+
+                <TextField
+                  label="Problem Description *"
+                  value={newProduct.problemNotes}
+                  onChange={(e) => setNewProduct({ ...newProduct, problemNotes: e.target.value })}
+                  error={Boolean(validationErrors.ProblemNotes)}
+                  helperText={validationErrors.ProblemNotes || "Describe the issue in detail"}
+                  // multiline
+                  rows={3}
+                  variant="outlined"
+                  fullWidth
+                  sx={standardInputSx}
+                />
+              </Box>
+            </Box>
+          </Box>
+
+          {/* Solution Planning Section */}
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2, color: "text.secondary" }}>
+              💡 Solution Planning
+            </Typography>
+            <Box
+              sx={{
+                p: 2,
+                bgcolor: "white",
+                borderRadius: 1,
+                border: "1px solid #e0e0e0",
+              }}
+            >
+              <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 2fr" }, gap: 3 }}>
+                <FormControl fullWidth sx={standardFormControlSx}>
+                  <InputLabel>Solution Type</InputLabel>
+                  <Select
+                    value={newProduct.solutionType}
+                    label="Solution Type"
+                    onChange={(e) => setNewProduct({ ...newProduct, solutionType: e.target.value })}
+                  >
+                    <MenuItem value="Replace Component">Replace Component</MenuItem>
+                    <MenuItem value="Repair Existing Component">Repair Existing Component</MenuItem>
+                    <MenuItem value="Software Update">Software Update</MenuItem>
+                    <MenuItem value="Firmware Update">Firmware Update</MenuItem>
+                    <MenuItem value="Complete Unit Replacement">Complete Unit Replacement</MenuItem>
+                    <MenuItem value="No Fault Found">No Fault Found</MenuItem>
+                    <MenuItem value="Customer Error">Customer Error</MenuItem>
+                    <MenuItem value="Return as Defective">Return as Defective</MenuItem>
+                  </Select>
+                </FormControl>
+
+                <TextField
+                  label="Solution Notes"
+                  value={newProduct.solutionNotes}
+                  onChange={(e) => setNewProduct({ ...newProduct, solutionNotes: e.target.value })}
+                  helperText="Optional: Describe the planned solution"
+                  //multiline
+                  rows={3}
+                  variant="outlined"
+                  fullWidth
+                  sx={standardInputSx}
+                />
+              </Box>
+            </Box>
+          </Box>
+
+          {/* Action Buttons */}
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              justifyContent: "flex-end",
+              pt: 2,
+              borderTop: "1px solid #e0e0e0",
+            }}
+          >
             <Button
               variant="outlined"
-              startIcon={isSearching ? <CircularProgress size={20} /> : <Search />}
-              onClick={handleSearchProduct}
-              disabled={!newProduct.serialNo.trim() || isSearching}
-              size="small"
+              color="secondary"
+              onClick={() => {
+                setNewProduct({
+                  productCapacity: 0,
+                  productUnit: "",
+                  serialNo: "",
+                  modelNo: "",
+                  calibrationType: "Tension",
+                  warrantyCheck: false,
+                  problemType: "",
+                  problemNotes: "",
+                  solutionType: "",
+                  solutionNotes: "",
+                  repairsDone: [],
+                  partsUsed: [],
+                  productionStage: "",
+                  pinDiameter: 0,
+                });
+                setValidationErrors({});
+              }}
+              sx={{ minWidth: 120 }}
             >
-              {isSearching ? "Searching..." : "Search Product"}
+              Clear Form
             </Button>
-            <Button variant="contained" startIcon={<Add />} onClick={handleAddProduct} size="small">
+            <Button
+              variant="contained"
+              startIcon={<Add />}
+              onClick={handleAddProduct}
+              sx={{
+                minWidth: 150,
+                background: "linear-gradient(45deg, #4CAF50 30%, #8BC34A 90%)",
+                boxShadow: "0 3px 5px 2px rgba(76, 175, 80, .3)",
+                "&:hover": {
+                  background: "linear-gradient(45deg, #388E3C 30%, #689F38 90%)",
+                },
+              }}
+            >
               Add Product
             </Button>
           </Box>
@@ -567,6 +688,9 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
                       color="primary"
                       variant="outlined"
                     />
+                    {product.pinDiameter && (
+                      <Chip label={`Pin: ${product.pinDiameter}`} size="small" color="info" variant="outlined" />
+                    )}
                     <Chip label={product.calibrationType} size="small" color="secondary" variant="outlined" />
                     <Chip
                       label={product.warrantyCheck ? "Warranty: Yes" : "Warranty: No"}
@@ -628,7 +752,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
 }) => {
   const [newRepair, setNewRepair] = useState<RepairItemDTO>({
     repairItemId: 0,
-  
+
     description: "",
     date: new Date(),
     hoursUsed: 0,
@@ -680,7 +804,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
       onAddRepair(productIndex, { ...newRepair });
       setNewRepair({
         repairItemId: 0,
-      
+
         description: "",
         date: new Date(),
         hoursUsed: 0,
@@ -694,7 +818,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
       onAddPart(productIndex, { ...newPart });
       setNewPart({
         partItemId: 0,
-       
+
         description: "",
         quantity: 1,
       });

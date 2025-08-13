@@ -19,7 +19,7 @@ export const DefaultRMAFormValues: RMACreateRequestDTO = {
   phoneNumber: "",
 
   notes: "",
-  pinDiameter: undefined,
+
   guidId: undefined,
   createContact: false,
 };

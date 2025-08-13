@@ -134,7 +134,7 @@ const AssessPackage = () => {
         phoneNumber: "555-1234",
         country: "USA",
         draftAssessment: false, // Will be determined by the API hook
-        pinDiameter: 5,
+
         salesOrderId: "mock-sales-order-id",
         guidId: "mock-guid",
       };

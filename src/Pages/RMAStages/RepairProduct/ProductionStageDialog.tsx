@@ -21,21 +21,21 @@ import {
 import { ProductItemDTO } from "../../../Models/RMAManagerModels/Dto";
 import { DefaultProductionStages } from "../../../Constants/ProductionStages";
 
-interface VerificationStageDialogProps {
+interface ProductionStageDialogProps {
   open: boolean;
   onClose: () => void;
   products: ProductItemDTO[];
-  verificationStages: { [serialNo: string]: string };
+  productionStages: { [serialNo: string]: string };
   onStageChange: (serialNo: string, stage: string) => void;
   onSave: () => void;
   isSaving?: boolean;
 }
 
-const VerificationStageDialog: React.FC<VerificationStageDialogProps> = ({
+const ProductionStageDialog: React.FC<ProductionStageDialogProps> = ({
   open,
   onClose,
   products,
-  verificationStages,
+  productionStages,
   onStageChange,
   onSave,
   isSaving = false,
@@ -59,7 +59,7 @@ const VerificationStageDialog: React.FC<VerificationStageDialogProps> = ({
                   <TableCell>
                     <FormControl fullWidth size="small">
                       <Select
-                        value={verificationStages[product.serialNo] || ""}
+                        value={productionStages[product.serialNo] || ""}
                         onChange={(e) => onStageChange(product.serialNo, e.target.value)}
                       >
                         {[
@@ -100,4 +100,4 @@ const VerificationStageDialog: React.FC<VerificationStageDialogProps> = ({
   );
 };
 
-export default VerificationStageDialog;
+export default ProductionStageDialog;

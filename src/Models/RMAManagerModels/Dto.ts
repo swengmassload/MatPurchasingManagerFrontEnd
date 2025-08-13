@@ -93,7 +93,7 @@ export interface RMACreateRequestDTO {
   phoneNumber?: string | undefined;
 
   notes?: string | undefined;
-  pinDiameter?: number;
+
   guidId?: string;
   createContact: boolean;
 }
@@ -266,7 +266,7 @@ export interface RMAResponseDTO {
   country?: string;
   phoneNumber?: string;
   notes: string;
-  pinDiameter?: number;
+
   draftAssessment: boolean;
   salesOrderId?: string;
   guidId: string; // UUID string
@@ -358,7 +358,7 @@ export interface RMAUpdateRequestDTO {
   phoneNumber?: string | undefined;
 
   notes?: string | undefined;
-  pinDiameter?: number;
+
   guidId?: string;
 }
 
@@ -389,9 +389,7 @@ export interface PackageReceivedEventCreateRequestDTO {
 export interface CloseRMAEventCreateRequestDTO {
   rMANumber: number;
   notes: string | undefined;
- 
 }
-
 
 export interface SalesOrderAddedEventCreateRequestDTO {
   rMANumber: number;
@@ -508,21 +506,11 @@ export interface ProductAssessedEventCreateRequestDTO {
   assessmentStatus: boolean;
 }
 
-
-
-
-
-
 export interface ProductRepairQueryDTO {
   rmaNumber: number;
   productId: string;
-  verificateStage: string;
+  productionStage: string;
 }
-
-
-
-
-
 
 export interface RepairItemDTO {
   repairItemId: number;
@@ -550,7 +538,8 @@ export interface ProductItemDTO {
   problemNotes: string;
   repairsDone: RepairItemDTO[];
   partsUsed: PartItemDTO[];
-  verificateStage: string;
+  productionStage: string;
+  pinDiameter?: number;
 }
 
 // export interface RMAAssessmentResponseDTO {
@@ -584,7 +573,6 @@ export interface RMAGetRequestByStage {
 
 export interface ProductsToMoveDTO {
   unknownYet: string | undefined;
-  
 }
 
 export interface ProductMovingEventCreateRequestDTO {

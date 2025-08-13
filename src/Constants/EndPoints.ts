@@ -10,11 +10,10 @@ export const RMAManagerEnpoints = {
   SearchContactEndPoint: `${RMAAPINAME}/v1/ConstantContact/searchContactByContactId`,
   ConfirmIfUserHasExistingValidToken: `${RMAAPINAME}/v1/ConstantContact/ConfirmIfUserHasExistingValidToken`,
   RMAEndpoints: `${RMAAPINAME}/v1/RMAs`,
-
   ProductAssessedEventsEndPoints: `${RMAAPINAME}/v1/ProductAssessedEvents`,
   SalesOrderAddedEventsEndPoints: `${RMAAPINAME}/v1/SalesOrderAddedEvents`,
   RepairInProgressEventsEndPoints: `${RMAAPINAME}/v1/RepairInProgressEvents`,
-  CreateChangeProductStageEndPoints: `${RMAAPINAME}/v1/RepairTypes/CreateChangeStage`,
+  CreateChangeProductStageEndPoints: `${RMAAPINAME}/v1/RMAs/CreateChangeStage`,
   CloseRMAEventsEndPoints: `${RMAAPINAME}/v1/CloseRMAEvents`,
   RMAProductByStage: `${RMAAPINAME}/v1/RMAs/Stage`,
   PackageReceivedEventsEndPoints: `${RMAAPINAME}/v1/PackageReceivedEvents`,

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { RMACreateRequestDTO } from "../../../../Models/RMAManagerModels/Dto";
+import { RMACreateRequestDTO, RMAResponseDTO } from "../../../../Models/RMAManagerModels/Dto";
 import { Contact } from "../../../../Models/ConstantContactModels/ConstantContactDTO";
 import { useCreateRMA } from "../../../../Hooks/useCreateRMA";
 //import { useGetRMANumber } from "../../../../Hooks/useGetRMANumber";
@@ -11,7 +11,6 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
   const createRMAMutation = useCreateRMA();
   const [formData, setFormData] = useState<RMACreateRequestDTO>(DefaultRMAFormValues);
   const [errors, setErrors] = useState<Partial<RMACreateRequestDTO>>({});
-  const [showMailModal, setShowMailModal] = useState(false);
 
   useEffect(() => {
     if (selectedContact) {
@@ -29,10 +28,10 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
 
         // Handle custom_fields based on array length
         rMAProblemDescription: (() => {
-          console.log("🔄 Populating problemDescription from custom fields", selectedContact.custom_fields);
+          // console.log("🔄 Populating problemDescription from custom fields", selectedContact.custom_fields);
           const customFields = selectedContact.custom_fields || [];
-              console.log("🔄 Populating problemDescription from custom fields",customFields);
-   
+          //  console.log("🔄 Populating problemDescription from custom fields", customFields);
+
           if (customFields.length === 0) return "";
           if (customFields.length === 1) return customFields[0].value || "";
           if (customFields.length >= 2) return customFields[0].value || "";
@@ -93,10 +92,6 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
       newErrors.contactName = "Contact name is required";
     }
 
-    // if (!formData.salesPerson) {
-    //   newErrors.salesPerson = "Sales person is required";
-    // }
-
     if (formData.phoneNumber && !/^[\+]?[1-9][\d]{0,15}$/.test(formData.phoneNumber)) {
       newErrors.phoneNumber = "Invalid phone number format";
     }
@@ -105,6 +100,115 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const downloadDocumentFromBytes = (byteArray: any, filename: string = "RMA_Document.doc") => {
+    try {
+      console.log("Raw response type:", typeof byteArray);
+      console.log("Raw response:", byteArray);
+
+      // Determine MIME type based on file extension
+      const getMimeType = (filename: string) => {
+        const extension = filename.split(".").pop()?.toLowerCase();
+        switch (extension) {
+          case "doc":
+            return "application/msword";
+          case "docx":
+            return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+          case "pdf":
+            return "application/pdf";
+          case "txt":
+            return "text/plain";
+          case "rtf":
+            return "application/rtf";
+          default:
+            return "application/octet-stream";
+        }
+      };
+
+      let processedData: any;
+
+      // Handle different response formats
+      if (typeof byteArray === "string") {
+        console.log("Converting from Base64 string");
+        // If it's a Base64 string, convert it to bytes
+        try {
+          processedData = Uint8Array.from(atob(byteArray), (c) => c.charCodeAt(0));
+        } catch (e) {
+          console.error("Failed to decode Base64, treating as plain text");
+          processedData = new TextEncoder().encode(byteArray);
+        }
+      } else if (byteArray instanceof Uint8Array) {
+        console.log("Using Uint8Array directly");
+        processedData = byteArray;
+      } else if (byteArray instanceof ArrayBuffer) {
+        console.log("Converting from ArrayBuffer");
+        processedData = new Uint8Array(byteArray);
+      } else if (Array.isArray(byteArray)) {
+        console.log("Converting from number array");
+        processedData = new Uint8Array(byteArray);
+      } else {
+        console.log("Converting object to JSON string");
+        // If it's an object, convert to JSON string then to bytes
+        const jsonString = JSON.stringify(byteArray);
+        processedData = new TextEncoder().encode(jsonString);
+      }
+
+      console.log("Processed data type:", processedData.constructor.name);
+      console.log("Processed data length:", processedData.length);
+
+      // Create a Blob from the processed data
+      const blob = new Blob([processedData], {
+        type: getMimeType(filename),
+      });
+
+      console.log("Blob size:", blob.size);
+      console.log("Blob type:", blob.type);
+
+      // Create a URL for the blob
+      const url = URL.createObjectURL(blob);
+
+      // Create a temporary anchor element for download
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      link.style.display = "none";
+
+      // Append to body, click, and remove
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Clean up the URL object
+      URL.revokeObjectURL(url);
+
+      toast.success(`Document "${filename}" downloaded successfully!`);
+    } catch (error) {
+      console.error("Error downloading document:", error);
+      toast.error("Failed to download document. Please try again.");
+    }
+  };
+
+  const openDefaultMailClient = (rmaData: RMAResponseDTO) => {
+    const subject = encodeURIComponent(`RMA #${rmaData.guidId || "New"} - Return Merchandise Authorization`);
+
+    const body = encodeURIComponent(`Dear Customer,
+
+      Your RMA #${rmaData.rmaNumber || "New"} has been created successfully.
+
+      RMA Details:
+      - RMA Number: ${rmaData.rmaNumber || "N/A"}
+      - Customer: ${formData.contactName}
+      - Company: ${formData.companyName}
+      - Email: ${formData.customerEmail}
+      - Problem Description: ${formData.rMAProblemDescription}
+
+      Please retain this information for your records.
+
+      Best regards,
+      RMA Management Team`);
+
+    const mailtoLink = `mailto:${formData.customerEmail}?subject=${subject}&body=${body}`;
+    window.open(mailtoLink, "_blank");
+  };
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -118,14 +222,24 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
       console.log("RMA created successfully:", createdRMA);
 
       if (createdRMA) {
+        debugger
         // Show success toast
-        toast.success(`RMA #${createdRMA.rmaNumber || "New"} created successfully!`);
+        //const rmaNumber = createdRMA.rmaNumber || "New";
+        toast.success(`RMA  created successfully!`);
 
-        // Show mail sender modal
-        setShowMailModal(true);
+        // If the response is a byte array (document), download it
+        //   if ((createdRMA as any) instanceof Uint8Array || (createdRMA as any) instanceof ArrayBuffer) {
+        const filename = `RMAShippingLabel-No_${createdRMA.rmaData.rmaNumber}_${createdRMA.rmaData.contactName}_${new Date().toISOString().split("T")[0]}.doc`;
+        downloadDocumentFromBytes(createdRMA.rmaLabel, filename);
+
+        // If it's a regular response object, open mail client
+        openDefaultMailClient(createdRMA.rmaData);
+        //  }
+
+        // Reset form after successful creation
+        setFormData(DefaultRMAFormValues);
+        setErrors({});
       }
-
-      // Don't reset form yet - wait for modal to close
     } catch (error) {
       // Error handling is done in the mutation
       alert("Failed to create RMA. Please try again.");
@@ -134,13 +248,6 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
   };
 
   const handleReset = () => {
-    setFormData(DefaultRMAFormValues);
-    setErrors({});
-  };
-
-  const handleCloseMailModal = () => {
-    setShowMailModal(false);
-    // Reset form after modal closes
     setFormData(DefaultRMAFormValues);
     setErrors({});
   };
@@ -158,13 +265,11 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
     formData,
     errors,
     isSubmitting: createRMAMutation.isPending,
-    showMailModal,
     handleFieldChange,
     handleDateChange,
     handleCreateContactChange,
     handleSubmit,
     handleReset,
-    handleCloseMailModal,
     handleClearContact,
     createdRMA: createRMAMutation.data || null,
   };

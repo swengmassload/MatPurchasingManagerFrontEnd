@@ -8,7 +8,6 @@ import AddressInformationSection from "./Components/AddressInformationSection";
 import RMADetailsSection from "./Components/RMADetailsSection";
 import ContactOptionsSection from "./Components/ContactOptionsSection";
 import FormActions from "./Components/FormActions";
-import MailSenderModal from "./Components/MailSenderModal";
 
 interface CreateRMAFormProps {
   selectedContact?: Contact | null;
@@ -20,13 +19,10 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact, tokenVal
     formData,
     errors,
     isSubmitting,
-    showMailModal,
     handleFieldChange,
     handleDateChange,
     handleCreateContactChange,
     handleSubmit,
-    handleCloseMailModal,
-    createdRMA,
   } = useCreateRMAForm(selectedContact);
 
   return (
@@ -58,11 +54,6 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact, tokenVal
             <FormActions isSubmitting={isSubmitting} />
           </Stack>
         </form>
-
-        {/* Mail Sender Modal */}
-        {showMailModal && createdRMA && (
-          <MailSenderModal open={showMailModal} onClose={handleCloseMailModal} rmaData={createdRMA} />
-        )}
       </Paper>
     </Box>
   );

@@ -150,7 +150,7 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
 
       const authUrl = await getAuthUrl();
       console.log("🔗 Redirecting to OAuth URL:", authUrl);
-      alert(`Redirecting to OAuth URL: ${authUrl}`);
+    
       await new Promise((resolve) => setTimeout(resolve, 2000)); // Optional delay for UX
       debugger;
       window.location.href = authUrl;

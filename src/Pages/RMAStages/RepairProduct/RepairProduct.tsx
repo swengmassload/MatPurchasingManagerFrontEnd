@@ -32,7 +32,8 @@ import { useCreateRepairProduct } from "../../../Hooks/useCreateRepairProduct";
 import { useCreateChangeProductStage } from "../../../Hooks/useCreateChangeProductStage";
 import { useGetAssessmentByRmaNumber } from "../../../Hooks/useGetAssessmentByRmaNumber";
 import { DefaultRMAStages } from "../../../Constants/RMAStages";
-import VerificationStageDialog from "./VerificationStageDialog";
+
+import ProductionStageDialog from "./ProductionStageDialog";
 
 // Component to display products as cards (read-only)
 const ProductDisplayCard: React.FC<{ product: ProductItemDTO; index: number }> = ({ product, index }) => {
@@ -45,7 +46,7 @@ const ProductDisplayCard: React.FC<{ product: ProductItemDTO; index: number }> =
       >
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
           <Typography variant="h6" color="primary">
-            Product #{index + 1} - {product.serialNo} ({product.modelNo})
+            Product #{index + 1} - {product.serialNo} ({product.productionStage})
           </Typography>
           <Chip
             label={product.calibrationType}
@@ -209,10 +210,10 @@ const RepairProduct = () => {
     notes?: string;
   }>({});
 
-  // Verification stage dialog state
-  const [verificationDialogOpen, setVerificationDialogOpen] = useState<boolean>(false);
-  const [verificationStages, setVerificationStages] = useState<{ [serialNo: string]: string }>({});
-  const [isSavingVerificationStages, setIsSavingVerificationStages] = useState<boolean>(false);
+  // Production stage dialog state
+  const [productionDialogOpen, setProductionDialogOpen] = useState<boolean>(false);
+  const [productionStages, setProductionStages] = useState<{ [serialNo: string]: string }>({});
+  const [isSavingProductionStages, setIsSavingProductionStages] = useState<boolean>(false);
 
   // Show error toast if RMA list fails to load
   useEffect(() => {
@@ -290,7 +291,7 @@ const RepairProduct = () => {
         phoneNumber: "555-1234",
         country: "USA",
         draftAssessment: false,
-        pinDiameter: 5,
+
         salesOrderId: "SO-2024-001234",
         guidId: "mock-guid",
       };
@@ -325,38 +326,38 @@ const RepairProduct = () => {
   const handleOpenVerificationDialog = () => {
     const initialStages: { [serialNo: string]: string } = {};
     products.forEach((product) => {
-      initialStages[product.serialNo] = product.verificateStage || "";
+      initialStages[product.serialNo] = product.productionStage || "";
     });
-    setVerificationStages(initialStages);
-    setVerificationDialogOpen(true);
+    setProductionStages(initialStages);
+    setProductionDialogOpen(true);
   };
 
-  const handleVerificationStageChange = (serialNo: string, stage: string) => {
-    setVerificationStages((prev) => ({
+  const handleProductionStageChange = (serialNo: string, stage: string) => {
+    setProductionStages((prev) => ({
       ...prev,
       [serialNo]: stage,
     }));
   };
 
-  const handleSaveVerificationStages = async () => {
+  const handleSaveProductionStages = async () => {
     const updatedProducts = products.map((product) => ({
       ...product,
-      verificateStage: verificationStages[product.serialNo] || product.verificateStage,
+      productionStage: productionStages[product.serialNo] || product.productionStage,
     }));
 
     const newlist: ProductRepairQueryDTO[] = updatedProducts
-      .filter((product) => product.verificateStage !== "Not_Applicable")
+      .filter((product) => product.productionStage !== "Not_Applicable")
       .map((product) => ({
         productId: product.serialNo,
         rmaNumber: existingAssessment?.rmaNumber || 0,
-        verificateStage: product.verificateStage,
+        productionStage: product.productionStage,
       }));
 
     console.log("Updated products with verification stages:", newlist);
     setProducts(updatedProducts);
 
     // Show loading state
-    setIsSavingVerificationStages(true);
+    setIsSavingProductionStages(true);
 
     try {
       // Only mutate if there are items to process
@@ -365,14 +366,14 @@ const RepairProduct = () => {
       }
 
       // Only close dialog if mutation was successful
-      setVerificationDialogOpen(false);
-      toast.success("Verification stages updated successfully");
+      setProductionDialogOpen(false);
+      toast.success("Production stages updated successfully");
     } catch (error) {
-      console.error("Error updating verification stages:", error);
-      toast.error("Failed to update verification stages. Please try again.");
+      console.error("Error updating production stages:", error);
+      toast.error("Failed to update production stages. Please try again.");
     } finally {
       // Always hide loading state
-      setIsSavingVerificationStages(false);
+      setIsSavingProductionStages(false);
     }
   };
   const handleSave = async () => {
@@ -448,7 +449,7 @@ const RepairProduct = () => {
                         onClick={handleOpenVerificationDialog}
                         sx={{ minWidth: 200 }}
                       >
-                        Change Verification Stage
+                        Change Production Stage
                       </Button>
                     </Box>
                     {products.map((product, index) => (
@@ -511,15 +512,15 @@ const RepairProduct = () => {
         </Box>
       </Paper>
 
-      {/* Verification Stage Dialog */}
-      <VerificationStageDialog
-        open={verificationDialogOpen}
-        onClose={() => setVerificationDialogOpen(false)}
+      {/* Production Stage Dialog */}
+      <ProductionStageDialog
+        open={productionDialogOpen}
+        onClose={() => setProductionDialogOpen(false)}
         products={products}
-        verificationStages={verificationStages}
-        onStageChange={handleVerificationStageChange}
-        onSave={handleSaveVerificationStages}
-        isSaving={isSavingVerificationStages}
+        productionStages={productionStages}
+        onStageChange={handleProductionStageChange}
+        onSave={handleSaveProductionStages}
+        isSaving={isSavingProductionStages}
       />
     </Box>
   );
