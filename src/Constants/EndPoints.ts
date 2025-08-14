@@ -14,7 +14,7 @@ export const RMAManagerEnpoints = {
   SalesOrderAddedEventsEndPoints: `${RMAAPINAME}/v1/SalesOrderAddedEvents`,
   RepairInProgressEventsEndPoints: `${RMAAPINAME}/v1/RepairInProgressEvents`,
   CreateChangeProductStageEndPoints: `${RMAAPINAME}/v1/RMAs/CreateChangeStage`,
-  CloseRMAEventsEndPoints: `${RMAAPINAME}/v1/CloseRMAEvents`,
+  CloseRMAEventsEndPoints: `${RMAAPINAME}/v1/RMACloseEvents`,
   RMAProductByStage: `${RMAAPINAME}/v1/RMAs/Stage`,
   PackageReceivedEventsEndPoints: `${RMAAPINAME}/v1/PackageReceivedEvents`,
   LabelSentEventsEndPoints: `${RMAAPINAME}/v1/LabelSentEvents`,

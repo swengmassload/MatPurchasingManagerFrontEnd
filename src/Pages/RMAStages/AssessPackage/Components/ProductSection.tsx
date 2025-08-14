@@ -34,7 +34,7 @@ import { ProductItemDTO, RepairItemDTO, PartItemDTO } from "../../../../Models/R
 import {
   standardInputSx,
   standardFormControlSx,
-  STANDARD_COMPONENT_HEIGHT,
+ 
 } from "../../../../Constants/ComponentStyles";
 import toast from "react-hot-toast";
 

@@ -50,7 +50,7 @@ describe("EndPoints constants", () => {
     });
 
     it("should have the correct CloseRMAEventsEndPoints", () => {
-      expect(RMAManagerEnpoints.CloseRMAEventsEndPoints).toBe(`${RMAAPINAME}/v1/CloseRMAEvents`);
+      expect(RMAManagerEnpoints.CloseRMAEventsEndPoints).toBe(`${RMAAPINAME}/v1/RMACloseEvents`);
     });
 
     it("should have the correct RMAProductByStage endpoint", () => {
@@ -108,6 +108,7 @@ describe("EndPoints constants", () => {
         "ProductAssessedEventsEndPoints",
         "SalesOrderAddedEventsEndPoints",
         "RepairInProgressEventsEndPoints",
+        "CreateChangeProductStageEndPoints",
         "CloseRMAEventsEndPoints",
         "RMAProductByStage",
         "PackageReceivedEventsEndPoints",
@@ -116,6 +117,12 @@ describe("EndPoints constants", () => {
         "TrackingGroupedRMAProduct",
         "GetRMATrackingDetails",
       ];
+
+
+
+
+
+
 
       expectedProperties.forEach((property) => {
         expect(RMAManagerEnpoints).toHaveProperty(property);
