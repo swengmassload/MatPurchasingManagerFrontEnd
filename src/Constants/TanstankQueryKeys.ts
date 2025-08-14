@@ -2,25 +2,19 @@ import { useGetConfirmIfUserHasExistingValidTokenProps } from "../Hooks/useGetCo
 import { useGetContactByContactIdProps } from "../Hooks/useGetContactByContactId";
 import { RMAGetRequestByStage, RMAGetTrackingDetailRequestDTO } from "../Models/RMAManagerModels/Dto";
 
-
-
 export const QueryKeys = {
-
   useGetContactByEmailKey: {
     mainKey: "Contacts",
   },
   useGetRMATrackingDetails: {
     mainKey: "useGetRMATrackingDetails",
-    subKeys: (params: { req: RMAGetTrackingDetailRequestDTO }) => [params.req.stage,  params.req.rMANumber],
+    subKeys: (params: { req: RMAGetTrackingDetailRequestDTO }) => [params.req.stage, params.req.rMANumber],
   },
 
   useGetRMAByStage: {
     mainKey: "useGetRMAByStage",
     subKeys: (params: { req: RMAGetRequestByStage }) => [params.req.Stage],
   },
-
-  
-
 
   useGetConfirmIfUserHasExistingValidTokenPropsKey: {
     mainKey: "UserId",
@@ -31,7 +25,7 @@ export const QueryKeys = {
     mainKey: "RMANextNumber",
   },
 
-useGetContactByContactIdKey: {
+  useGetContactByContactIdKey: {
     mainKey: "ContactsByContactId",
     subKeys: (params: { data: useGetContactByContactIdProps }) => [params.data.ContactId],
   },
@@ -40,6 +34,7 @@ useGetContactByContactIdKey: {
     mainKey: "CreateRMA",
   },
 
-
-  
+  useGetRMAByIdKey: {
+    mainKey: "useGetRMAById",
+  },
 };

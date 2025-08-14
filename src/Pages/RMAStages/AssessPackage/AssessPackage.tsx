@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import { useGetRMAByStage } from "../../../Hooks/useGetRMAByStage";
 import { useCreateAssessment } from "../../../Hooks/useCreateAssessment";
 import { useGetAssessmentByRmaNumber } from "../../../Hooks/useGetAssessmentByRmaNumber";
+import { useGetRMAById } from "../../../Hooks/useGetRMAById";
 import { DefaultRMAStages } from "../../../Constants/RMAStages";
 
 const AssessPackage = () => {
@@ -23,13 +24,20 @@ const AssessPackage = () => {
     DraftAssessment: true, // Include draft assessments to see the DRAFT label
   };
 
-  const { data: rmaList = [], isLoading: isLoadingList, error: rmaListError,refetch } = useGetRMAByStage(rmaStageRequest, true);
+  const {
+    data: rmaList = [],
+    isLoading: isLoadingList,
+    error: rmaListError,
+    refetch,
+  } = useGetRMAByStage(rmaStageRequest, true);
 
   // Search state
   const [rmaNumber, setRmaNumber] = useState<string>("");
   const [searchResults, setSearchResults] = useState<RMAResponseDTO | null>(null);
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [searchError, setSearchError] = useState<string>("");
+  const [executeSearch, setExecuteSearch] = useState<boolean>(false);
+  const [searchRmaNumber, setSearchRmaNumber] = useState<string | undefined>(undefined);
 
   // Assessment form state
   const [products, setProducts] = useState<ProductItemDTO[]>([]);
@@ -56,6 +64,13 @@ const AssessPackage = () => {
     !!selectedRmaNumber
   );
 
+  // Hook for searching RMA by ID
+  const {
+    data: searchRmaData,
+    isLoading: isSearchingRMA,
+    error: searchRMAError,
+  } = useGetRMAById(searchRmaNumber, executeSearch);
+
   const handleSelectRMA = (rma: RMAResponseDTO) => {
     rma.draftAssessment ? console.log("Selected RMA for assessment:", rma) : <></>;
     // If draftAssessment is true, we can proceed with the assessment
@@ -74,7 +89,6 @@ const AssessPackage = () => {
   useEffect(() => {
     if (selectedRmaNumber && !isLoadingAssessment && searchResults?.draftAssessment) {
       if (existingAssessment) {
-   
         toast.success(`RMA #${selectedRmaNumber} selected - Loading existing assessment data`);
         console.log("Found existing draft assessment via API:", existingAssessment);
         setProducts(existingAssessment.products);
@@ -99,72 +113,55 @@ const AssessPackage = () => {
     }
   }, [selectedRmaNumber, existingAssessment, isLoadingAssessment, searchResults?.draftAssessment]);
 
+  // Effect to handle search results from useGetRMAById
+  useEffect(() => {
+    if (executeSearch && !isSearchingRMA) {
+      if (searchRMAError) {
+        setSearchError("RMA not found or search failed");
+        toast.error("Failed to find RMA");
+        setIsSearching(false);
+        setExecuteSearch(false);
+      } else if (searchRmaData) {
+        setSearchResults(searchRmaData);
+        setSearchError("");
+        setIsSearching(false);
+        setExecuteSearch(false);
+        toast.success(`RMA #${searchRmaData.rmaNumber} found successfully`);
+      }
+    } else if (executeSearch && isSearchingRMA) {
+      setIsSearching(true);
+    }
+  }, [executeSearch, isSearchingRMA, searchRMAError, searchRmaData]);
+
   const handleSearch = async () => {
     if (!rmaNumber.trim()) {
       toast.error("Please enter an RMA number");
       return;
     }
 
-    setIsSearching(true);
+    // Reset previous search state
     setSearchError("");
     setSearchResults(null);
 
-    try {
-      // TODO: Replace with actual API call
-      // Simulating API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Mock successful search result - using RMA number
-      const searchedRmaNumber = parseInt(rmaNumber);
-      // The API hook will determine if draft assessment exists
-      const mockResult: RMAResponseDTO = {
-        rmaNumber: searchedRmaNumber,
-        customerEmail: "jane@acme.com",
-        dateIssued: new Date(),
-        rmaProblemDescription: "Connectivity issues reported",
-        stage: "Package Received",
-        salesPerson: "John Doe",
-        companyName: "Acme Corporation",
-        contactName: "Jane Smith",
-        notes: "Search result - ready for assessment",
-        street: "123 Main St",
-        city: "Springfield",
-        province: "IL",
-        zipCode: "62701",
-        phoneNumber: "555-1234",
-        country: "USA",
-        draftAssessment: false, // Will be determined by the API hook
-
-        salesOrderId: "mock-sales-order-id",
-        guidId: "mock-guid",
-      };
-
-      setSearchResults(mockResult);
-      // handleSelectRMA will handle loading assessment data
-    } catch (error) {
-      setSearchError("RMA not found or search failed");
-      toast.error("Failed to find RMA");
-    } finally {
-      setIsSearching(false);
-    }
+    // Set the RMA number to search and enable the hook
+    setSearchRmaNumber(rmaNumber.trim());
+    setExecuteSearch(true);
   };
 
   const validateForm = (): boolean => {
-    debugger
+    debugger;
     const newErrors: typeof errors = {};
 
     if (products.length === 0) {
       newErrors.products = "At least one product is required";
     } else {
       // Check if all products have required problem fields
-      const productsWithMissingProblemInfo = products.filter(
-        (product) => {
-          debugger
-          console.log("Validating product:", product);
-          const result = !product.problemType?.trim() || !product.problemNotes?.trim();
-          return result;
-        }
-      );
+      const productsWithMissingProblemInfo = products.filter((product) => {
+        debugger;
+        console.log("Validating product:", product);
+        const result = !product.problemType?.trim() || !product.problemNotes?.trim();
+        return result;
+      });
 
       if (productsWithMissingProblemInfo.length > 0) {
         newErrors.products = "All products must have problem type and problem notes";

@@ -86,6 +86,7 @@ pipeline {
                     mkdir "%DEST_DIR%"
                     xcopy "%SOURCE_DIR%\\*.*" "%DEST_DIR%" /s /e /y
                     xcopy /Y /F "%JSON_PATH%\\web.config" "%DEST_DIR%" 
+                    xcopy /Y /F "%JSON_PATH%\\config.json" "%DEST_DIR%" 
                 """
             }
         }
