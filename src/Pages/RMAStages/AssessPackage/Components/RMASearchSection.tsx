@@ -34,7 +34,7 @@ const RMASearchSection: React.FC<RMASearchSectionProps> = ({
   searchResults,
   searchError,
 }) => {
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       onSearch();
     }
@@ -54,7 +54,7 @@ const RMASearchSection: React.FC<RMASearchSectionProps> = ({
             type="number"
             value={rmaNumber}
             onChange={(e) => onRmaNumberChange(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyDown}
             placeholder="Enter RMA number"
             disabled={isSearching}
             sx={{

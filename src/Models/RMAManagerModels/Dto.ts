@@ -128,22 +128,24 @@ export interface RMAGetRequestDTO {
   entityNameId?: any | undefined;
 }
 
-export interface RMAProblemTypeCreateRequestDTO {
-  problemType?: string | undefined;
-  guidId?: string;
-}
+// export interface RMAProblemTypeCreateRequestDTO {
+//   problemType?: string | undefined;
+//   guidId?: string;
+// }
 
-export interface RMAProblemTypeGetRequestDTO {
-  entityNameId?: any | undefined;
-}
+// export interface RMAProblemTypeGetRequestDTO {
+//   entityNameId?: any | undefined;
+// }
 
+
+// export interface RMAProblemTypeUpdateRequestDTO {
+//   problemType?: string | undefined;
+//   guidId?: string;
+// }
 export interface RMAProblemTypeResponseDTO {
-  value?: any | undefined;
-}
+  problemType: ProductsToMoveDTO[];
+  guidId: string;
 
-export interface RMAProblemTypeUpdateRequestDTO {
-  problemType?: string | undefined;
-  guidId?: string;
 }
 
 export interface RMAProductCertificateCreateRequestDTO {
@@ -272,23 +274,25 @@ export interface RMAResponseDTO {
   guidId: string; // UUID string
 }
 
-export interface RMASolutionTypeCreateRequestDTO {
-  solution?: string | undefined;
-  guidId?: string;
-}
+// export interface RMASolutionTypeCreateRequestDTO {
+//   solution?: string | undefined;
+//   guidId?: string;
+// }
 
-export interface RMASolutionTypeGetRequestDTO {
-  entityNameId?: any | undefined;
-}
+// export interface RMASolutionTypeGetRequestDTO {
+//   entityNameId?: any | undefined;
+// }
 
 export interface RMASolutionTypeResponseDTO {
-  value?: any | undefined;
+  solution: string | undefined;
+  guidId: string;
 }
 
-export interface RMASolutionTypeUpdateRequestDTO {
-  solution?: string | undefined;
-  guidId?: string;
-}
+
+// export interface RMASolutionTypeUpdateRequestDTO {
+//   solution?: string | undefined;
+//   guidId?: string;
+// }
 
 export interface RMAStatusCreateRequestDTO {
   status?: string | undefined;
@@ -580,3 +584,5 @@ export interface ProductMovingEventCreateRequestDTO {
   destinationStage: string;
   movingNotes: string;
 }
+
+

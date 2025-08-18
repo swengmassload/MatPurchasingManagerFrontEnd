@@ -29,6 +29,7 @@ export const useGetAppToken = () => {
       try {
         const newAuthUrlBase = await getConfig("GATEWAYSERVERIP");
         const newAuthUrl = `${newAuthUrlBase}/${AUTHAPINAME}/access_token`;
+     
 
         axios.interceptors.request.use((config) => {
           // config.baseURL =  AuthUrls.APPLICATIONTOKEN_BASEURL; // base url for your api.

@@ -113,6 +113,14 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
     }
   }, [detailResult, detailError, fetchingContactId, loadingToastId]);
 
+  // Effect: Reset search flag after search completes to prevent auto-search on email changes
+  useEffect(() => {
+    if (startSearching && !isLoading) {
+      // Search has completed (either success or error), reset the flag
+      setStartSearching(false);
+    }
+  }, [startSearching, isLoading]);
+
   const getAuthUrl = async () => {
     const clientId = await getConfig("CLIENTID");
     const redirectRoute = await getConfig("REDIRECTROUTE");
@@ -125,23 +133,16 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
     const authUrl = `${constantAuthUrl}?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=contact_data%20offline_access&state=${state}`;
     console.log("🔗 Generated auth URL:", authUrl);
     return authUrl;
-    //alert(`Client ID: ${id}\nRedirect Route: ${redirect}\nAuth URL: ${auth}`);
+     };
 
-    //export  const clientId = "a861af35-d728-4e4b-8151-5b1f048db025";
-    //export  const redirectUri = "http://localhost:5175/oauth/callback";
-
-    //export  const authUrl = `https://authz.constantcontact.com/oauth2/default/v1/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(
-    //    redirectUri)}&response_type=code&scope=contact_data%20offline_access&state=${state}`;
-  };
-  // Handlers
   const handleSearch = async () => {
-    // Prevent search if token validation not complete
+
     if (!tokenValidationComplete) {
       toast.error("Please wait for token validation to complete");
       return;
     }
 
-    // Prevent search if token is invalid
+
     if (!persistentTokenValidation?.isValid) {
       toast.error("Valid token required. Redirecting to OAuth...");
       // store login user and search email in localStorage b4 it will redirect
@@ -150,7 +151,7 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
 
       const authUrl = await getAuthUrl();
       console.log("🔗 Redirecting to OAuth URL:", authUrl);
-    
+
       await new Promise((resolve) => setTimeout(resolve, 2000)); // Optional delay for UX
       debugger;
       window.location.href = authUrl;
@@ -172,7 +173,7 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       handleSearch();
     }
@@ -221,7 +222,7 @@ export const useSearchConstantContact = (onContactSelected?: (contact: Contact |
 
     // Handlers
     handleSearch,
-    handleKeyPress,
+    handleKeyPress: handleKeyDown,
     handleFetchContactDetails,
     handleUseContactDetails,
   };

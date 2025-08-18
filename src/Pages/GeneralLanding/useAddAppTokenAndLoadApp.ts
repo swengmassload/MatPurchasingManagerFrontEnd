@@ -34,6 +34,7 @@ export const useAddAppTokenAndLoadApp = ({ request }: useAddAppTokenAndLoadAppPr
         const newAuthUrlBase = await getConfig("GATEWAYSERVERIP");
         const newAuthUrl = `${newAuthUrlBase}/${AUTHAPINAME}/access_token`;
 
+
         console.log("GeneralLanding Count3- apptoken newAuthUrl", newAuthUrl);
         axios.interceptors.request.use((config) => {
           config.baseURL = newAuthUrl; // base url for your api.

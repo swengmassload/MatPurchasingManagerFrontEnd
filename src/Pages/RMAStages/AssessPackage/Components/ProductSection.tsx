@@ -31,11 +31,10 @@ import {
 } from "@mui/material";
 import { Add, Delete, ExpandMore, Build, Inventory, Search } from "@mui/icons-material";
 import { ProductItemDTO, RepairItemDTO, PartItemDTO } from "../../../../Models/RMAManagerModels/Dto";
-import {
-  standardInputSx,
-  standardFormControlSx,
- 
-} from "../../../../Constants/ComponentStyles";
+import { standardInputSx, standardFormControlSx } from "../../../../Constants/ComponentStyles";
+import { useGetProductsByProductId } from "../../../../Hooks/useGetProductBySerialNo";
+import { useGetRMAProblemTypes } from "../../../../Hooks/useGetRMAProblemTypes";
+import { useGetRMASolutionTypes } from "../../../../Hooks/useGetRMASolutionTypes";
 import toast from "react-hot-toast";
 
 interface ProductSectionProps {
@@ -73,6 +72,31 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
   }>({});
 
   const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [executeProductSearch, setExecuteProductSearch] = useState<boolean>(false);
+  const [searchSerialNo, setSearchSerialNo] = useState<string | undefined>(undefined);
+  const [problemTypes, setProblemTypes] = useState<string[]>([]);
+  const [solutionTypes, setSolutionTypes] = useState<string[]>([]);
+
+  // Hook for searching product by serial number
+  const {
+    data: productData,
+    isLoading: isLoadingProduct,
+    error: productError,
+  } = useGetProductsByProductId(searchSerialNo, executeProductSearch);
+
+  // Hook for fetching RMA problem types
+  const {
+    data: problemTypesData,
+    isLoading: isLoadingProblemTypes,
+    error: problemTypesError,
+  } = useGetRMAProblemTypes();
+
+  // Hook for fetching RMA solution types
+  const {
+    data: solutionTypesData,
+    isLoading: isLoadingSolutionTypes,
+    error: solutionTypesError,
+  } = useGetRMASolutionTypes();
 
   // Migration mapping for old problem types to new ones
   const problemTypeMigrationMap: Record<string, string> = {
@@ -127,81 +151,109 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
   }, [products, onProductsChange]);
 
   // Common units for product capacity
-  const productUnits = ["lbs", "kg", "N", "kN", "tons", "grams", "ounces", "pounds"];
+  const productUnits = ["lbs", "kg"];
 
-  const handleSearchProduct = async () => {
+  // Effect to handle problem types data
+  useEffect(() => {
+    if (problemTypesData && Array.isArray(problemTypesData)) {
+      // Since the API structure might be different, let's handle multiple possible formats
+      let extractedTypes: string[] = [];
+
+      try {
+        // If the response contains problem types directly as strings
+        if (problemTypesData.length > 0 && typeof problemTypesData[0] === "string") {
+          extractedTypes = problemTypesData as unknown as string[];
+        }
+        // If the response has a different structure, extract the problem type values
+        else if (problemTypesData.length > 0 && typeof problemTypesData[0] === "object") {
+          extractedTypes = problemTypesData
+            .map((item: any) => {
+              // Try different possible property names
+              return item.problemType || item.name || item.type || item.value || String(item);
+            })
+            .filter(Boolean);
+        }
+
+        if (extractedTypes.length > 0) {
+          setProblemTypes(extractedTypes);
+        }
+      } catch (error) {
+        console.error("Error processing problem types:", error);
+        setProblemTypes([]);
+      }
+    } else if (problemTypesError) {
+      console.error("Error fetching problem types:", problemTypesError);
+      setProblemTypes([]);
+    }
+  }, [problemTypesData, problemTypesError]);
+
+  // Effect to handle solution types data
+  useEffect(() => {
+    if (solutionTypesData && Array.isArray(solutionTypesData)) {
+      // Since the API structure might be different, let's handle multiple possible formats
+      let extractedTypes: string[] = [];
+
+      try {
+        // If the response contains solution types directly as strings
+        if (solutionTypesData.length > 0 && typeof solutionTypesData[0] === "string") {
+          extractedTypes = solutionTypesData as unknown as string[];
+        }
+        // If the response has the expected structure with 'solution' property
+        else if (solutionTypesData.length > 0 && typeof solutionTypesData[0] === "object") {
+          extractedTypes = solutionTypesData
+            .map((item: any) => {
+              // Try different possible property names, prioritizing 'solution'
+              return item.solution || item.solutionType || item.name || item.type || item.value || String(item);
+            })
+            .filter(Boolean);
+        }
+
+        if (extractedTypes.length > 0) {
+          setSolutionTypes(extractedTypes);
+        }
+      } catch (error) {
+        console.error("Error processing solution types:", error);
+        setSolutionTypes([]);
+      }
+    } else if (solutionTypesError) {
+      console.error("Error fetching solution types:", solutionTypesError);
+      setSolutionTypes([]);
+    }
+  }, [solutionTypesData, solutionTypesError]);
+
+  // Effect to handle product search results
+  useEffect(() => {
+    if (executeProductSearch && !isLoadingProduct) {
+      if (productError) {
+        toast.error("Product not found with this serial number");
+        setIsSearching(false);
+        setExecuteProductSearch(false);
+      } else if (productData) {
+        // Map the product data to our form structure
+        setNewProduct({
+          ...newProduct,
+          productCapacity: productData.capacity || 0,
+          productUnit: productData.weightUnit || "",
+          modelNo: productData.modelName || "",
+        });
+        toast.success(`Product found! Populated details for ${productData.modelName}`);
+        setIsSearching(false);
+        setExecuteProductSearch(false);
+      }
+    } else if (executeProductSearch && isLoadingProduct) {
+      setIsSearching(true);
+    }
+  }, [executeProductSearch, isLoadingProduct, productError, productData]);
+
+  const handleSearchProduct = () => {
     if (!newProduct.serialNo.trim()) {
       toast.error("Please enter a serial number to search");
       return;
     }
 
-    setIsSearching(true);
-    try {
-      // TODO: Replace with actual API call
-      // Simulating API call to search product by serial number
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Mock product database
-      const mockProductDatabase = [
-        {
-          serialNo: "SN123456",
-          productCapacity: "1000",
-          productUnit: "lbs",
-          modelNo: "XYZ-1000",
-        },
-        {
-          serialNo: "SN789012",
-          productCapacity: "500",
-          productUnit: "kg",
-          modelNo: "ABC-500",
-        },
-        {
-          serialNo: "SN345678",
-          productCapacity: "750",
-          productUnit: "N",
-          modelNo: "DEF-750",
-        },
-        {
-          serialNo: "SN901234",
-          productCapacity: "2000",
-          productUnit: "kN",
-          modelNo: "GHI-2000",
-        },
-        {
-          serialNo: "12345",
-          productCapacity: "1500",
-          productUnit: "lbs",
-          modelNo: "TEST-1500",
-        },
-        {
-          serialNo: "67890",
-          productCapacity: "800",
-          productUnit: "kg",
-          modelNo: "DEMO-800",
-        },
-      ];
-
-      // Search for product by serial number
-      const foundProduct = mockProductDatabase.find(
-        (product) => product.serialNo.toLowerCase() === newProduct.serialNo.toLowerCase()
-      );
-
-      if (foundProduct) {
-        setNewProduct({
-          ...newProduct,
-          productCapacity: Number(foundProduct.productCapacity),
-          productUnit: foundProduct.productUnit,
-          modelNo: foundProduct.modelNo,
-        });
-        toast.success(`Product found! Populated details for ${foundProduct.modelNo}`);
-      } else {
-        toast.error("Product not found with this serial number");
-      }
-    } catch (error) {
-      toast.error("Failed to search product");
-    } finally {
-      setIsSearching(false);
-    }
+    // Reset previous search state
+    setSearchSerialNo(newProduct.serialNo.trim());
+    setExecuteProductSearch(true);
   };
 
   const validateNewProduct = (): boolean => {
@@ -530,16 +582,14 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
                     label="Problem Type *"
                     onChange={(e) => setNewProduct({ ...newProduct, problemType: e.target.value })}
                   >
-                    <MenuItem value="Hardware Failure">Hardware Failure</MenuItem>
-                    <MenuItem value="Software Issue">Software Issue</MenuItem>
-                    <MenuItem value="Calibration Error">Calibration Error</MenuItem>
-                    <MenuItem value="Physical Damage">Physical Damage</MenuItem>
-                    <MenuItem value="Connection Problem">Connection Problem</MenuItem>
-                    <MenuItem value="Performance Degradation">Performance Degradation</MenuItem>
-                    <MenuItem value="Manufacturing Defect">Manufacturing Defect</MenuItem>
-                    <MenuItem value="User Error">User Error</MenuItem>
-                    <MenuItem value="Environmental Damage">Environmental Damage</MenuItem>
-                    <MenuItem value="Other">Other</MenuItem>
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {problemTypes.map((type) => (
+                      <MenuItem key={type} value={type}>
+                        {type}
+                      </MenuItem>
+                    ))}
                   </Select>
                   {validationErrors.problemType && <FormHelperText>{validationErrors.problemType}</FormHelperText>}
                 </FormControl>
@@ -581,14 +631,14 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
                     label="Solution Type"
                     onChange={(e) => setNewProduct({ ...newProduct, solutionType: e.target.value })}
                   >
-                    <MenuItem value="Replace Component">Replace Component</MenuItem>
-                    <MenuItem value="Repair Existing Component">Repair Existing Component</MenuItem>
-                    <MenuItem value="Software Update">Software Update</MenuItem>
-                    <MenuItem value="Firmware Update">Firmware Update</MenuItem>
-                    <MenuItem value="Complete Unit Replacement">Complete Unit Replacement</MenuItem>
-                    <MenuItem value="No Fault Found">No Fault Found</MenuItem>
-                    <MenuItem value="Customer Error">Customer Error</MenuItem>
-                    <MenuItem value="Return as Defective">Return as Defective</MenuItem>
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {solutionTypes.map((type) => (
+                      <MenuItem key={type} value={type}>
+                        {type}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
 

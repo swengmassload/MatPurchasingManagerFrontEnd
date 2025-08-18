@@ -32,7 +32,7 @@ const RMAListSection: React.FC<RMAListSectionProps> = ({
   const sortedRmaList = [...rmaList].sort((a, b) => {
     const dateA = a.dateIssued ? new Date(a.dateIssued) : new Date(0);
     const dateB = b.dateIssued ? new Date(b.dateIssued) : new Date(0);
-    return dateB.getTime() - dateA.getTime();
+    return  dateA.getTime()-dateB.getTime() ;
   });
   return (
     <Card sx={{ width: "100%", height: "fit-content" }}>

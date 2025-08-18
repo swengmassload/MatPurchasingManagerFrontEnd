@@ -6,7 +6,7 @@ interface SearchFormProps {
   currentSearchEmail: string;
   onEmailChange: (email: string) => void;
   onSearch: () => void;
-  onKeyPress: (e: React.KeyboardEvent) => void;
+  onKeyDown: (e: React.KeyboardEvent) => void;
   isLoading: boolean;
 }
 
@@ -14,7 +14,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
   currentSearchEmail,
   onEmailChange,
   onSearch,
-  onKeyPress,
+  onKeyDown,
   isLoading,
 }) => {
   return (
@@ -25,7 +25,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
           variant="outlined"
           value={currentSearchEmail}
           onChange={(e) => onEmailChange(e.target.value)}
-          onKeyPress={onKeyPress}
+          onKeyDown={onKeyDown}
           placeholder="Enter email to search"
           fullWidth
           disabled={isLoading}

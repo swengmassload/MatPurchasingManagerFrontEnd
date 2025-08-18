@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent, CircularProgress,  Typography, Box } from "@mui/material";
+import { Card, CardContent, CircularProgress, Typography, Box } from "@mui/material";
 import { Contact } from "../../../../Models/ConstantContactModels/ConstantContactDTO";
 import { ValidToken } from "../../../../Hooks/useGetConfirmIfUserHasExistingValidToken";
 import { useSearchConstantContact } from "./Hooks/useSearchConstantContact";
@@ -75,7 +75,6 @@ const SearchConstantContact: React.FC<SearchConstantContactProps> = ({
     );
   }
 
-
   return (
     <Card
       elevation={3}
@@ -93,9 +92,8 @@ const SearchConstantContact: React.FC<SearchConstantContactProps> = ({
           currentSearchEmail={searchEmail}
           onEmailChange={setSearchEmail}
           onSearch={handleSearch}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyPress}
           isLoading={isLoading}
-
         />
 
         <StatusMessages
