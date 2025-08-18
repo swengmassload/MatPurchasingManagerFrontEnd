@@ -87,68 +87,16 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
   // Hook for fetching RMA problem types
   const {
     data: problemTypesData,
-    isLoading: isLoadingProblemTypes,
+    // isLoading: isLoadingProblemTypes,
     error: problemTypesError,
   } = useGetRMAProblemTypes();
 
   // Hook for fetching RMA solution types
   const {
     data: solutionTypesData,
-    isLoading: isLoadingSolutionTypes,
+    //isLoading: isLoadingSolutionTypes,
     error: solutionTypesError,
   } = useGetRMASolutionTypes();
-
-  // Migration mapping for old problem types to new ones
-  const problemTypeMigrationMap: Record<string, string> = {
-    "Mechanical Damage": "Physical Damage",
-    "Electrical Failure": "Hardware Failure",
-    "Calibration Issue": "Calibration Error",
-    Corrosion: "Environmental Damage",
-    Overload: "Physical Damage",
-    "Wear and Tear": "Physical Damage",
-  };
-
-  // Migration mapping for old solution types to new ones
-  const solutionTypeMigrationMap: Record<string, string> = {
-    Repair: "Repair Existing Component",
-    Replace: "Replace Component",
-    Calibrate: "Software Update",
-    Clean: "Repair Existing Component",
-    "No Action Required": "No Fault Found",
-    "Beyond Repair": "Return as Defective",
-    Other: "Return as Defective",
-  };
-
-  // Migrate existing products with old problem/solution types
-  useEffect(() => {
-    if (products.length > 0) {
-      const migratedProducts = products.map((product) => {
-        const migratedProduct = { ...product };
-
-        // Migrate problem type if it's an old value
-        if (problemTypeMigrationMap[product.problemType]) {
-          migratedProduct.problemType = problemTypeMigrationMap[product.problemType];
-        }
-
-        // Migrate solution type if it's an old value
-        if (solutionTypeMigrationMap[product.solutionType]) {
-          migratedProduct.solutionType = solutionTypeMigrationMap[product.solutionType];
-        }
-
-        return migratedProduct;
-      });
-
-      // Check if any migration was needed
-      const needsMigration = migratedProducts.some(
-        (product, index) =>
-          product.problemType !== products[index].problemType || product.solutionType !== products[index].solutionType
-      );
-
-      if (needsMigration) {
-        onProductsChange(migratedProducts);
-      }
-    }
-  }, [products, onProductsChange]);
 
   // Common units for product capacity
   const productUnits = ["lbs", "kg"];

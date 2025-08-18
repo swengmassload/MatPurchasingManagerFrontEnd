@@ -95,7 +95,7 @@ describe("EndPoints constants", () => {
   describe("Endpoint object structure", () => {
     it("should have ProductManagerEnpoints object with expected properties", () => {
       expect(ProductManagerEnpoints).toHaveProperty("ProductMovingEvents");
-      expect(Object.keys(ProductManagerEnpoints)).toHaveLength(1);
+      expect(Object.keys(ProductManagerEnpoints)).toHaveLength(2);
     });
 
     it("should have RMAManagerEnpoints object with expected properties", () => {
@@ -116,13 +116,9 @@ describe("EndPoints constants", () => {
         "RMANextNumberEndpoint",
         "TrackingGroupedRMAProduct",
         "GetRMATrackingDetails",
+        "GetRMAProblemTypesEndPoint",
+        "GetRMASolutionTypesEndPoint",
       ];
-
-
-
-
-
-
 
       expectedProperties.forEach((property) => {
         expect(RMAManagerEnpoints).toHaveProperty(property);
