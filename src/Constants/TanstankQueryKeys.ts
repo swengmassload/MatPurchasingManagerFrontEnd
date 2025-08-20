@@ -15,6 +15,9 @@ export const QueryKeys = {
     mainKey: "useGetRMASolutionTypes",
   },
 
+  useGenerateReportsKey: {
+    mainKey: "useGenerateReports",
+  },
   useGetRMAByStage: {
     mainKey: "useGetRMAByStage",
     subKeys: (params: { req: RMAGetRequestByStage }) => [params.req.Stage],

@@ -29,6 +29,8 @@ const CloseRMA = () => {
   const [formData, setFormData] = useState<CloseRMAEventCreateRequestDTO>({
     rMANumber: 0,
     notes: "",
+    salesIdNo: "",
+    useSalesIdNo: false, // Default value for useSalesIdNo PM uses this internally during inventory movement to shipping 
   });
   const [errors, setErrors] = useState<CloseRMAFormErrors>({});
 
@@ -106,6 +108,8 @@ const CloseRMA = () => {
       // Reset form after successful submission
       setFormData({
         rMANumber: 0,
+        salesIdNo: "",
+        useSalesIdNo: false,
         notes: "",
       });
       setErrors({});

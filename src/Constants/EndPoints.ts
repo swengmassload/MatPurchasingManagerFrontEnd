@@ -1,5 +1,14 @@
-import { PRODUCTAPINAME, RMAAPINAME } from "./APINames";
+import { PRODUCTAPINAME, RegistrationAPINAME, RMAAPINAME } from "./APINames";
 
+
+export const RegistrationEnpoints = {
+  UsersEndpoint: `${RegistrationAPINAME}/v1/Users`,
+  // ResourceResponsibilityEndPoint: `${RegistrationAPINAME}/v1/ResourceResponsibilitys`,
+  // SignatureManagerEndpoint: `${RegistrationAPINAME}/v1/SignatureManagers`,
+  // EMailSenderEndpoint: `${RegistrationAPINAME}/v1/EMailSenders`, 
+
+};
+  
 export const ProductManagerEnpoints = {
   ProductMovingEvents: `${PRODUCTAPINAME}/v1/ProductMovingEvents`,
   GetProductById: `${PRODUCTAPINAME}/v1/Products/`,
@@ -24,4 +33,5 @@ export const RMAManagerEnpoints = {
   GetRMATrackingDetails: `${RMAAPINAME}/v1/RMATracking/TrackingReportDetail`,
   GetRMAProblemTypesEndPoint: `${RMAAPINAME}/v1/RMAProblemTypes`,
   GetRMASolutionTypesEndPoint: `${RMAAPINAME}/v1/RMASolutionTypes`,
+  GetReportsEndpoint: `${RMAAPINAME}/v1/RMAReports`,
 };

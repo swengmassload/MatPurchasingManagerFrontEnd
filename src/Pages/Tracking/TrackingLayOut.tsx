@@ -8,6 +8,7 @@ import { TabListSyle, TabIndicatorStyle, TabBorderStyle } from "../../Components
 import TrackByRMANumber from "./TrackByRMANumber/TrackByRMANumber";
 import TrackByStage from "./TrackByStage/TrackByStage";
 import { TabContext, TabPanel } from "@mui/lab";
+import TheReports from "../TheReports/TheReports";
 const TrackingLayOut = () => {
 const [value, setValue] = useState("1");
   const handleChange = (_event: React.SyntheticEvent, newValue: string) => {
@@ -31,7 +32,8 @@ const [value, setValue] = useState("1");
             >
               <Tab sx={TabBorderStyle} label="Track by Stage" value="1" />
               <Tab sx={TabBorderStyle} label="Track by Serial Number" value="2" />
-{/*            
+                   <Tab sx={TabBorderStyle} label="Report" value="3" />
+{/*                 <Tab sx={TabBorderStyle} label="Report" value="3" />
               <Tab sx={TabBorderStyle} label="Print Certificates" value="4" /> */}
             </Tabs>
             <TabPanel value="1" sx={{ padding: "0px" }}>
@@ -42,9 +44,9 @@ const [value, setValue] = useState("1");
               <TrackByRMANumber />
             </TabPanel>
 
-                        {/* <TabPanel value="4" sx={{ padding: "0px" }}>
-              <PrintCertificates />
-            </TabPanel> */}
+              <TabPanel value="3" sx={{ padding: "0px" }}>
+              <TheReports />
+            </TabPanel>
           </TabContext>
         </Box>
       </LayoutInLetWrapper>

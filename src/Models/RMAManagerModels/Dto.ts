@@ -137,7 +137,6 @@ export interface RMAGetRequestDTO {
 //   entityNameId?: any | undefined;
 // }
 
-
 // export interface RMAProblemTypeUpdateRequestDTO {
 //   problemType?: string | undefined;
 //   guidId?: string;
@@ -145,7 +144,6 @@ export interface RMAGetRequestDTO {
 export interface RMAProblemTypeResponseDTO {
   problemType: ProductsToMoveDTO[];
   guidId: string;
-
 }
 
 export interface RMAProductCertificateCreateRequestDTO {
@@ -288,7 +286,6 @@ export interface RMASolutionTypeResponseDTO {
   guidId: string;
 }
 
-
 // export interface RMASolutionTypeUpdateRequestDTO {
 //   solution?: string | undefined;
 //   guidId?: string;
@@ -392,7 +389,9 @@ export interface PackageReceivedEventCreateRequestDTO {
 
 export interface CloseRMAEventCreateRequestDTO {
   rMANumber: number;
+  salesIdNo?: string  | undefined;
   notes: string | undefined;
+  useSalesIdNo: boolean;//  i  pass SalesOrderId  to it in PM inventory
 }
 
 export interface SalesOrderAddedEventCreateRequestDTO {
@@ -584,5 +583,35 @@ export interface ProductMovingEventCreateRequestDTO {
   destinationStage: string;
   movingNotes: string;
 }
+export interface StageField {
+  stageActualFieldName: string;
+  stageDisplayFieldName: string;
+}
 
+export interface StageTitle {
+  stageActualTitle: string;
+  stageDisplayTitle: string;
+}
+export interface StageAndFields {
+  stageTitle: StageTitle;
+  stageFields: StageField[] | [];
+}
+export interface AllStageAndFields {
+  AllStages: StageAndFields[];
+}
 
+export interface RMAReportRequestDTO {
+  AllStagesAndEvents: StageAndFields[];
+  startDateIssued: string | null;
+  endDateIssued: string | null;
+  startDateReceived: string | null;
+  endDateReceived: string | null;
+  salesOrderId: string | null;
+  rmaNumberStart: number | null;
+  rmaNumberEnd: number | null;
+  stage: string | null;
+  salesPerson: string | null;
+  contactName: string | null;
+  companyName: string | null;
+  customerEmail: string | null;
+}
