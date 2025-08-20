@@ -19,6 +19,8 @@ import AllStagesDropDown from "./Components/StageComponents/AllStagesDropDown";
 import AllUsers from "./Components/AllUsers";
 import ContactName from "./Components/ContactName";
 import CompanyName from "./Components/CompanyName";
+import CustomerEmail from "./Components/CustomerEmail";
+import SalesOrderId from "./Components/salesOrderId";
 
 const TheReports = () => {
   const [listOfCheckedFields, setListOfCheckedFields] = useState<StageAndFields[]>(
@@ -32,6 +34,7 @@ const TheReports = () => {
   const [startDateReceived, setStartDateReceived] = useState<Dayjs | null>(dayjs());
   const [endDateReceived, setEndDateReceived] = useState<Dayjs | null>(dayjs().add(1, "year"));
   const [salesOrderId, setSalesOrderId] = useState<string>("");
+  const [customerEmail, setCustomerEmail] = useState<string>("");
 
   const [contactName, setContactName] = useState<string>("");
   const [companyName, setCompanyName] = useState<string>("");
@@ -70,7 +73,7 @@ const TheReports = () => {
       salesPerson: salesPerson,
       contactName: contactName,
       companyName: companyName,
-      customerEmail: "customerEmail",
+      customerEmail: customerEmail,
     };
     try {
       const response = await downloadRequest.mutateAsync(data);
@@ -242,8 +245,8 @@ const TheReports = () => {
         >
           {/* second part */}
           <Box sx={{ ...SimpleBoxborder, width: "100%", gap: "2rem", padding: "1rem" }}>
-            <ContactName contactName={contactName} setContactName={setContactName} />
-            <CompanyName companyName={companyName} setCompanyName={setCompanyName} />
+            <CustomerEmail customerEmail={customerEmail} setCustomerEmail ={setCustomerEmail} />
+            <SalesOrderId salesOrderId={salesOrderId} setSalesOrderId={setSalesOrderId} />
           </Box>
           {/* end of second part */}
         </Box>

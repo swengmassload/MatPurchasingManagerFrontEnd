@@ -33,5 +33,5 @@ export const RMAManagerEnpoints = {
   GetRMATrackingDetails: `${RMAAPINAME}/v1/RMATracking/TrackingReportDetail`,
   GetRMAProblemTypesEndPoint: `${RMAAPINAME}/v1/RMAProblemTypes`,
   GetRMASolutionTypesEndPoint: `${RMAAPINAME}/v1/RMASolutionTypes`,
-  GetReportsEndpoint: `${RMAAPINAME}/v1/RMAReports`,
+  GetReportsEndpoint: `${RMAAPINAME}/v1/RMATracking`,
 };
