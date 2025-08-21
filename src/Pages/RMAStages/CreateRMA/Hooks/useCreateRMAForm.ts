@@ -27,23 +27,23 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
         phoneNumber: selectedContact.phone_numbers?.filter((phone) => phone.kind === "work")[0]?.phone_number || "",
 
         // Handle custom_fields based on array length
-        rMAProblemDescription: (() => {
-          // console.log("🔄 Populating problemDescription from custom fields", selectedContact.custom_fields);
-          const customFields = selectedContact.custom_fields || [];
-          //  console.log("🔄 Populating problemDescription from custom fields", customFields);
+        // rMAProblemDescription: (() => {
+         
+        //   const customFields = selectedContact.custom_fields || [];
+          
 
-          if (customFields.length === 0) return "";
-          if (customFields.length === 1) return customFields[0].value || "";
-          if (customFields.length >= 2) return customFields[0].value || "";
-          return "";
-        })(),
-        notes: (() => {
-          const customFields = selectedContact.custom_fields || [];
-          if (customFields.length === 0) return "";
-          if (customFields.length === 1) return "";
-          if (customFields.length >= 2) return customFields[1].value || "";
-          return "";
-        })(),
+        //   if (customFields.length === 0) return "";
+        //   if (customFields.length === 1) return customFields[0].value || "";
+        //   if (customFields.length >= 2) return customFields[0].value || "";
+        //   return "";
+        // })(),
+        // notes: (() => {
+        //   const customFields = selectedContact.custom_fields || [];
+        //   if (customFields.length === 0) return "";
+        //   if (customFields.length === 1) return "";
+        //   if (customFields.length >= 2) return customFields[1].value || "";
+        //   return "";
+        // })(),
       }));
       toast.success(`Form populated with contact: ${selectedContact.first_name} ${selectedContact.last_name}`);
     }
@@ -78,10 +78,15 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
       newErrors.customerEmail = "Invalid email format";
     }
 
-    if (!formData.rMAProblemDescription) {
-      newErrors.rMAProblemDescription = "Problem description is required";
-    } else if (formData.rMAProblemDescription.length < 10) {
-      newErrors.rMAProblemDescription = "Problem description must be at least 10 characters";
+  //   if (!formData.rMAProblemDescription) {
+  //  //   newErrors.rMAProblemDescription = "Problem description is required";
+  //   } else 
+      
+      if (formData.rMAProblemDescription  &&formData.rMAProblemDescription.length > 400) {
+      newErrors.rMAProblemDescription = "Problem description must be at most 400 characters";
+    }
+    if (formData.notes && formData.notes.length > 300) {
+      newErrors.notes = "Notes must be at most 300 characters";
     }
 
     if (!formData.companyName) {

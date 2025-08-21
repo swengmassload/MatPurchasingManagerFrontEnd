@@ -14,7 +14,7 @@ const AddressInformationSection: React.FC<AddressInformationSectionProps> = ({ f
     <Card>
       <CardContent>
         <Typography variant="h6" gutterBottom color="primary">
-          Address Information
+          Return Shipping Address
         </Typography>
         <Divider sx={{ mb: 2 }} />
 

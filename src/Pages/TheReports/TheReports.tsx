@@ -20,7 +20,7 @@ import AllUsers from "./Components/AllUsers";
 import ContactName from "./Components/ContactName";
 import CompanyName from "./Components/CompanyName";
 import CustomerEmail from "./Components/CustomerEmail";
-import SalesOrderId from "./Components/salesOrderId";
+import SalesOrderId from "./Components/SalesOrderId";
 
 const TheReports = () => {
   const [listOfCheckedFields, setListOfCheckedFields] = useState<StageAndFields[]>(
@@ -218,10 +218,11 @@ const TheReports = () => {
                 endBatchNo={endBatchNo}
               /> */}
              <Box sx={{...SimpleBoxborder, flexDirection:"column", gap: 1, alignItems: "center", width: "100%" }}>
-                Type one or a range of RMA Numbers
+                Company and Contact Information
                   <Box sx={{display:"flex" , gap: 2,p:1, alignItems: "center", width: "100%" }}>
+                      <CompanyName companyName={companyName} setCompanyName={setCompanyName} />
                   <ContactName contactName={contactName} setContactName={setContactName} />
-                  <CompanyName companyName={companyName} setCompanyName={setCompanyName} />
+                
                 </Box>
               </Box>
             </Box>

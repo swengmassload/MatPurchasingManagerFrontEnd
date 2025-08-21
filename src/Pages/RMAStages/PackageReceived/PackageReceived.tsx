@@ -83,10 +83,9 @@ const PackageReceived = () => {
       newErrors.rMANumber = "RMA Number is required and must be greater than 0";
     }
 
-    if (!formData.notes || formData.notes.trim().length === 0) {
-      newErrors.notes = "Notes are required";
-    } else if (formData.notes.trim().length < 5) {
-      newErrors.notes = "Notes must be at least 5 characters long";
+   
+    if (formData.notes &&formData.notes.trim().length >300 ) {
+      newErrors.notes = "Notes must be at most 300 characters long";
     }
 
     if (!formData.timeStamp) {
@@ -187,7 +186,7 @@ const PackageReceived = () => {
                         onChange={handleFieldChange("notes")}
                         error={Boolean(errors.notes)}
                         helperText={errors.notes || "Details about the package received (condition, contents, etc.)"}
-                        placeholder="Describe the package condition, contents, and any relevant details..."
+                        placeholder="Describe the package condition, contents, and any relevant details in less than 300 characters..."
                       />
                     </Stack>
                   </CardContent>

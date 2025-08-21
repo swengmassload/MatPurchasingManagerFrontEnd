@@ -31,7 +31,7 @@ const [value, setValue] = useState("1");
               TabIndicatorProps={TabIndicatorStyle}
             >
               <Tab sx={TabBorderStyle} label="Track by Stage" value="1" />
-              <Tab sx={TabBorderStyle} label="Track by Serial Number" value="2" />
+              <Tab sx={TabBorderStyle} label="Search RMA" value="2" />
                    <Tab sx={TabBorderStyle} label="Report" value="3" />
 {/*                 <Tab sx={TabBorderStyle} label="Report" value="3" />
               <Tab sx={TabBorderStyle} label="Print Certificates" value="4" /> */}

@@ -49,7 +49,8 @@ const RMADetailsSection: React.FC<RMADetailsSectionProps> = ({ formData, errors,
             value={formData.rMAProblemDescription}
             onChange={onFieldChange("rMAProblemDescription")}
             error={Boolean(errors.rMAProblemDescription)}
-            helperText={errors.rMAProblemDescription}
+            helperText={errors.rMAProblemDescription }
+            placeholder="Describe the problem in less than 400 characters"
           />
 
 
@@ -61,7 +62,9 @@ const RMADetailsSection: React.FC<RMADetailsSectionProps> = ({ formData, errors,
             rows={3}
             value={formData.notes}
             onChange={onFieldChange("notes")}
-            helperText="Any additional information or special instructions"
+            error={Boolean(errors.notes) }
+            helperText={errors.notes}
+              placeholder="Any Additional Notes in less than 300 characters..."
           />
         </Stack>
       </CardContent>

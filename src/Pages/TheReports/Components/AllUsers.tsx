@@ -1,9 +1,8 @@
-import { Box, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { SimpleBoxborder } from "../../../Components/Common/SimpleBoxborder";
+
 import { useGetUsers } from "../../../Hooks/useGetUser";
 import { UsersAndRoleDTO } from "../../../Models/RegistrationModels/UsersCreateRequestDTO";
-import { DefaultRMAStages, RMAStage } from "../../../Constants/RMAStages";
 
 interface AllUsersProps {
   salesPerson: string;

@@ -531,6 +531,7 @@ export interface PartItemDTO {
 export interface ProductItemDTO {
   productCapacity: number;
   productUnit: string;
+  indicatorName: string;
   serialNo: string;
   modelNo: string;
   calibrationType: "Tension" | "Compression";

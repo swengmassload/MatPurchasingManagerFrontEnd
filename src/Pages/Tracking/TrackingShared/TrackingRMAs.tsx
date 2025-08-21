@@ -55,7 +55,8 @@ const TrackingRMAs: React.FC<TrackingDetailsTableProps> = ({ data, setSelectedTr
                   }}
                   onClick={(e) => handleTableCellClicked(e, detail)}
                 >
-                  {detail.products.rmaNumber}
+                  {detail.products.rmaNumber} - <span style={{ color: "red" }}>{detail.products.companyName}</span>
+
                 </TableCell>
               </TableRow>
             ))}

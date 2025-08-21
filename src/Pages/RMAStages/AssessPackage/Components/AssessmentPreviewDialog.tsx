@@ -220,7 +220,7 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
               <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: "bold", color: "#333" }}>
                 Product Information
               </Typography>
-              <Box sx={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 2 }}>
+              <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2, mb: 2 }}>
                 <Box>
                   <Typography variant="body2" color="text.secondary">
                     Serial Number:
@@ -239,6 +239,16 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
                 </Box>
                 <Box>
                   <Typography variant="body2" color="text.secondary">
+                    Indicator:
+                  </Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                    {product.indicatorName || "N/A"}
+                  </Typography>
+                </Box>
+              </Box>
+              <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2, mb: 2 }}>
+                <Box>
+                  <Typography variant="body2" color="text.secondary">
                     Capacity:
                   </Typography>
                   <Typography variant="body1" sx={{ fontWeight: 500 }}>
@@ -253,6 +263,16 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
                     {product.calibrationType}
                   </Typography>
                 </Box>
+                {product.pinDiameter && (
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Pin Diameter:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      {product.pinDiameter} mm
+                    </Typography>
+                  </Box>
+                )}
               </Box>
               <Box sx={{ mt: 2 }}>
                 <Typography variant="body2" color="text.secondary">

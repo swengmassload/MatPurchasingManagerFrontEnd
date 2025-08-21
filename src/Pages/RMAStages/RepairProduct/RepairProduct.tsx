@@ -309,10 +309,8 @@ const RepairProduct = () => {
   const validateForm = (): boolean => {
     const newErrors: typeof errors = {};
 
-    if (!note || note.trim().length === 0) {
-      newErrors.notes = "Repair notes are required";
-    } else if (note.trim().length < 5) {
-      newErrors.notes = "Repair notes must be at least 5 characters long";
+   if (note && note.trim().length > 300) {
+      newErrors.notes = "Notes must be at most 300 characters long";
     }
 
     setErrors(newErrors);

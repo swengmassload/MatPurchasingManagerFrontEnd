@@ -16,8 +16,8 @@ interface TrackByStageMUITableProps {
 }
 
 const TrackByStageMUITable = ({ data, hiddenColumns, enableRowSelection = false }: TrackByStageMUITableProps) => {
-  const columns = TrackByStageColumnHelper(data); //s
-  console.log("TrackByStageMUITable Rendered", data);
+  const columns = TrackByStageColumnHelper(); //s
+
 
   useEffect(() => {
     const columnVisibility = getColumnVisibility(columns, hiddenColumns);
@@ -35,34 +35,23 @@ const TrackByStageMUITable = ({ data, hiddenColumns, enableRowSelection = false 
     data,
     enableStickyHeader: true,
     initialState: {
-      //showGlobalFilter: true,
       density: "compact",
       columnPinning: { left: ["ModelName"], right: ["Total"] },
     },
 
     enableColumnActions: false,
     enableColumnFilters: false,
-
     enableSorting: false,
     enableColumnDragging: false,
-
     enableRowSelection: enableRowSelection,
-    // enableMultiRowSelection: true,
     enableDensityToggle: true,
     enableBottomToolbar: true,
-    //enableFilters: true,
-    //enableGlobalFilterModes: true,
-    // enableMultiSort: true,
     enableTopToolbar: true,
     enableColumnOrdering: true,
     enablePagination: true,
-    // enableColumnFilters: true,
     enableHiding: false,
-    //enableColumnFilterModes: true,
-    //enableGrouping: true,
     enableColumnPinning: true,
-    //enableFacetedValues: true,
-    //enableGlobalFilter: true,
+
 
     muiTableBodyRowProps: ({ row }) => ({
       onClick: row.getToggleSelectedHandler(),
@@ -98,29 +87,37 @@ const TrackByStageMUITable = ({ data, hiddenColumns, enableRowSelection = false 
       baseBackgroundColor: theme.palette.background.paper, //change default background color
     }),
 
-    muiTableHeadCellProps: {
-      sx: {
-        border: "1px solid rgba(81, 81, 81, .5)",
-        fontWeight: "bold",
-        textAlign: "center",
-        color: "black",
-        backgroundColor: muiTableHeaderCellColor,
-        whiteSpace: "normal",
-
-        wordWrap: "break-word",
-        wordBreak: "break-all",
-      },
+muiTableHeadCellProps: {
+  sx: {
+    border: "1px solid rgba(81, 81, 81, .5)",
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "black",
+    backgroundColor: muiTableHeaderCellColor,
+    whiteSpace: "normal",
+    wordWrap: "break-word",
+    wordBreak: "break-all",
+   // display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    "& .Mui-TableHeadCell-Content": {
+      justifyContent: "center",
     },
-    muiTableFooterCellProps: {
-      sx: {
-        border: "1px solid rgba(81, 81, 81, .5)",
-        alignItems: "center",
-        textAlign: "center",
-        color: "black",
-        backgroundColor: muiTableHeaderCellColor,
-        fontWeight: "bold",
-      },
+    "& .MuiTableSortLabel-root": {
+      flexDirection: "column",
     },
+  },
+},
+    // muiTableFooterCellProps: {
+    //   sx: {
+    //     border: "1px solid rgba(81, 81, 81, .5)",
+    //     alignItems: "center",
+    //     textAlign: "center",
+    //     color: "black",
+    //     backgroundColor: muiTableHeaderCellColor,
+    //     fontWeight: "bold",
+    //   },
+    // },
     muiTableBodyCellProps: ({ cell }) => ({
       onClick: (event) => {
         event.stopPropagation(); // Prevent row selection
