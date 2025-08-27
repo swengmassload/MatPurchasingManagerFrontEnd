@@ -41,7 +41,7 @@ export const GetTrackReportForRMA = (
 
   const ans1 = GetStageCount(trackedModelData, DefaultRMAStages.PRODUCTASSESSED.stage);
   if (ans1) {
-    debugger;
+
     const sum = sumBy(ans1, (item) => item.count);
     trackReport.ProductAssessedValue = sum;
     modelsum += sum;

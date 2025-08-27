@@ -15,18 +15,9 @@ function ConvertTrackingGroupedProductDTOToTrackReport(data: TrackingGroupedProd
   if (data.length === 0) return undefined;
 
   console.log("ConvertTrackingGroupedProductDTOToTrackReport", data);
-  debugger;
-  // result is the data that will be returned because we dont need any grouping
-  //just one group 
-  //if we need to group then the commented code will be relevant
- const result: TrackReport[] = [];
-  // const distincModels = data
-  //   .map((item) => item.modelName)
-  //   .filter((value, index, self) => self.indexOf(value) === index);
 
- // distincModels.forEach((element) => {
-   
-  //  const trackedModelData = data.filter((item) => item.modelName === element);
+ const result: TrackReport[] = [];
+
     const trackReport = GetTrackReportForRMA(data);
 
     result.push(trackReport);
@@ -41,7 +32,7 @@ const TrackByStage = ({}: TrackByStageProps) => {
   useEffect(() => {
     if (request.isSuccess && request.data) {
       const conveterdData = ConvertTrackingGroupedProductDTOToTrackReport(request.data);
-debugger
+
       setTrackingData(conveterdData);
     }
   }, [request.isSuccess]);

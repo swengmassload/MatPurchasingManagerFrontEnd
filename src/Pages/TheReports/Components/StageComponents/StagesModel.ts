@@ -1,6 +1,6 @@
 export class EntityNames {
   public static readonly Entity = {
-    RMA: "RMA",
+    RMA: "RMAs",
     LabelSentevents: "labelsentevents",
     PackageReceivedevents: "packagereceivedevents",
     ProductAssessedEvents: "productassessedevents",
@@ -30,7 +30,7 @@ export interface AllStageAndFields {
 
 export const AllStagesAndEvents: StageAndFields[] = [
   {
-    stageTitle: { stageActualTitle: EntityNames.Entity.RMA, stageDisplayTitle: "RMA" },
+    stageTitle: { stageActualTitle: EntityNames.Entity.RMA, stageDisplayTitle: "RMAs" },
     stageFields: [
       { stageActualFieldName: "rmaNumber", stageDisplayFieldName: "RMA Number" },
       { stageActualFieldName: "customerEmail", stageDisplayFieldName: "Customer Email" },

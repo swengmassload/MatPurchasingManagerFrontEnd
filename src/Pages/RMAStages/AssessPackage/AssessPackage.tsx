@@ -149,7 +149,7 @@ const AssessPackage = () => {
   };
 
   const validateForm = (): boolean => {
-    debugger;
+ 
     const newErrors: typeof errors = {};
 
     if (products.length === 0) {
@@ -157,7 +157,7 @@ const AssessPackage = () => {
     } else {
       // Check if all products have required problem fields
       const productsWithMissingProblemInfo = products.filter((product) => {
-        debugger;
+      
         console.log("Validating product:", product);
         const result = !product.problemType?.trim() || !product.problemNotes?.trim();
         return result;

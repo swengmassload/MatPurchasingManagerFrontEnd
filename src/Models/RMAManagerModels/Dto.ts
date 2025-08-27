@@ -436,8 +436,20 @@ interface LabelSentEventResponseDTO {
   senderEmail: string;
   receiverEmail: string;
   message: string;
-  guidId: string; // UUID string
+
+  PhoneNumber: string;
+  ContactName: string;
+  CompanyName: string;
+  guidId: string;
 }
+
+
+     //          // public record LabelSentEventResponseDTO(Int32 RmaNumber, string UserName, DateTime TimeStamp, string SenderEmail, string ReceiverEmail, string PhoneNumber, string ContactName, string CompanyName, Guid guidId);
+
+
+
+
+
 
 export interface PackageReceivedEventResponseDTO {
   rmaNumber: number;
@@ -616,3 +628,35 @@ export interface RMAReportRequestDTO {
   companyName: string | null;
   customerEmail: string | null;
 }
+
+export interface RMASearchRequestDTO {
+
+  startDateIssued: string | null;
+  endDateIssued: string | null;
+  startDateReceived: string | null;
+  endDateReceived: string | null;
+  salesOrderId: string | null;
+  rmaNumberStart: number | null;
+  rmaNumberEnd: number | null;
+  stage: string | null;
+  salesPerson: string | null;
+  contactName: string | null;
+  companyName: string | null;
+  customerEmail: string | null;
+}
+
+
+export const defaultRMASearchRequestDTOParamsValue: RMASearchRequestDTO = {
+  startDateIssued: null,
+  endDateIssued: null,
+  startDateReceived: null,
+  endDateReceived: null,
+  salesOrderId: null,
+  rmaNumberStart: null,
+  rmaNumberEnd: null,
+  stage: null,
+  salesPerson: null,
+  contactName: null,
+  companyName: null,
+  customerEmail: null,
+};

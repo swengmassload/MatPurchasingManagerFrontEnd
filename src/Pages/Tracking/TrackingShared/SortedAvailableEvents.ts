@@ -13,11 +13,11 @@ export const SortedAvailableEvents = (events: RMATrackingReportDetailResponseDTO
         EventName: DefaultRMAStages.LABELSENT.code,
         RMANumber: event.rmaNumber,
         userName: event.userName,
-       // senderEmail: event.senderEmail,
-       // receiverEmail: event.receiverEmail, 
+
         timeStamp: event.timeStamp,
         guidId: event.guidId,
-        AllPropertiesAsJson: "",
+         AllPropertiesAsJson: JSON.stringify(event),
+
       });
     });
   }

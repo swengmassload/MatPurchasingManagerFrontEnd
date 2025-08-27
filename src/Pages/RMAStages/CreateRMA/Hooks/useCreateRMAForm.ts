@@ -71,7 +71,7 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
 
   const validateForm = (): boolean => {
     const newErrors: Partial<RMACreateRequestDTO> = {};
-    debugger;
+
     if (!formData.customerEmail) {
       newErrors.customerEmail = "Customer email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.customerEmail)) {
@@ -227,14 +227,10 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
       console.log("RMA created successfully:", createdRMA);
 
       if (createdRMA) {
-        debugger
-        // Show success toast
-        //const rmaNumber = createdRMA.rmaNumber || "New";
+  
         toast.success(`RMA  created successfully!`);
 
-        // If the response is a byte array (document), download it
-        //   if ((createdRMA as any) instanceof Uint8Array || (createdRMA as any) instanceof ArrayBuffer) {
-        const filename = `RMAShippingLabel-No_${createdRMA.rmaData.rmaNumber}_${createdRMA.rmaData.contactName}_${new Date().toISOString().split("T")[0]}.doc`;
+               const filename = `RMAShippingLabel-No_${createdRMA.rmaData.rmaNumber}_${createdRMA.rmaData.contactName}_${new Date().toISOString().split("T")[0]}.doc`;
         downloadDocumentFromBytes(createdRMA.rmaLabel, filename);
 
         // If it's a regular response object, open mail client

@@ -1,11 +1,19 @@
 import { useGetConfirmIfUserHasExistingValidTokenProps } from "../Hooks/useGetConfirmIfUserHasExistingValidToken";
 import { useGetContactByContactIdProps } from "../Hooks/useGetContactByContactId";
-import { RMAGetRequestByStage, RMAGetTrackingDetailRequestDTO } from "../Models/RMAManagerModels/Dto";
+import { RMAGetRequestByStage, RMAGetTrackingDetailRequestDTO, RMASearchRequestDTO } from "../Models/RMAManagerModels/Dto";
 
 export const QueryKeys = {
   useGetContactByEmailKey: {
     mainKey: "Contacts",
   },
+
+
+
+useGetSearchRMA: {
+    mainKey: "useGetSearchRMA",
+    subKeys: (params: { req: RMASearchRequestDTO }) => [params],
+  },
+
   useGetRMATrackingDetails: {
     mainKey: "useGetRMATrackingDetails",
     subKeys: (params: { req: RMAGetTrackingDetailRequestDTO }) => [params.req.stage, params.req.rMANumber],

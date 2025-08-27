@@ -7,6 +7,7 @@ import TrackingRMAs from "./TrackingRMAs";
 import TrackingSelectedRMAEvents from "./TrackingSelectedRMAEvents";
 import TrackingSelectedRMAInfo from "./TrackingSelectedRMAInfo";
 import { SortedAvailableEvents } from "./SortedAvailableEvents";
+import ProductSelectPlaceholder from "./ProductSelectPlaceholder";
 
 interface TrackingDetailsDialogProps {
   open: boolean;
@@ -16,7 +17,7 @@ interface TrackingDetailsDialogProps {
 }
 
 const TrackingDetailsDialog: React.FC<TrackingDetailsDialogProps> = ({ open, onClose, data, additionalInfo }) => {
-  debugger;
+
   console.log("TrackingDetailsDialog Rendered", data);
   console.log("Additional Info:", additionalInfo);
   const [selectedTrackingDetail, setSelectedTrackingDetail] = useState<RMATrackingReportDetailResponseDTO | undefined>(
@@ -59,7 +60,14 @@ const TrackingDetailsDialog: React.FC<TrackingDetailsDialogProps> = ({ open, onC
             <TrackingRMAs data={data} setSelectedTrackingDetail={setSelectedTrackingDetail} />
           </Box>
           <Box>
-            <TrackingSelectedRMAInfo product={selectedTrackingDetail?.products} />
+           { selectedTrackingDetail?.products? (<TrackingSelectedRMAInfo product={selectedTrackingDetail?.products} />) 
+           
+           
+           
+           : (
+              <ProductSelectPlaceholder />
+            )
+           }
           </Box>
           <Box>
             {selectedTrackingDetail && (

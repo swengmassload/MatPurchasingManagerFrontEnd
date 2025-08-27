@@ -198,211 +198,215 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
 
         {/* Products Assessment */}
         <Typography variant="h5" gutterBottom sx={{ color: "#1976d2", mb: 3 }}>
-          Product Assessment Details ({assessmentData.products.length} Products)
+          Product Assessment Details ({Array.isArray(assessmentData.products) ? assessmentData.products.length : 0}{" "}
+          Products)
         </Typography>
 
-        {assessmentData.products.map((product, index) => (
-          <Paper
-            key={index}
-            sx={{
-              mb: 4,
-              p: 3,
-              border: "2px solid #e0e0e0",
-              "@media print": { breakInside: "avoid" },
-            }}
-          >
-            <Typography variant="h6" gutterBottom sx={{ color: "#1976d2", mb: 2 }}>
-              Product #{index + 1}
-            </Typography>
-
-            {/* Product Basic Information */}
-            <Box sx={{ mb: 3 }}>
-              <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: "bold", color: "#333" }}>
-                Product Information
+        {Array.isArray(assessmentData.products) &&
+          assessmentData.products.map((product, index) => (
+            <Paper
+              key={index}
+              sx={{
+                mb: 4,
+                p: 3,
+                border: "2px solid #e0e0e0",
+                "@media print": { breakInside: "avoid" },
+              }}
+            >
+              <Typography variant="h6" gutterBottom sx={{ color: "#1976d2", mb: 2 }}>
+                Product #{index + 1}
               </Typography>
-              <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2, mb: 2 }}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Serial Number:
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                    {product.serialNo}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Model:
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                    {product.modelNo}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Indicator:
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                    {product.indicatorName || "N/A"}
-                  </Typography>
-                </Box>
-              </Box>
-              <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2, mb: 2 }}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Capacity:
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                    {product.productCapacity} {product.productUnit}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Calibration Type:
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                    {product.calibrationType}
-                  </Typography>
-                </Box>
-                {product.pinDiameter && (
+
+              {/* Product Basic Information */}
+              <Box sx={{ mb: 3 }}>
+                <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: "bold", color: "#333" }}>
+                  Product Information
+                </Typography>
+                <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2, mb: 2 }}>
                   <Box>
                     <Typography variant="body2" color="text.secondary">
-                      Pin Diameter:
+                      Serial Number:
                     </Typography>
                     <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                      {product.pinDiameter} mm
+                      {product.serialNo}
                     </Typography>
                   </Box>
-                )}
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Model:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      {product.modelNo}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Indicator:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      {product.indicatorName || "N/A"}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2, mb: 2 }}>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Capacity:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      {product.productCapacity} {product.productUnit}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Calibration Type:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      {product.calibrationType}
+                    </Typography>
+                  </Box>
+                  {product.pinDiameter && (
+                    <Box>
+                      <Typography variant="body2" color="text.secondary">
+                        Pin Diameter:
+                      </Typography>
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        {product.pinDiameter} mm
+                      </Typography>
+                    </Box>
+                  )}
+                </Box>
+                <Box sx={{ mt: 2 }}>
+                  <Typography variant="body2" color="text.secondary">
+                    Warranty Status:
+                  </Typography>
+                  <Chip
+                    label={product.warrantyCheck ? "Under Warranty" : "Out of Warranty"}
+                    color={product.warrantyCheck ? "success" : "error"}
+                    size="small"
+                  />
+                </Box>
               </Box>
-              <Box sx={{ mt: 2 }}>
-                <Typography variant="body2" color="text.secondary">
-                  Warranty Status:
+
+              {/* Problem Details */}
+              <Box sx={{ mb: 3, p: 2, backgroundColor: "#fff3e0", borderRadius: 1 }}>
+                <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: "bold", color: "#ed6c02" }}>
+                  Problem Analysis
                 </Typography>
-                <Chip
-                  label={product.warrantyCheck ? "Under Warranty" : "Out of Warranty"}
-                  color={product.warrantyCheck ? "success" : "error"}
-                  size="small"
-                />
-              </Box>
-            </Box>
-
-            {/* Problem Details */}
-            <Box sx={{ mb: 3, p: 2, backgroundColor: "#fff3e0", borderRadius: 1 }}>
-              <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: "bold", color: "#ed6c02" }}>
-                Problem Analysis
-              </Typography>
-              <Box sx={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: 2 }}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Problem Type:
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                    {product.problemType}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Problem Notes:
-                  </Typography>
-                  <Typography variant="body1" sx={{ lineHeight: 1.6 }}>
-                    {product.problemNotes}
-                  </Typography>
+                <Box sx={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: 2 }}>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Problem Type:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      {product.problemType}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Problem Notes:
+                    </Typography>
+                    <Typography variant="body1" sx={{ lineHeight: 1.6 }}>
+                      {product.problemNotes}
+                    </Typography>
+                  </Box>
                 </Box>
               </Box>
-            </Box>
 
-            {/* Solution Details */}
-            <Box sx={{ mb: 3, p: 2, backgroundColor: "#f0f7ff", borderRadius: 1 }}>
-              <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: "bold", color: "#1976d2" }}>
-                Solution Implemented
-              </Typography>
-              <Box sx={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: 2 }}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Solution Type:
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                    {product.solutionType}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Solution Notes:
-                  </Typography>
-                  <Typography variant="body1" sx={{ lineHeight: 1.6 }}>
-                    {product.solutionNotes}
-                  </Typography>
+              {/* Solution Details */}
+              <Box sx={{ mb: 3, p: 2, backgroundColor: "#f0f7ff", borderRadius: 1 }}>
+                <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: "bold", color: "#1976d2" }}>
+                  Solution Implemented
+                </Typography>
+                <Box sx={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: 2 }}>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Solution Type:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      {product.solutionType}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Solution Notes:
+                    </Typography>
+                    <Typography variant="body1" sx={{ lineHeight: 1.6 }}>
+                      {product.solutionNotes}
+                    </Typography>
+                  </Box>
                 </Box>
               </Box>
-            </Box>
 
-            {/* Repairs Done */}
-            {product.repairsDone.length > 0 && (
-              <Box sx={{ mb: 3 }}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-                  <Build color="action" />
-                  <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                    Repairs Performed
-                  </Typography>
-                </Box>
-                <TableContainer component={Paper} sx={{ backgroundColor: "#f9f9f9" }}>
-                  <Table size="small">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell sx={{ fontWeight: "bold" }}>Serial No</TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }}>Description</TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }}>Date</TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }}>Hours Used</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {product.repairsDone.map((repair, repairIndex) => (
-                        <TableRow key={repairIndex}>
-                          <TableCell>{repair.repairItemId}</TableCell>
-                          <TableCell>{repair.description}</TableCell>
-                          <TableCell>{formatDate(repair.date)}</TableCell>
-                          <TableCell>{repair.hoursUsed} hours</TableCell>
+              {/* Repairs Done */}
+              {Array.isArray(product.repairsDone) && product.repairsDone.length > 0 && (
+                <Box sx={{ mb: 3 }}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+                    <Build color="action" />
+                    <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                      Repairs Performed
+                    </Typography>
+                  </Box>
+                  <TableContainer component={Paper} sx={{ backgroundColor: "#f9f9f9" }}>
+                    <Table size="small">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell sx={{ fontWeight: "bold" }}>Serial No</TableCell>
+                          <TableCell sx={{ fontWeight: "bold" }}>Description</TableCell>
+                          <TableCell sx={{ fontWeight: "bold" }}>Date</TableCell>
+                          <TableCell sx={{ fontWeight: "bold" }}>Hours Used</TableCell>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Box>
-            )}
-
-            {/* Parts Used */}
-            {product.partsUsed.length > 0 && (
-              <Box sx={{ mb: 2 }}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-                  <Inventory color="action" />
-                  <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                    Parts Used
-                  </Typography>
+                      </TableHead>
+                      <TableBody>
+                        {Array.isArray(product.repairsDone) &&
+                          product.repairsDone.map((repair, repairIndex) => (
+                            <TableRow key={repairIndex}>
+                              <TableCell>{repair.repairItemId}</TableCell>
+                              <TableCell>{repair.description}</TableCell>
+                              <TableCell>{formatDate(repair.date)}</TableCell>
+                              <TableCell>{repair.hoursUsed} hours</TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
                 </Box>
-                <TableContainer component={Paper} sx={{ backgroundColor: "#f9f9f9" }}>
-                  <Table size="small">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell sx={{ fontWeight: "bold" }}>Serial No</TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }}>Description</TableCell>
-                        <TableCell sx={{ fontWeight: "bold" }}>Quantity</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {product.partsUsed.map((part, partIndex) => (
-                        <TableRow key={partIndex}>
-                          <TableCell>{part.partItemId}</TableCell>
-                          <TableCell>{part.description}</TableCell>
-                          <TableCell>{part.quantity}</TableCell>
+              )}
+
+              {/* Parts Used */}
+              {Array.isArray(product.partsUsed) && product.partsUsed.length > 0 && (
+                <Box sx={{ mb: 2 }}>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+                    <Inventory color="action" />
+                    <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                      Parts Used
+                    </Typography>
+                  </Box>
+                  <TableContainer component={Paper} sx={{ backgroundColor: "#f9f9f9" }}>
+                    <Table size="small">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell sx={{ fontWeight: "bold" }}>Serial No</TableCell>
+                          <TableCell sx={{ fontWeight: "bold" }}>Description</TableCell>
+                          <TableCell sx={{ fontWeight: "bold" }}>Quantity</TableCell>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Box>
-            )}
-          </Paper>
-        ))}
+                      </TableHead>
+                      <TableBody>
+                        {Array.isArray(product.partsUsed) &&
+                          product.partsUsed.map((part, partIndex) => (
+                            <TableRow key={partIndex}>
+                              <TableCell>{part.partItemId}</TableCell>
+                              <TableCell>{part.description}</TableCell>
+                              <TableCell>{part.quantity}</TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Box>
+              )}
+            </Paper>
+          ))}
 
         {/* Assessment Summary */}
         <Paper sx={{ p: 3, backgroundColor: "#f5f5f5", mt: 4 }}>
@@ -414,14 +418,21 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
               <Typography variant="body2" color="text.secondary">
                 Total Products:
               </Typography>
-              <Typography variant="h6">{assessmentData.products.length}</Typography>
+              <Typography variant="h6">
+                {Array.isArray(assessmentData.products) ? assessmentData.products.length : 0}
+              </Typography>
             </Box>
             <Box>
               <Typography variant="body2" color="text.secondary">
                 Total Repairs:
               </Typography>
               <Typography variant="h6">
-                {assessmentData.products.reduce((total, product) => total + product.repairsDone.length, 0)}
+                {Array.isArray(assessmentData.products)
+                  ? assessmentData.products.reduce(
+                      (total, product) => total + (Array.isArray(product.repairsDone) ? product.repairsDone.length : 0),
+                      0
+                    )
+                  : 0}
               </Typography>
             </Box>
             <Box>
@@ -429,7 +440,12 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
                 Total Parts Used:
               </Typography>
               <Typography variant="h6">
-                {assessmentData.products.reduce((total, product) => total + product.partsUsed.length, 0)}
+                {Array.isArray(assessmentData.products)
+                  ? assessmentData.products.reduce(
+                      (total, product) => total + (Array.isArray(product.partsUsed) ? product.partsUsed.length : 0),
+                      0
+                    )
+                  : 0}
               </Typography>
             </Box>
           </Box>

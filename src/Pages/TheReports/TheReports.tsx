@@ -2,25 +2,15 @@ import { Box, Button, Typography } from "@mui/material";
 import StageComponent from "./Components/StageComponents/StageComponent";
 import { useState } from "react";
 import { AllStagesAndEvents, StageAndFields } from "./Components/StageComponents/StagesModel";
-
-import DateRangeComponent from "./Components/DateRangeComponent";
 import dayjs, { Dayjs } from "dayjs";
-
-//import { useGenerateReports } from "../../../Hooks/useGenerateReports";
 import FileSaver from "file-saver";
 
 import { RMAReportRequestDTO } from "../../Models/RMAManagerModels/Dto";
-import { SimpleBoxborder } from "../../Components/Common/SimpleBoxborder";
 
 import CircularSpinner from "../../Components/Common/CircularSpinner";
 import { useGenerateReports } from "../../Hooks/useGenerateReports";
-import RMANumberRange from "./Components/ProductIdNumberRange";
-import AllStagesDropDown from "./Components/StageComponents/AllStagesDropDown";
-import AllUsers from "./Components/AllUsers";
-import ContactName from "./Components/ContactName";
-import CompanyName from "./Components/CompanyName";
-import CustomerEmail from "./Components/CustomerEmail";
-import SalesOrderId from "./Components/SalesOrderId";
+import RMASearchSpecifier from "./Components/RMASearchSpecifier";
+
 
 const TheReports = () => {
   const [listOfCheckedFields, setListOfCheckedFields] = useState<StageAndFields[]>(
@@ -66,7 +56,6 @@ const TheReports = () => {
       endDateReceived: endDateReceived?.format("YYYY-MM-DD") ?? null,
       startDateReceived: startDateReceived?.day(1).format("YYYY-MM-DD") ?? null,
       salesOrderId: salesOrderId,
-      //endBatchNo: endBatchNo,
       rmaNumberStart: startRMANumber,
       rmaNumberEnd: endRMANumber,
       stage: stage,
@@ -140,7 +129,7 @@ const TheReports = () => {
           alignItems: "flex-start",
         }}
       >
-        <Box sx={{ display: "flex", gap: "1rem", width: "100%", justifyContent: "center", padding: "1rem" }}>
+        {/* <Box sx={{ display: "flex", gap: "1rem", width: "100%", justifyContent: "center", padding: "1rem" }}>
           <Typography
             sx={{
               fontFamily: "Inter",
@@ -152,123 +141,36 @@ const TheReports = () => {
           >
             Filter to Selecting the Information You Want :
           </Typography>
-        </Box>
-        <Box
-          sx={{ display: "flex", gap: "1rem", width: "100%", justifyContent: "left", alignItems: "flex-start", mt: 0 }}
-        >
-          {/* First part */}
-          <Box
-            sx={{
-              display: "flex",
-              gap: "1rem",
-              flexDirection: "column",
-              justifyContent: "left",
-              alignItems: "flex-start",
-              width: "100%",
-            }}
-          >
-            {/* side a first  part */}
-            <Box
-              sx={{
-                display: "flex",
-                gap: "1rem",
-                flexDirection: "column",
-                justifyContent: "left",
-                alignItems: "flex-start",
-                width: "100%",
-              }}
-            >
-              {/*dates  part */}
-              <DateRangeComponent
-                startDate={startDateIssued}
-                endDate={endDateIssued}
-                setStartDate={setStartDateIssued}
-                setEndDate={setEndDateIssued}
-                caption="Issued "
-              />
-              <DateRangeComponent
-                startDate={startDateReceived}
-                endDate={endDateReceived}
-                setStartDate={setStartDateReceived}
-                setEndDate={setEndDateReceived}
-                caption="Received "
-              />
-            </Box>
-            <Box
-              sx={{
-                ...SimpleBoxborder,
-                display: "flex",
-                gap: "1rem",
-                alignContent: "flex-start",
-                padding: "1rem",
-                width: "100%",
-              }}
-            >
-              {/* number and batch*/}
-              <RMANumberRange
-                setEndRMANumber={setEndRMANumber}
-                setStartRMANumber={setStartRMANumber}
-                startRMANumber={startRMANumber}
-                endRMANumber={endRMANumber}
-              />
-              {/* <BatchNumberRange
-                setEndBatchNo={setEndBatchNo}
-                setStartBatchNo={setStartBatchNo}
-                startBatchNo={startBatchNo}
-                endBatchNo={endBatchNo}
-              /> */}
-             <Box sx={{...SimpleBoxborder, flexDirection:"column", gap: 1, alignItems: "center", width: "100%" }}>
-                Company and Contact Information
-                  <Box sx={{display:"flex" , gap: 2,p:1, alignItems: "center", width: "100%" }}>
-                      <CompanyName companyName={companyName} setCompanyName={setCompanyName} />
-                  <ContactName contactName={contactName} setContactName={setContactName} />
-                
-                </Box>
-              </Box>
-            </Box>
-          </Box>
+        </Box> */}
 
-          {/* end of first part */}
-        </Box>
-
-        <Box
-          sx={{
-            ...SimpleBoxborder,
-            display: "flex",
-            gap: "1rem",
-            width: "100%",
-            justifyContent: "left",
-            alignItems: "flex-start",
-            mt: 0,
-            p: 2,
-            pl: 0,
-          }}
-        >
-          {/* second part */}
-          <Box sx={{ ...SimpleBoxborder, width: "100%", gap: "2rem", padding: "1rem" }}>
-            <CustomerEmail customerEmail={customerEmail} setCustomerEmail ={setCustomerEmail} />
-            <SalesOrderId salesOrderId={salesOrderId} setSalesOrderId={setSalesOrderId} />
-          </Box>
-          {/* end of second part */}
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            gap: "1rem",
-            width: "100%",
-            justifyContent: "left",
-            alignItems: "flex-start",
-            mt: 0,
-          }}
-        >
-          {/* third part  */}
-
-          <Box sx={{ ...SimpleBoxborder, width: "100%", gap: "2rem", padding: "1rem" }}>
-            <AllStagesDropDown stage={stage} setStage={setStage} />
-            <AllUsers salesPerson={salesPerson} setSalesPerson={setSalesPerson} />
-          </Box>
-          {/* end of third part */}
-        </Box>
+        <RMASearchSpecifier
+          startDateIssued={startDateIssued}
+          endDateIssued={endDateIssued}
+          setStartDateIssued={setStartDateIssued}
+          setEndDateIssued={setEndDateIssued}
+          startDateReceived={startDateReceived}
+          endDateReceived={endDateReceived}
+          setStartDateReceived={setStartDateReceived}
+          setEndDateReceived={setEndDateReceived}
+          startRMANumber={startRMANumber}
+          endRMANumber={endRMANumber}
+          setStartRMANumber={setStartRMANumber}
+          setEndRMANumber={setEndRMANumber}
+          companyName={companyName}
+          setCompanyName={setCompanyName}
+          contactName={contactName}
+          setContactName={setContactName}
+          customerEmail={customerEmail}
+          setCustomerEmail={setCustomerEmail}
+          salesOrderId={salesOrderId}
+          setSalesOrderId={setSalesOrderId}
+          stage={stage}
+          setStage={setStage}
+          salesPerson={salesPerson}
+          setSalesPerson={setSalesPerson}
+         // handleGenerateReport={handleGenerateReport}
+         RMASearchSpecifierCaption="Filter to Selecting the Information You Want"
+        />
 
         <Box sx={{ display: "flex", gap: "1rem", width: "100%", justifyContent: "center", padding: "1rem" }}>
           <Button onClick={handleGenerateReport}>Generate and Export Report</Button>

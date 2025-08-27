@@ -27,7 +27,6 @@ export const useGetRMATrackingDetails = (
   enabledGetTrackingDetails: boolean
 ) => {
   return useQuery<RMATrackingReportDetailResponseDTO[] | undefined, Error>({
-   // queryKey: [QueryKeys.useGetTrackingDetailsKey.mainKey, { ...QueryKeys.useGetTrackingDetailsKey.subKeys }],
         queryKey: [QueryKeys.useGetRMATrackingDetails.mainKey, {...param }],
     queryFn: () =>
       CRUDApi<RMAGetTrackingDetailRequestDTO, RMATrackingReportDetailResponseDTO[]>(

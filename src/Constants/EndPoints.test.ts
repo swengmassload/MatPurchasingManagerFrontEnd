@@ -118,6 +118,15 @@ describe("EndPoints constants", () => {
         "GetRMATrackingDetails",
         "GetRMAProblemTypesEndPoint",
         "GetRMASolutionTypesEndPoint",
+        "GetReportsEndpoint",
+        "GetTrackingDetailsBySpecifics"
+
+
+
+
+
+
+
       ];
 
       expectedProperties.forEach((property) => {
