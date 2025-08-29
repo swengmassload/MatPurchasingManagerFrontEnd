@@ -1,29 +1,27 @@
 import { configureStore } from "@reduxjs/toolkit";
-//import SelectedAppReducer from "./State/SelectedAppSlice"
 import LoginUserReducer from "./State/LoginUserSlice";
 
 // Middleware to log all Redux actions and state changes
-const loggerMiddleware = (store: any) => (next: any) => (action: any) => {
-  console.group(`🔄 Redux Action: ${action.type}`);
-  console.log("📤 Dispatching:", action);
-  console.log("📋 State before:", store.getState());
+// const loggerMiddleware = (store: any) => (next: any) => (action: any) => {
+//   console.group(`🔄 Redux Action: ${action.type}`);
+//   console.log("📤 Dispatching:", action);
+//   console.log("📋 State before:", store.getState());
 
-  const result = next(action);
+//   const result = next(action);
 
-  console.log("📋 State after:", store.getState());
-  console.groupEnd();
+//   console.log("📋 State after:", store.getState());
+//   console.groupEnd();
 
-  return result;
-};
+//   return result;
+// };
 
 export const store = configureStore({
   reducer: {
-    //selectedApp: SelectedAppReducer,
+ 
     loginUser: LoginUserReducer,
-    // hubconnection: HubConnectionReducer,
-    // Add more reducers here ie slices
+
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(loggerMiddleware),
+  //middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(loggerMiddleware),
 });
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

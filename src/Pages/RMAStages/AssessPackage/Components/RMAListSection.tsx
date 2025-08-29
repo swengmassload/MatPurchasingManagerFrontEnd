@@ -6,7 +6,7 @@ import { RMAResponseDTO } from "../../../../Models/RMAManagerModels/Dto";
 interface RMAListSectionProps {
   rmaList: RMAResponseDTO[];
   onSelectRMA: (rma: RMAResponseDTO) => void;
-  selectedRMANumber?: number;
+  selectedRMANumber?: number|null;
   isLoading?: boolean;
 }
 

@@ -308,8 +308,8 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
               label="Problem Description *"
               value={newProduct.problemNotes}
               onChange={(e) => setNewProduct({ ...newProduct, problemNotes: e.target.value })}
-              error={Boolean(validationErrors.ProblemNotes)}
-              helperText={validationErrors.ProblemNotes || "Describe the issue in detail"}
+              error={Boolean(validationErrors.problemNotes)}
+              helperText={validationErrors.problemNotes || "Describe the issue in detail"}
               rows={3}
               variant="outlined"
               fullWidth
@@ -333,7 +333,8 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
           }}
         >
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 2fr" }, gap: 3 }}>
-            <FormControl fullWidth sx={standardFormControlSx}>
+        
+                  <FormControl fullWidth error={Boolean(validationErrors.solutionType)} sx={standardFormControlSx}>
               <InputLabel>Solution Type</InputLabel>
               <Select
                 value={newProduct.solutionType}
@@ -349,16 +350,18 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
                   </MenuItem>
                 ))}
               </Select>
+              {validationErrors.solutionType && <FormHelperText>{validationErrors.solutionType}</FormHelperText>}
             </FormControl>
 
             <TextField
               label="Solution Notes"
               value={newProduct.solutionNotes}
               onChange={(e) => setNewProduct({ ...newProduct, solutionNotes: e.target.value })}
-              helperText="Optional: Describe the planned solution"
               rows={3}
               variant="outlined"
               fullWidth
+              error={Boolean(validationErrors.solutionNotes)}
+              helperText={validationErrors.solutionNotes || "Optional:Describe the planned solution"}
               sx={standardInputSx}
             />
           </Box>

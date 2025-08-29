@@ -39,9 +39,12 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
     serialNo?: string;
     modelNo?: string;
     indicatorName?: string;
+    solutionType?: string;
     problemType?: string;
     problemNotes?: string;
+    solutionNotes?: string;
     pinDiameter?: string;
+    
   }>({});
 
   const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -155,6 +158,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
   };
 
   const validateNewProduct = (): boolean => {
+    debugger
     const errors: typeof validationErrors = {};
 
     if (!newProduct.productCapacity) {
@@ -177,13 +181,30 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
     //   errors.indicatorName = "Indicator is required";
     // }
 
+
+        if (!newProduct.solutionType.trim()) {
+      errors.solutionType = "Solution type is required";
+    }
+
     if (!newProduct.problemType.trim()) {
       errors.problemType = "Problem type is required";
     }
 
-    if (!newProduct.problemNotes.trim()) {
-      errors.problemNotes = "Problem notes are required";
+    // if (!newProduct.problemNotes.trim()) {
+    //   errors.problemNotes = "Problem notes are required";
+    // }
+
+
+  if (newProduct.problemNotes &&newProduct.problemNotes.trim().length >400 ) {
+        errors.problemNotes = "Notes must be at most 400 characters long";
     }
+
+  if (newProduct.solutionNotes &&newProduct.solutionNotes.trim().length >400 ) {
+        errors.solutionNotes = "Notes must be at most 400 characters long";
+    }
+
+
+
 
     setValidationErrors(errors);
     return Object.keys(errors).length === 0;
@@ -212,7 +233,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
       setValidationErrors({});
       toast.success("Product added successfully!");
     } else {
-      toast.error("Please fill in all required fields");
+      toast.error("Please fill in all required fields correctly");
     }
   };
 

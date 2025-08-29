@@ -21,7 +21,7 @@ const AppbarHeight = 120; // Adjust this value based on your app bar height`
 
 export function ApplicationManagerLayOut() {
 
-  console.count("ApplicationManagerLayOut- If this is always count then  there is problem");
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const appEmail = useSelector((state: RootState) => state.loginUser).email;
@@ -36,7 +36,7 @@ export function ApplicationManagerLayOut() {
     if (RmaUser.token) {
     
         axios.defaults.headers.common["Authorization" ] = `Bearer ${RmaUser.token}`;
-      //  const decodedresult= TryJwtDecode<JwtAccessTokenFormat>(currentToken);
+
       dispatch(
          setTokenNameBarcode({ token: RmaUser.token, email: RmaUser.email, userName:RmaUser.userName})
  

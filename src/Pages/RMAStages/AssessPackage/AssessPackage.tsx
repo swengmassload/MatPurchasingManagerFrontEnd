@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Paper, Button, Stack, Checkbox, FormControlLabel } from "@mui/material";
-import { Save, Visibility } from "@mui/icons-material";
+import { Box, Paper } from "@mui/material";
 import {
   ProductAssessedEventCreateRequestDTO,
   RMAResponseDTO,
@@ -8,20 +7,21 @@ import {
   RMAGetRequestByStage,
 } from "../../../Models/RMAManagerModels/Dto";
 import RMASearchSection from "./Components/RMASearchSection";
-import { RMAListSection, ProductSection } from "./Components";
+import { RMAListSection } from "./Components";
 import AssessmentPreviewDialog from "./Components/AssessmentPreviewDialog";
+import AssessPackageAssessmentForm from "./Components/AssessPackageAssessmentForm";
 import toast from "react-hot-toast";
 import { useGetRMAByStage } from "../../../Hooks/useGetRMAByStage";
 import { useCreateAssessment } from "../../../Hooks/useCreateAssessment";
 import { useGetAssessmentByRmaNumber } from "../../../Hooks/useGetAssessmentByRmaNumber";
 import { useGetRMAById } from "../../../Hooks/useGetRMAById";
 import { DefaultRMAStages } from "../../../Constants/RMAStages";
+import { validateAssessmentNote } from "../../../Utils/assessmentValidation";
 
 const AssessPackage = () => {
-  // RMA List state using the API hook
   const rmaStageRequest: RMAGetRequestByStage = {
     Stage: DefaultRMAStages.PACKAGERECEIVED.stage,
-    DraftAssessment: true, // Include draft assessments to see the DRAFT label
+    DraftAssessment: true,
   };
 
   const {
@@ -49,6 +49,7 @@ const AssessPackage = () => {
   // Form validation
   const [errors, setErrors] = useState<{
     products?: string;
+    note?: string;
   }>({});
 
   // Show error toast if RMA list fails to load
@@ -73,19 +74,15 @@ const AssessPackage = () => {
 
   const handleSelectRMA = (rma: RMAResponseDTO) => {
     rma.draftAssessment ? console.log("Selected RMA for assessment:", rma) : <></>;
-    // If draftAssessment is true, we can proceed with the assessment
 
     setSearchResults(rma);
     setSelectedRmaNumber(rma.rmaNumber.toString()); // Set the RMA number for the hook to check for existing assessment
     setSearchError("");
-
-    // Show loading message while checking for existing assessment
     if (rma.draftAssessment) {
       toast.success(`RMA #${rma.rmaNumber} selected - Checking for existing assessment...`);
     }
   };
 
-  // Effect to handle the assessment loading after the hook fetches data
   useEffect(() => {
     if (selectedRmaNumber && !isLoadingAssessment && searchResults?.draftAssessment) {
       if (existingAssessment) {
@@ -96,8 +93,6 @@ const AssessPackage = () => {
         setNote(existingAssessment.notes || "");
         toast.success(`RMA #${selectedRmaNumber} selected - Loading draft assessment data`);
       } else {
-        console.log("No existing assessment found for RMA:", selectedRmaNumber);
-        // Reset form for new assessment
         setProducts([]);
         setIsCompleted(false);
         setNote("");
@@ -113,7 +108,6 @@ const AssessPackage = () => {
     }
   }, [selectedRmaNumber, existingAssessment, isLoadingAssessment, searchResults?.draftAssessment]);
 
-  // Effect to handle search results from useGetRMAById
   useEffect(() => {
     if (executeSearch && !isSearchingRMA) {
       if (searchRMAError) {
@@ -133,48 +127,68 @@ const AssessPackage = () => {
     }
   }, [executeSearch, isSearchingRMA, searchRMAError, searchRmaData]);
 
+  // Real-time note validation
+  useEffect(() => {
+    const noteValidation = validateAssessmentNote(note);
+    if (errors.note && noteValidation.isValid) {
+      // Clear note error when the note becomes valid
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors.note;
+        return newErrors;
+      });
+    }
+  }, [note, errors.note]);
+
   const handleSearch = async () => {
     if (!rmaNumber.trim()) {
       toast.error("Please enter an RMA number");
       return;
     }
 
-    // Reset previous search state
     setSearchError("");
     setSearchResults(null);
-
-    // Set the RMA number to search and enable the hook
     setSearchRmaNumber(rmaNumber.trim());
     setExecuteSearch(true);
   };
 
   const validateForm = (): boolean => {
- 
     const newErrors: typeof errors = {};
+
+    // Validate assessment note length using utility function
+    const noteValidation = validateAssessmentNote(note);
+    console.log("Main validation - note:", { note, validation: noteValidation });
+
+    if (!noteValidation.isValid) {
+      newErrors.note = noteValidation.error!;
+    }
 
     if (products.length === 0) {
       newErrors.products = "At least one product is required";
     } else {
-      // Check if all products have required problem fields
+      // const productsWithMissingProblemInfo = products.filter((product) => {
+      //   console.log("Validating product:", product);
+      //   const result = !product.problemType?.trim() || !product.problemNotes?.trim();
+      //   return result;
+      // });
       const productsWithMissingProblemInfo = products.filter((product) => {
-      
         console.log("Validating product:", product);
-        const result = !product.problemType?.trim() || !product.problemNotes?.trim();
+        const result = !product.problemType?.trim();
         return result;
       });
-
       if (productsWithMissingProblemInfo.length > 0) {
-        newErrors.products = "All products must have problem type and problem notes";
+        newErrors.products = "All products must have problem type";
       }
 
-      // Check if all products have required solution fields
-      const productsWithMissingSolution = products.filter(
-        (product) => !product.solutionType?.trim() || !product.solutionNotes?.trim()
-      );
-
-      if (productsWithMissingSolution.length > 0) {
-        newErrors.products = "All products must have solution type and solution notes";
-      }
+      // const productsWithMissingSolution = products.filter(
+      //   (product) => !product.solutionType?.trim() || !product.solutionNotes?.trim()
+      // );
+      // const productsWithMissingSolution = products.filter(
+      //   (product) => !product.solutionType?.trim()
+      // );
+      // if (productsWithMissingSolution.length > 0) {
+      //   newErrors.products = "All products must have solution type ";
+      // }
 
       // Check if products have repairs and parts
       const hasProductsWithRepairsOrParts = products.some(
@@ -186,6 +200,7 @@ const AssessPackage = () => {
       }
     }
 
+    console.log("Validation result:", { newErrors, isValid: Object.keys(newErrors).length === 0 });
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -269,64 +284,23 @@ const AssessPackage = () => {
 
             {/* Assessment Form - Only show if search is successful */}
             {searchResults && (
-              <Stack spacing={3} sx={{ mt: 3 }}>
-                {/* Product Section */}
-                <ProductSection products={products} onProductsChange={setProducts} error={errors.products} />
-
-                {/* Note Field */}
-                <Box sx={{ mt: 2 }}>
-                  <label htmlFor="assessment-note" style={{ fontWeight: "bold" }}>
-                    Assessment Note:
-                  </label>
-                  <textarea
-                    id="assessment-note"
-                    value={note}
-                    onChange={(e) => setNote(e.target.value)}
-                    rows={3}
-                    style={{ width: "100%", marginTop: 8, padding: 8, fontSize: 16 }}
-                    placeholder="Enter any notes for this assessment..."
-                  />
-                </Box>
-
-                {/* Action Buttons */}
-                <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 2, mt: 4 }}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={isCompleted}
-                        onChange={(e) => setIsCompleted(e.target.checked)}
-                        color="primary"
-                      />
-                    }
-                    label="Mark as Completed"
-                    sx={{ mr: 2 }}
-                  />
-                  <Button
-                    variant="outlined"
-                    startIcon={<Visibility />}
-                    onClick={handlePreview}
-                    disabled={products.length === 0}
-                    sx={{ minWidth: 120 }}
-                  >
-                    Preview
-                  </Button>
-                  <Button
-                    variant="contained"
-                    startIcon={<Save />}
-                    onClick={handleSave}
-                    disabled={isSaving}
-                    sx={{ minWidth: 140 }}
-                  >
-                    {isSaving ? "Saving..." : `Save ${isCompleted ? "Completed" : "Draft"}`}
-                  </Button>
-                </Box>
-              </Stack>
+              <AssessPackageAssessmentForm
+                products={products}
+                onProductsChange={setProducts}
+                note={note}
+                setNote={setNote}
+                isCompleted={isCompleted}
+                setIsCompleted={setIsCompleted}
+                errors={errors}
+                onPreview={handlePreview}
+                onSave={handleSave}
+                isSaving={isSaving}
+              />
             )}
           </Box>
         </Box>
       </Paper>
 
-      {/* Assessment Preview Dialog */}
       {showPreview && searchResults && (
         <AssessmentPreviewDialog
           open={showPreview}
