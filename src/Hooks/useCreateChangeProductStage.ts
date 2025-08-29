@@ -17,7 +17,7 @@ export const useCreateChangeProductStage = () => {
     onSuccess: () => {
      // toast.success(`Repair in progress created successfully! RMA Number: ${data?.rMANumber ? data.rMANumber : "N/A"}`);
      // queryClient.invalidateQueries({ queryKey: [data?.rMANumber] });
-     alert("Verification stages updated successfully, what should I invalidate");
+     alert("Product  stages updated successfully, what should I invalidate");
       queryClient.invalidateQueries({ queryKey: [QueryKeys.useGetRMAByStage.mainKey] });
     },
     onError: (error: any) => {

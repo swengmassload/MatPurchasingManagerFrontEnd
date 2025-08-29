@@ -5,8 +5,6 @@ import { BASEAPIURL } from "../Constants/FixValues";
 import { ProductMovingEventCreateRequestDTO } from "../Models/RMAManagerModels/Dto";
 
 export const useCreateProductMovingEvent = () => {
- // const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (data: ProductMovingEventCreateRequestDTO) =>
       CRUDApi<ProductMovingEventCreateRequestDTO, ProductMovingEventCreateRequestDTO>(
@@ -14,9 +12,7 @@ export const useCreateProductMovingEvent = () => {
       ).addData(data),
     onSuccess: () => {
         alert("Product moving event created successfully!");
-   //   queryClient.invalidateQueries({   queryKey: [QueryKeys.useGetProductsByProductId.mainKey],  });
-     //  queryClient.invalidateQueries({ queryKey: [QueryKeys.useGetDefectLogsKey.mainKey],  });
-       
+
     
     },
   });

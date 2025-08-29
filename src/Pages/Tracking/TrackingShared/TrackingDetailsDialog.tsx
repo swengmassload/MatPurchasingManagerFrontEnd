@@ -62,8 +62,7 @@ const TrackingDetailsDialog: React.FC<TrackingDetailsDialogProps> = ({ open, onC
           <Box>
            { selectedTrackingDetail?.products? (<TrackingSelectedRMAInfo product={selectedTrackingDetail?.products} />) 
            
-           
-           
+
            : (
               <ProductSelectPlaceholder />
             )

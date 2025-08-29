@@ -9,7 +9,9 @@ function GetStageCount(
   trackedModelData: TrackingGroupedProductDTO[],
   code: string
 ): TrackingGroupedProductDTO[] | undefined {
-  
+  if (!Array.isArray(trackedModelData)) {
+    return undefined;
+  }
   const stageData = trackedModelData.filter((item) => item.stage === code);
   if (stageData.length > 0) {
     return stageData;
@@ -17,12 +19,9 @@ function GetStageCount(
   return undefined;
 }
 
-export const GetTrackReportForRMA = (
-  
-  trackedModelData: TrackingGroupedProductDTO[]
-): TrackReport => {
+export const GetTrackReportForRMA = (trackedModelData: TrackingGroupedProductDTO[]): TrackReport => {
   const trackReport = new TrackReport();
- // trackReport.ModelName = modelName;
+  // trackReport.ModelName = modelName;
   let modelsum = 0;
 
   const ans = GetStageCount(trackedModelData, DefaultRMAStages.LABELSENT.stage);
@@ -32,7 +31,7 @@ export const GetTrackReportForRMA = (
     modelsum += sum;
   }
 
-  const ans0 = GetStageCount(trackedModelData, DefaultRMAStages.PACKAGERECEIVED  .stage);
+  const ans0 = GetStageCount(trackedModelData, DefaultRMAStages.PACKAGERECEIVED.stage);
   if (ans0) {
     const sum = sumBy(ans0, (item) => item.count);
     trackReport.PackageReceivedValue = sum;
@@ -41,7 +40,6 @@ export const GetTrackReportForRMA = (
 
   const ans1 = GetStageCount(trackedModelData, DefaultRMAStages.PRODUCTASSESSED.stage);
   if (ans1) {
-
     const sum = sumBy(ans1, (item) => item.count);
     trackReport.ProductAssessedValue = sum;
     modelsum += sum;
@@ -67,7 +65,7 @@ export const GetTrackReportForRMA = (
     trackReport.RMACLOSEDValue = sum;
     modelsum += sum;
   }
-trackReport.Total = modelsum;
+  trackReport.Total = modelsum;
 
   return trackReport;
 };

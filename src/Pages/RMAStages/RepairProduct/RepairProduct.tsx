@@ -101,7 +101,7 @@ const ProductDisplayCard: React.FC<{ product: ProductItemDTO; index: number }> =
               Problem Notes
             </Typography>
             <Typography variant="body1" sx={{ mb: 1 }}>
-              {product.problemNotes}
+              {product.problemNotes.toString().length > 0 ? product.problemNotes.substring(0, 50)+"...." : ""}
             </Typography>
 
             <Typography variant="body2" color="text.secondary">
@@ -114,7 +114,7 @@ const ProductDisplayCard: React.FC<{ product: ProductItemDTO; index: number }> =
             <Typography variant="body2" color="text.secondary">
               Solution Notes
             </Typography>
-            <Typography variant="body1">{product.solutionNotes}</Typography>
+            <Typography variant="body1">{product.solutionNotes.toString().length > 0 ? product.solutionNotes.substring(0, 50)+"...." : ""}</Typography>
           </Box>
         </Box>
 

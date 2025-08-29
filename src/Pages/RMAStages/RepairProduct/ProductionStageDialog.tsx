@@ -42,14 +42,14 @@ const ProductionStageDialog: React.FC<ProductionStageDialogProps> = ({
 }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>Change Verification Stages</DialogTitle>
+      <DialogTitle>Change Product Stage in Product Manager</DialogTitle>
       <DialogContent>
         <TableContainer component={Paper} sx={{ mt: 2 }}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell>Serial Number</TableCell>
-                <TableCell>Verification Stage</TableCell>
+                <TableCell> Product Stage</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
