@@ -22,16 +22,6 @@ export const TryJwtDecode = <T extends JwtAccessToken>(token: string) : DecodedR
 
     const currentDtm = Math.round((new Date()).getTime() / 1000)
     const expires = decoded.exp < currentDtm;
-// Remove  the next expirationDate  currentDateTime  formattedExpirationDatelines of code later 
-// they are for debugging purposes only
-    const expirationDate = new Date(decoded.exp * 1000); // Multiply by 1000 to convert to milliseconds
-    const currentDateTime = new Date(currentDtm * 1000); // Multiply by 1000 to convert to milliseconds 
-    const formattedExpirationDate = expirationDate.toLocaleString();
-
-    console.log(`Token will expires at : ${formattedExpirationDate}`);
-    console.log(`Token expires status : ${expires}`);
-    console.log(`Current time is : ${currentDateTime.toLocaleString()}`);
-
 
     return {
       decoded: decoded,

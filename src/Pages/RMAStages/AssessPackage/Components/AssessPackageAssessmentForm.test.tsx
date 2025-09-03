@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import AssessPackageAssessmentForm from "./AssessPackageAssessmentForm";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -25,6 +25,10 @@ describe("AssessPackageAssessmentForm - Note Validation", () => {
     onSave: vi.fn(),
     isSaving: false,
   };
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
 
   it("should show validation error when note exceeds maximum length", () => {
     const longNote = "a".repeat(401); // 401 characters, exceeds 400 limit
