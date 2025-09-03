@@ -1,6 +1,7 @@
 import { Box, Stack, Button, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import ProductSection from "./ProductSection";
-import { Save, Visibility } from "@mui/icons-material";
+import SaveIcon from "@mui/icons-material/Save";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { validateAssessmentNote, ASSESSMENT_VALIDATION } from "../../../../Utils/assessmentValidation";
 
 interface AssessPackageAssessmentFormProps {
@@ -31,25 +32,13 @@ const AssessPackageAssessmentForm = ({
   const noteValidation = validateAssessmentNote(note);
   const remainingChars = noteValidation.remainingCharacters;
 
-  // Debug logging to help identify issues
-  console.log("AssessmentForm Debug:", {
-    noteLength: note.length,
-    isValid: noteValidation.isValid,
-    remainingChars,
-    errors: errors,
-    showClientError: !noteValidation.isValid,
-    showServerError: !!errors.note,
-  });
 
   const handleNoteChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value;
-    // Always allow typing - let validation handle the limits
+
     setNote(newValue);
 
-    // Log when user exceeds limit for debugging
-    if (newValue.length > ASSESSMENT_VALIDATION.MAX_NOTE_LENGTH) {
-      console.warn(`Note length ${newValue.length} exceeds limit of ${ASSESSMENT_VALIDATION.MAX_NOTE_LENGTH}`);
-    }
+
   };
 
   const canSave = products.length > 0 && noteValidation.isValid && !errors.products && !errors.note;
@@ -117,7 +106,7 @@ const AssessPackageAssessmentForm = ({
         />
         <Button
           variant="outlined"
-          startIcon={<Visibility />}
+          startIcon={<VisibilityIcon />}
           onClick={onPreview}
           disabled={products.length === 0 || !noteValidation.isValid}
           sx={{ minWidth: 120 }}
@@ -126,7 +115,7 @@ const AssessPackageAssessmentForm = ({
         </Button>
         <Button
           variant="contained"
-          startIcon={<Save />}
+          startIcon={<SaveIcon />}
           onClick={onSave}
           disabled={isSaving || !canSave}
           sx={{ minWidth: 140 }}
