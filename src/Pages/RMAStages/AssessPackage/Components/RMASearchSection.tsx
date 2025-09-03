@@ -13,7 +13,8 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from "@mui/material";
-import { Search, ExpandMore } from "@mui/icons-material";
+import  SearchIcon from "@mui/icons-material/Search";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { RMAResponseDTO } from "../../../../Models/RMAManagerModels/Dto";
 import { standardInputSx } from "../../../../Constants/ComponentStyles";
 
@@ -66,7 +67,7 @@ const RMASearchSection: React.FC<RMASearchSectionProps> = ({
           />
           <Button
             variant="contained"
-            startIcon={isSearching ? <CircularProgress size={20} /> : <Search />}
+            startIcon={isSearching ? <CircularProgress size={20} /> : <SearchIcon />}
             onClick={onSearch}
             disabled={!rmaNumber.trim() || isSearching}
             sx={{ minWidth: 120, flexShrink: 0 }}
@@ -90,7 +91,7 @@ const RMASearchSection: React.FC<RMASearchSectionProps> = ({
             </Alert>
 
             <Accordion defaultExpanded sx={{ backgroundColor: "#f9f9f9", width: "100%" }}>
-              <AccordionSummary expandIcon={<ExpandMore />} aria-controls="rma-details-content" id="rma-details-header">
+              <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="rma-details-content" id="rma-details-header">
                 <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
                   RMA Details...
                 </Typography>

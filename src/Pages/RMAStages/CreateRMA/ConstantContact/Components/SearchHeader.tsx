@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, Typography, Divider } from "@mui/material";
-import { Search } from "@mui/icons-material";
+import  SearchIcon  from "@mui/icons-material/Search";
 
 const SearchHeader: React.FC = () => {
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-        <Search sx={{ mr: 2, color: "primary.main", fontSize: 32 }} />
+        <SearchIcon sx={{ mr: 2, color: "primary.main", fontSize: 32 }} />
         <Typography
           variant="h5"
           component="h2"

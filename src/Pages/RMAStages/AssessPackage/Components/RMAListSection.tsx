@@ -1,6 +1,20 @@
 import React, { useState } from "react";
 import { Card, CardContent, Typography, Button, Box, Divider, Alert, Chip, Collapse, IconButton } from "@mui/material";
-import { Assignment, Person, Phone, Email, ExpandMore, ExpandLess, Description } from "@mui/icons-material";
+import  AssignmentIcon from "@mui/icons-material/Assignment";
+import PersonIcon from "@mui/icons-material/Person";
+import PhoneIcon from "@mui/icons-material/Phone";
+import EmailIcon from "@mui/icons-material/Email";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import DescriptionIcon from "@mui/icons-material/Description";
+
+
+
+
+
+
+
+
 import { RMAResponseDTO } from "../../../../Models/RMAManagerModels/Dto";
 
 interface RMAListSectionProps {
@@ -73,7 +87,7 @@ const RMAListSection: React.FC<RMAListSectionProps> = ({
                     {/* RMA Number Header with Expand/Collapse */}
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 2 }}>
                       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        <Assignment sx={{ color: "black" }} />
+                        <AssignmentIcon sx={{ color: "black" }} />
                         <Typography variant="h6" sx={{ color: "black" }}>
                           RMA #{rma.rmaNumber}
                         </Typography>
@@ -101,7 +115,7 @@ const RMAListSection: React.FC<RMAListSectionProps> = ({
                           variant="outlined"
                         />
                         <IconButton size="small" onClick={() => toggleExpand(rma.rmaNumber)} sx={{ ml: 1 }}>
-                          {isExpanded ? <ExpandLess /> : <ExpandMore />}
+                          {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon   />}
                         </IconButton>
                       </Box>
                     </Box>
@@ -111,7 +125,7 @@ const RMAListSection: React.FC<RMAListSectionProps> = ({
                       <Box sx={{ mb: 2 }}>
                         {/* Company Name */}
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-                          <Person fontSize="small" sx={{ color: "black" }} />
+                          <PersonIcon fontSize="small" sx={{ color: "black" }} />
                           <Typography variant="body2" sx={{ color: "black" }}>
                             Company:
                           </Typography>
@@ -122,7 +136,7 @@ const RMAListSection: React.FC<RMAListSectionProps> = ({
 
                         {/* Contact Name */}
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-                          <Person fontSize="small" sx={{ color: "black" }} />
+                          <PersonIcon fontSize="small" sx={{ color: "black" }} />
                           <Typography variant="body2" sx={{ color: "black" }}>
                             Contact:
                           </Typography>
@@ -133,7 +147,7 @@ const RMAListSection: React.FC<RMAListSectionProps> = ({
 
                         {/* Phone Number */}
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-                          <Phone fontSize="small" sx={{ color: "black" }} />
+                          <PhoneIcon fontSize="small" sx={{ color: "black" }} />
                           <Typography variant="body2" sx={{ color: "black" }}>
                             Phone:
                           </Typography>
@@ -144,7 +158,7 @@ const RMAListSection: React.FC<RMAListSectionProps> = ({
 
                         {/* Email */}
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
-                          <Email fontSize="small" sx={{ color: "black" }} />
+                          <EmailIcon fontSize="small" sx={{ color: "black" }} />
                           <Typography variant="body2" sx={{ color: "black" }}>
                             Email:
                           </Typography>
@@ -155,7 +169,7 @@ const RMAListSection: React.FC<RMAListSectionProps> = ({
 
                         {/* Problem Description */}
                         <Box sx={{ display: "flex", alignItems: "flex-start", gap: 1, mb: 2 }}>
-                          <Description fontSize="small" sx={{ color: "black", mt: 0.5 }} />
+                          <DescriptionIcon fontSize="small" sx={{ color: "black", mt: 0.5 }} />
                           <Typography variant="body2" sx={{ color: "black" }}>
                             Problem:
                           </Typography>

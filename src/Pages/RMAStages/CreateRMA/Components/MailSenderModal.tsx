@@ -21,7 +21,13 @@ import {
   Tooltip,
   Chip,
 } from "@mui/material";
-import { FormatBold, FormatItalic, FormatUnderlined, FormatColorText, Close, Send } from "@mui/icons-material";
+
+import FormatBoldIcon from "@mui/icons-material/FormatBold";
+import FormatItalicIcon from "@mui/icons-material/FormatItalic";
+import FormatUnderlinedIcon from "@mui/icons-material/FormatUnderlined";
+import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
+import CloseIcon from "@mui/icons-material/Close";
+import SendIcon from "@mui/icons-material/Send";
 
 import { LabelSentEventCreateRequestDTO, RMAResponseDTO } from "../../../../Models/RMAManagerModels/Dto";
 import { useSelector } from "react-redux";
@@ -295,7 +301,7 @@ ${appUser || "Customer Service Team"}`;
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h6">Send Email</Typography>
           <IconButton onClick={handleClose} size="small">
-            <Close />
+            <CloseIcon />
           </IconButton>
         </Box>
       </DialogTitle>
@@ -381,19 +387,19 @@ ${appUser || "Customer Service Team"}`;
               <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
                 <Tooltip title="Bold (Wrap text with **)">
                   <IconButton size="small" onClick={() => insertFormatting("bold")} color="primary">
-                    <FormatBold />
+                    <FormatBoldIcon />
                   </IconButton>
                 </Tooltip>
 
                 <Tooltip title="Italic (Wrap text with *)">
                   <IconButton size="small" onClick={() => insertFormatting("italic")} color="primary">
-                    <FormatItalic />
+                    <FormatItalicIcon />
                   </IconButton>
                 </Tooltip>
 
                 <Tooltip title="Underline (Wrap text with ___)">
                   <IconButton size="small" onClick={() => insertFormatting("underline")} color="primary">
-                    <FormatUnderlined />
+                    <FormatUnderlinedIcon />
                   </IconButton>
                 </Tooltip>
 
@@ -452,7 +458,7 @@ ${appUser || "Customer Service Team"}`;
 
                 <Tooltip title="Apply Text Color">
                   <IconButton size="small" onClick={() => insertFormatting("color")} color="primary">
-                    <FormatColorText />
+                    <FormatColorTextIcon />
                   </IconButton>
                 </Tooltip>
               </Box>
@@ -524,7 +530,7 @@ ${appUser || "Customer Service Team"}`;
         <Button onClick={handleClose} disabled={isPending}>
           Cancel
         </Button>
-        <Button onClick={handleSend} variant="contained" disabled={isPending} startIcon={isPending ? <></> : <Send />}>
+        <Button onClick={handleSend} variant="contained" disabled={isPending} startIcon={isPending ? <></> : <SendIcon />}>
           {isPending ? "Sending..." : "Send Email"}
         </Button>
       </DialogActions>

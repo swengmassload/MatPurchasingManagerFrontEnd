@@ -18,7 +18,11 @@ import {
   Chip,
   IconButton,
 } from "@mui/material";
-import { Print, Close, Assignment, Build, Inventory } from "@mui/icons-material";
+import  PrintIcon from "@mui/icons-material/Print";
+import  CloseIcon  from "@mui/icons-material/Close";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import  BuildIcon  from "@mui/icons-material/Build";
+import   InventoryIcon  from "@mui/icons-material/Inventory";
 import { ProductAssessedEventCreateRequestDTO } from "../../../../Models/RMAManagerModels/Dto";
 
 interface AssessmentPreviewDialogProps {
@@ -86,15 +90,15 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Assignment />
+          <AssignmentIcon />
           <Typography variant="h5">RMA Assessment Report</Typography>
         </Box>
         <Box sx={{ "@media print": { display: "none" } }}>
           <IconButton onClick={handlePrint} sx={{ color: "white", mr: 1 }}>
-            <Print />
+            <PrintIcon />
           </IconButton>
           <IconButton onClick={onClose} sx={{ color: "white" }}>
-            <Close />
+            <CloseIcon />
           </IconButton>
         </Box>
       </DialogTitle>
@@ -342,7 +346,7 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
               {Array.isArray(product.repairsDone) && product.repairsDone.length > 0 && (
                 <Box sx={{ mb: 3 }}>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-                    <Build color="action" />
+                    <BuildIcon color="action" />
                     <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
                       Repairs Performed
                     </Typography>
@@ -377,7 +381,7 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
               {Array.isArray(product.partsUsed) && product.partsUsed.length > 0 && (
                 <Box sx={{ mb: 2 }}>
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-                    <Inventory color="action" />
+                    <InventoryIcon color="action" />
                     <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
                       Parts Used
                     </Typography>
@@ -453,7 +457,7 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
       </DialogContent>
 
       <DialogActions sx={{ p: 2, "@media print": { display: "none" } }}>
-        <Button onClick={handlePrint} startIcon={<Print />} variant="outlined">
+        <Button onClick={handlePrint} startIcon={<PrintIcon />} variant="outlined">
           Print Report
         </Button>
         <Button onClick={onClose} variant="contained">

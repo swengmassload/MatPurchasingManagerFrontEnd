@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Box, Button, Stack, Divider } from "@mui/material";
-import { Email, Send } from "@mui/icons-material";
+
+import EmailIcon from '@mui/icons-material/Email';
+import SendIcon from '@mui/icons-material/Send';
 import FileUploadComponent from "./FileUploadComponent";
 
 interface EmailWithAttachmentsProps {
@@ -39,11 +41,11 @@ const EmailWithAttachments: React.FC<EmailWithAttachmentsProps> = ({
 
       {/* Email Action Buttons */}
       <Stack direction="row" spacing={2} justifyContent="flex-end">
-        <Button variant="outlined" startIcon={<Email />} onClick={onSendMailBasic} disabled={disabled}>
+        <Button variant="outlined" startIcon={<EmailIcon />} onClick={onSendMailBasic} disabled={disabled}>
           Send Basic Email
         </Button>
 
-        <Button variant="contained" startIcon={<Send />} onClick={handleSendWithAttachments} disabled={disabled}>
+        <Button variant="contained" startIcon={<SendIcon   />} onClick={handleSendWithAttachments} disabled={disabled}>
           {attachmentFiles.length > 0
             ? `Send Email (${attachmentFiles.length} attachment${attachmentFiles.length > 1 ? "s" : ""})`
             : "Send Email"}

@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Stack, TextField, Button } from "@mui/material";
-import { Email } from "@mui/icons-material";
+import  EmailIcon  from "@mui/icons-material/Email";
 
 interface SearchFormProps {
   currentSearchEmail: string;
@@ -31,7 +31,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
           disabled={isLoading}
           slotProps={{
             input: {
-              startAdornment: <Email sx={{ mr: 1, color: "action.active" }} />,
+              startAdornment: <EmailIcon sx={{ mr: 1, color: "action.active" }} />,
             },
           }}
           sx={{

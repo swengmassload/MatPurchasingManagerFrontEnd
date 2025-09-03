@@ -14,7 +14,17 @@ import {
   IconButton,
   Alert,
 } from "@mui/material";
-import { Add, Delete, Build, Inventory } from "@mui/icons-material";
+
+import  DeleteIcon from "@mui/icons-material/Delete";
+import  BuildIcon  from "@mui/icons-material/Build";
+import   InventoryIcon  from "@mui/icons-material/Inventory";
+import AddIcon  from "@mui/icons-material/Add";
+
+
+
+
+
+
 import { ProductItemDTO, RepairItemDTO, PartItemDTO } from "../../../../../Models/RMAManagerModels/Dto";
 import { standardInputSx } from "../../../../../Constants/ComponentStyles";
 
@@ -145,7 +155,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
       {/* Repairs Done Section */}
       <Box sx={{ mb: 3 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-          <Build />
+          <BuildIcon />
           <Typography variant="h6">Repairs Done</Typography>
         </Box>
 
@@ -194,7 +204,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
               }}
             />
           </Box>
-          <Button variant="outlined" startIcon={<Add />} onClick={handleAddRepairClick} size="small">
+          <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddRepairClick} size="small">
             Add Repair
           </Button>
         </Box>
@@ -227,7 +237,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
                     <TableCell>{repair.hoursUsed} hrs</TableCell>
                     <TableCell>
                       <IconButton color="error" size="small" onClick={() => onDeleteRepair(productIndex, repairIndex)}>
-                        <Delete />
+                        <DeleteIcon />
                       </IconButton>
                     </TableCell>
                   </TableRow>
@@ -243,7 +253,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
       {/* Parts Used Section */}
       <Box>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-          <Inventory />
+          <InventoryIcon />
           <Typography variant="h6">Parts Used</Typography>
         </Box>
 
@@ -280,7 +290,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
               }}
             />
           </Box>
-          <Button variant="outlined" startIcon={<Add />} onClick={handleAddPartClick} size="small">
+          <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddPartClick} size="small">
             Add Part
           </Button>
         </Box>
@@ -309,7 +319,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
                     <TableCell>{part.quantity}</TableCell>
                     <TableCell>
                       <IconButton color="error" size="small" onClick={() => onDeletePart(productIndex, partIndex)}>
-                        <Delete />
+                        <DeleteIcon />
                       </IconButton>
                     </TableCell>
                   </TableRow>

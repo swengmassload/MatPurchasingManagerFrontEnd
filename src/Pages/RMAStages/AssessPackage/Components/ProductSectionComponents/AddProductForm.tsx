@@ -13,7 +13,9 @@ import {
   FormControlLabel,
   CircularProgress,
 } from "@mui/material";
-import { Add, Search } from "@mui/icons-material";
+import  AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "@mui/icons-material/Search";
+
 import { ProductItemDTO } from "../../../../../Models/RMAManagerModels/Dto";
 import { standardInputSx, standardFormControlSx } from "../../../../../Constants/ComponentStyles";
 
@@ -76,7 +78,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
-        <Add sx={{ color: "primary.main", fontSize: 28 }} />
+        <AddIcon sx={{ color: "primary.main", fontSize: 28 }} />
         <Typography variant="h5" sx={{ fontWeight: 600, color: "primary.main" }}>
           Add New Product
         </Typography>
@@ -122,7 +124,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
 
           <Button
             variant="contained"
-            startIcon={isSearching ? <CircularProgress size={20} color="inherit" /> : <Search />}
+            startIcon={isSearching ? <CircularProgress size={20} color="inherit" /> : <SearchIcon />}
             onClick={onSearchProduct}
             disabled={!newProduct.serialNo.trim() || isSearching}
             fullWidth
@@ -383,7 +385,7 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
         </Button>
         <Button
           variant="contained"
-          startIcon={<Add />}
+          startIcon={<AddIcon />}
           onClick={onAddProduct}
           sx={{
             minWidth: 150,

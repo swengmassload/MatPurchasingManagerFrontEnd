@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Card, CardContent, Typography, TextField, Button, Paper, Stack, Divider, Alert } from "@mui/material";
-import { Save } from "@mui/icons-material";
+import SaveIcon from "@mui/icons-material/Save";
 import {
   SalesOrderAddedEventCreateRequestDTO,
   RMAResponseDTO,
@@ -206,7 +206,7 @@ const AddSalesOrder = () => {
                   <Button
                     type="submit"
                     variant="contained"
-                    startIcon={<Save />}
+                    startIcon={<SaveIcon />}
                     disabled={createSalesOrderAddedMutation.isPending}
                     sx={{ minWidth: 140 }}
                   >

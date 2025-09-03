@@ -16,7 +16,13 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from "@mui/material";
-import { Save, Build, Inventory, ExpandMore, VerifiedUser } from "@mui/icons-material";
+import  VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
+import  BuildIcon  from "@mui/icons-material/Build";
+import   InventoryIcon  from "@mui/icons-material/Inventory";
+import  ExpandMoreIcon  from "@mui/icons-material/ExpandMore";
+import SaveIcon from "@mui/icons-material/Save";
+
+
 import {
   RepairInProgressEventCreateRequestDTO,
   RMAResponseDTO,
@@ -40,7 +46,7 @@ const ProductDisplayCard: React.FC<{ product: ProductItemDTO; index: number }> =
   return (
     <Accordion sx={{ mb: 2 }} defaultExpanded={index === 0}>
       <AccordionSummary
-        expandIcon={<ExpandMore />}
+        expandIcon={<ExpandMoreIcon  />}
         aria-controls={`product-${index}-content`}
         id={`product-${index}-header`}
       >
@@ -122,7 +128,7 @@ const ProductDisplayCard: React.FC<{ product: ProductItemDTO; index: number }> =
         {product.repairsDone.length > 0 && (
           <Box sx={{ mt: 3 }}>
             <Typography variant="h6" sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-              <Build sx={{ mr: 1 }} />
+              <BuildIcon  sx={{ mr: 1 }} />
               Repairs Done ({product.repairsDone.length})
             </Typography>
             <TableContainer component={Paper} variant="outlined">
@@ -152,7 +158,7 @@ const ProductDisplayCard: React.FC<{ product: ProductItemDTO; index: number }> =
         {product.partsUsed.length > 0 && (
           <Box sx={{ mt: 3 }}>
             <Typography variant="h6" sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-              <Inventory sx={{ mr: 1 }} />
+              <InventoryIcon  sx={{ mr: 1 }} />
               Parts Used ({product.partsUsed.length})
             </Typography>
             <TableContainer component={Paper} variant="outlined">
@@ -443,7 +449,7 @@ const RepairProduct = () => {
                       </Typography>
                       <Button
                         variant="outlined"
-                        startIcon={<VerifiedUser />}
+                        startIcon={<VerifiedUserIcon  />}
                         onClick={handleOpenVerificationDialog}
                         sx={{ minWidth: 200 }}
                       >
@@ -496,7 +502,7 @@ const RepairProduct = () => {
                 <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 2, mt: 4 }}>
                   <Button
                     variant="contained"
-                    startIcon={<Save />}
+                    startIcon={<SaveIcon  />}
                     onClick={handleSave}
                     disabled={isSaving || products.length === 0}
                     sx={{ minWidth: 140 }}

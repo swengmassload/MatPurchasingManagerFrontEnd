@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Box, Button, Typography, IconButton, Paper, Alert } from "@mui/material";
-import { CloudUpload, Delete, AttachFile, InsertDriveFile } from "@mui/icons-material";
+
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import { styled } from "@mui/material/styles";
 
 const VisuallyHiddenInput = styled("input")({
@@ -101,7 +105,7 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
   return (
     <Box sx={{ width: "100%" }}>
       <Typography variant="h6" gutterBottom>
-        <AttachFile sx={{ mr: 1, verticalAlign: "middle" }} />
+        <AttachFileIcon sx={{ mr: 1, verticalAlign: "middle" }} />
         File Attachments
       </Typography>
 
@@ -109,7 +113,7 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
       <Button
         component="label"
         variant="outlined"
-        startIcon={<CloudUpload />}
+        startIcon={<CloudUploadIcon />}
         disabled={disabled || selectedFiles.length >= maxFiles}
         sx={{ mb: 2 }}
       >
@@ -150,7 +154,7 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
                   borderRadius: 1,
                 }}
               >
-                <InsertDriveFile color="primary" />
+                <InsertDriveFileIcon color="primary" />
                 <Box sx={{ flex: 1, minWidth: 0 }}>
                   <Typography variant="body2" noWrap>
                     {file.name}
@@ -160,7 +164,7 @@ const FileUploadComponent: React.FC<FileUploadComponentProps> = ({
                   </Typography>
                 </Box>
                 <IconButton size="small" color="error" onClick={() => handleRemoveFile(index)} disabled={disabled}>
-                  <Delete />
+                  <DeleteIcon />
                 </IconButton>
               </Box>
             ))}

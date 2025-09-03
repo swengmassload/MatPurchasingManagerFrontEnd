@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Accordion, AccordionSummary, AccordionDetails, Typography, Chip, IconButton, Alert } from "@mui/material";
-import { ExpandMore, Delete } from "@mui/icons-material";
+import DeleteIcon  from "@mui/icons-material/Delete";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { ProductItemDTO, RepairItemDTO, PartItemDTO } from "../../../../../Models/RMAManagerModels/Dto";
 import ProductDetailsPanel from "./ProductDetailsPanel";
 
@@ -30,7 +31,7 @@ const ProductsList: React.FC<ProductsListProps> = ({
       {products.map((product, productIndex) => (
         <Accordion key={productIndex} sx={{ mb: 2 }}>
           <AccordionSummary
-            expandIcon={<ExpandMore />}
+            expandIcon={<ExpandMoreIcon />}
             aria-controls={`product-${productIndex}-content`}
             id={`product-${productIndex}-header`}
           >
@@ -66,7 +67,7 @@ const ProductsList: React.FC<ProductsListProps> = ({
                 }}
                 sx={{ ml: "auto" }}
               >
-                <Delete />
+                <DeleteIcon />
               </IconButton>
             </Box>
           </AccordionSummary>
