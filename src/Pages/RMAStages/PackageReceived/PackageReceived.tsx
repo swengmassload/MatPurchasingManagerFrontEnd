@@ -5,6 +5,7 @@ import {
   PackageReceivedEventCreateRequestDTO,
   RMAResponseDTO,
   RMAGetRequestByStage,
+  ProblemDetails,
 } from "../../../Models/RMAManagerModels/Dto";
 import { useCreatePackageReceived } from "../../../Hooks/useCreatePackageReceived";
 import { useGetRMAByStage } from "../../../Hooks/useGetRMAByStage";
@@ -195,7 +196,7 @@ const PackageReceived = () => {
                 {/* Status Information */}
                 {createPackageReceivedMutation.isError && (
                   <Alert severity="error" sx={{ mt: 2 }}>
-                    Failed to record package received event. Please try again.
+                    {(createPackageReceivedMutation.error as unknown as ProblemDetails).detail ?? "Failed to record package received event. Please try again."}
                   </Alert>
                 )}
 
