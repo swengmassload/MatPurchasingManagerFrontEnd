@@ -40,6 +40,7 @@ import { useGetAssessmentByRmaNumber } from "../../../Hooks/useGetAssessmentByRm
 import { DefaultRMAStages } from "../../../Constants/RMAStages";
 
 import ProductionStageDialog from "./ProductionStageDialog";
+import { DefaultProductionStages } from "../../../Constants/ProductionStages";
 
 // Component to display products as cards (read-only)
 const ProductDisplayCard: React.FC<{ product: ProductItemDTO; index: number }> = ({ product, index }) => {
@@ -351,6 +352,10 @@ const RepairProduct = () => {
 
     const newlist: ProductRepairQueryDTO[] = updatedProducts
       .filter((product) => product.productionStage !== "Not_Applicable")
+      .filter((product) => {
+        // Only include products where the stage has changed
+        return DefaultProductionStages.AllStages.map(stage => stage.code).includes(product.productionStage);
+      })
       .map((product) => ({
         productId: product.serialNo,
         rmaNumber: existingAssessment?.rmaNumber || 0,

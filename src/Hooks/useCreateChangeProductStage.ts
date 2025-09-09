@@ -5,7 +5,7 @@ import { RMAManagerEnpoints } from "../Constants/EndPoints";
 import { BASEAPIURL } from "../Constants/FixValues";
 import { QueryKeys } from "../Constants/TanstankQueryKeys";
 import { ProductRepairQueryDTO } from "../Models/RMAManagerModels/Dto";
-//ProductRepairQueryDTO[]
+
 export const useCreateChangeProductStage = () => {
   const queryClient = useQueryClient();
 
@@ -15,9 +15,7 @@ export const useCreateChangeProductStage = () => {
         BASEAPIURL + RMAManagerEnpoints.CreateChangeProductStageEndPoints
       ).addData(rmaData),
     onSuccess: () => {
-     // toast.success(`Repair in progress created successfully! RMA Number: ${data?.rMANumber ? data.rMANumber : "N/A"}`);
-     // queryClient.invalidateQueries({ queryKey: [data?.rMANumber] });
-     alert("Product  stages updated successfully, what should I invalidate");
+
       queryClient.invalidateQueries({ queryKey: [QueryKeys.useGetRMAByStage.mainKey] });
     },
     onError: (error: any) => {
