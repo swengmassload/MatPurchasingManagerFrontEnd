@@ -1,8 +1,9 @@
 import { TextField } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useGetUsers } from "../../../../../Hooks/useGetUser";
+import { UsersAndRoleDTO } from "../../../../../Models/RegistrationModels/UsersCreateRequestDTO";
 
-import { useGetUsers } from "../../../Hooks/useGetUser";
-import { UsersAndRoleDTO } from "../../../Models/RegistrationModels/UsersCreateRequestDTO";
+
 
 interface AllUsersProps {
   salesPerson: string;
@@ -10,7 +11,7 @@ interface AllUsersProps {
 
 }
 
-const AllUsers = ({ salesPerson, setSalesPerson }: AllUsersProps) => {
+const AllUsersForReport = ({ salesPerson, setSalesPerson }: AllUsersProps) => {
   const allUsersData = useGetUsers();
 
   const [realUsers, setRealUsers] = useState<UsersAndRoleDTO[]>([]);
@@ -65,4 +66,4 @@ const AllUsers = ({ salesPerson, setSalesPerson }: AllUsersProps) => {
   );
 };
 
-export default AllUsers;
+export default AllUsersForReport;

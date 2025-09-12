@@ -1,15 +1,13 @@
 import { Box, Button, Typography } from "@mui/material";
-import StageComponent from "./Components/StageComponents/StageComponent";
+import StageComponent from "../../TheReports/Components/StageComponents/SearchingComponenets/StageComponent";
 import { useState } from "react";
-import { AllStagesAndEvents, StageAndFields } from "./Components/StageComponents/StagesModel";
+import { AllStagesAndEvents, StageAndFields } from "../../TheReports/Components/StageComponents/StagesModel";
 import dayjs, { Dayjs } from "dayjs";
 import FileSaver from "file-saver";
-
-import { RMAReportRequestDTO } from "../../Models/RMAManagerModels/Dto";
-
-import CircularSpinner from "../../Components/Common/CircularSpinner";
-import { useGenerateReports } from "../../Hooks/useGenerateReports";
-import RMASearchSpecifier from "./Components/RMASearchSpecifier";
+import { RMAReportRequestDTO } from "../../../Models/RMAManagerModels/Dto";
+import CircularSpinner from "../../../Components/Common/CircularSpinner";
+import { useGenerateReports } from "../../../Hooks/useGenerateReports";
+import RMAReportSpecifier from "../../TheReports/Components/StageComponents/ReportComponents/RMAReportSpecifier";
 
 
 const TheReports = () => {
@@ -143,7 +141,7 @@ const TheReports = () => {
           </Typography>
         </Box> */}
 
-        <RMASearchSpecifier
+        <RMAReportSpecifier
           startDateIssued={startDateIssued}
           endDateIssued={endDateIssued}
           setStartDateIssued={setStartDateIssued}
@@ -168,8 +166,8 @@ const TheReports = () => {
           setStage={setStage}
           salesPerson={salesPerson}
           setSalesPerson={setSalesPerson}
-         // handleGenerateReport={handleGenerateReport}
-         RMASearchSpecifierCaption="Filter to Selecting the Information You Want"
+          // handleGenerateReport={handleGenerateReport}
+          RMASearchSpecifierCaption="Filter to Selecting the Information You Want"
         />
 
         <Box sx={{ display: "flex", gap: "1rem", width: "100%", justifyContent: "center", padding: "1rem" }}>

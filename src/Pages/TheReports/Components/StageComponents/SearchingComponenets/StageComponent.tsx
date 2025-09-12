@@ -15,30 +15,28 @@ import { useEffect, useState } from "react";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import { StageField, StageAndFields } from "./StagesModel";
-import { cardContentGraybackgroundColor, cardContentGraybackgroundColor2 } from "../../../../Constants/ComponentStyles";
-import { CustomCard } from "../../../../Components/Common/CustomCard";
+import { StageField, StageAndFields } from "../StagesModel";
+import {
+  cardContentGraybackgroundColor,
+  cardContentGraybackgroundColor2,
+} from "../../../../../Constants/ComponentStyles";
+import { CustomCard } from "../../../../../Components/Common/CustomCard";
 
 interface StageComponentProps {
-
   stageAndFields: StageAndFields;
-  checkedStageAndFields: StageAndFields|undefined;
+  checkedStageAndFields: StageAndFields | undefined;
   handleSetCheckedFields: (newChecked: StageAndFields) => void;
 }
 
-const StageComponent = ({ stageAndFields, 
-  checkedStageAndFields, handleSetCheckedFields
-   }: StageComponentProps) => {
-   const [expanded, setExpanded] = useState(false);
+const StageComponent = ({ stageAndFields, checkedStageAndFields, handleSetCheckedFields }: StageComponentProps) => {
+  const [expanded, setExpanded] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
 
   const handleToggle = (value: StageField) => () => {
-   if(!checkedStageAndFields){
-   
+    if (!checkedStageAndFields) {
       return;
     }
 
-    
     const currentIndex = checkedStageAndFields.stageFields.findIndex(
       (item) => item.stageActualFieldName === value.stageActualFieldName
     );
@@ -50,20 +48,14 @@ const StageComponent = ({ stageAndFields,
       newChecked.splice(currentIndex, 1);
     }
     const currentChecked = { ...checkedStageAndFields, stageFields: newChecked };
-    handleSetCheckedFields(currentChecked as StageAndFields); ;
-
-  
- }
-
-
-  
+    handleSetCheckedFields(currentChecked as StageAndFields);
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  if (checkedStageAndFields &&checkedStageAndFields.stageFields?.length < 1) {
-
+  if (checkedStageAndFields && checkedStageAndFields.stageFields?.length < 1) {
   }
 
   const handleSelectAll = () => {
@@ -72,17 +64,17 @@ const StageComponent = ({ stageAndFields,
 
   useEffect(() => {
     if (selectAll) {
-      handleSetCheckedFields&&   handleSetCheckedFields( stageAndFields);
+      handleSetCheckedFields && handleSetCheckedFields(stageAndFields);
     } else {
       const currentChecked = { ...checkedStageAndFields, stageFields: [] };
-      handleSetCheckedFields(currentChecked  as StageAndFields); ;    
+      handleSetCheckedFields(currentChecked as StageAndFields);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectAll]);
 
   return (
-    <CustomCard sx={{  minWidth: 270, margin: "auto", mt: 4 }}>
+    <CustomCard sx={{ minWidth: 270, margin: "auto", mt: 4 }}>
       <CardContent sx={{ background: cardContentGraybackgroundColor }}>
         <Box sx={{ display: "flex", background: cardContentGraybackgroundColor2 }}>
           <Button
@@ -118,9 +110,7 @@ const StageComponent = ({ stageAndFields,
                   }}
                 >
                   {stageAndFields.stageTitle.stageDisplayTitle}
-          
                 </Typography>
-
               </span>
             </>
           </Button>
@@ -161,18 +151,24 @@ const StageComponent = ({ stageAndFields,
                     sx={{
                       padding: 0,
                       margin: 0,
-                      ml:2,
+                      ml: 2,
                       borderRadius: 0,
                       //  width: "100%",
                       alignContent: "start",
-                    //  backgroundColor: "yellow",
+                      //  backgroundColor: "yellow",
                       justifyContent: "start",
                       "&.Mui-disabled": {
                         color: "gray", // Change the color of the disabled checkbox
                         backgroundColor: "yellow", // Change the background color of the disabled checkbox
                       },
                     }}
-                   checked={checkedStageAndFields && checkedStageAndFields.stageFields.length>0 &&checkedStageAndFields.stageFields?.some((item) => item.stageActualFieldName === value.stageActualFieldName)}
+                    checked={
+                      checkedStageAndFields &&
+                      checkedStageAndFields.stageFields.length > 0 &&
+                      checkedStageAndFields.stageFields?.some(
+                        (item) => item.stageActualFieldName === value.stageActualFieldName
+                      )
+                    }
                     tabIndex={-1}
                     disableRipple
                     inputProps={{ "aria-labelledby": labelId }}
@@ -186,8 +182,7 @@ const StageComponent = ({ stageAndFields,
                     }}
                     id={labelId}
                     primary={value.stageDisplayFieldName}
-                   // primary={(checkedStageAndFields.stageFields?.some((item) => item.stageActualFieldName === value.stageActualFieldName)).toString()}
-                  
+                    // primary={(checkedStageAndFields.stageFields?.some((item) => item.stageActualFieldName === value.stageActualFieldName)).toString()}
                   />
                 </ListItem>
               );

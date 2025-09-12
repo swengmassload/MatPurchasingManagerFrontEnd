@@ -1,6 +1,7 @@
 //
 import { TextField } from "@mui/material";
-import { DefaultRMAStages, RMAStage } from "../../../../Constants/RMAStages";
+import { RMAStage, DefaultRMAStages } from "../../../../../Constants/RMAStages";
+
 
 interface StagesProps {
   stage: string;
@@ -15,7 +16,7 @@ const allStages: RMAStage = {
 };
 const NullPaddedDefaultProductionStages: RMAStage[] = [...DefaultRMAStages.AllStages, allStages];
 
-const AllStagesDropDown = ({ stage, setStage }: StagesProps) => {
+const AllStagesDropDownForReport = ({ stage, setStage }: StagesProps) => {
   return (
  
     <TextField
@@ -38,7 +39,7 @@ const AllStagesDropDown = ({ stage, setStage }: StagesProps) => {
       label="Current Stage"
     >
       {NullPaddedDefaultProductionStages.map((option) => (
-        <option key={option.code} value={option.code}>
+        <option key={option.code} value={option.stage}>
           {option.CommonName}
         </option>
       ))}
@@ -46,4 +47,4 @@ const AllStagesDropDown = ({ stage, setStage }: StagesProps) => {
   );
 };
 
-export default AllStagesDropDown;
+export default AllStagesDropDownForReport;

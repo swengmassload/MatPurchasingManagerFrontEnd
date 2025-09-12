@@ -4,19 +4,23 @@ import DateRangeComponent from "./DateRangeComponent";
 import RMANumberRange from "./ProductIdNumberRange";
 import CustomerEmail from "./CustomerEmail";
 import SalesOrderId from "./SalesOrderId";
-import AllStagesDropDown from "./StageComponents/SearchingComponenets/AllStagesDropDown";
-
+import AllStagesDropDown from "./StageComponents/AllStagesDropDown";
+import AllUsers from "./AllUsers";
 import { SimpleBoxborder } from "../../../Components/Common/SimpleBoxborder";
-import { RMASearchRequestDTO } from "../../../Models/RMAManagerModels/Dto";
+import { RMASearchRequestDTO,  } from "../../../Models/RMAManagerModels/Dto";
 import CompanyContactSearch from "./CompanyContactSearch";
-import AllUsers from "./StageComponents/SearchingComponenets/AllUsers";
 
 interface RMASearchSpecifierProps {
+
   RMASearchSpecifierCaption: string;
   handleSearchRMA: (input: RMASearchRequestDTO) => Promise<void>;
 }
 
-const RMASearchSpecifier: React.FC<RMASearchSpecifierProps> = ({ RMASearchSpecifierCaption, handleSearchRMA }) => {
+const RMASearchSpecifier: React.FC<RMASearchSpecifierProps> = ({
+
+  RMASearchSpecifierCaption,
+  handleSearchRMA,
+}) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem", width: "100%", alignItems: "flex-start" }}>
       {/* Title */}

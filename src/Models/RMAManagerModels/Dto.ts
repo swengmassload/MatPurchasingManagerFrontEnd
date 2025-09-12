@@ -613,6 +613,8 @@ export interface AllStageAndFields {
   AllStages: StageAndFields[];
 }
 
+
+export type SearchByOptions = "IssuedDate" | "ReceivedDate" | "CompanyContactSearch" | "SalesOrderId" | "CustomerEmail" | "ContactName" | "CompanyName" | "RMANumberRange" | "Stage" | "SalesPerson";
 export interface RMAReportRequestDTO {
   AllStagesAndEvents: StageAndFields[];
   startDateIssued: string | null;
@@ -643,6 +645,7 @@ export interface RMASearchRequestDTO {
   contactName: string | null;
   companyName: string | null;
   customerEmail: string | null;
+  searchBy: SearchByOptions;
 }
 
 
@@ -659,4 +662,5 @@ export const defaultRMASearchRequestDTOParamsValue: RMASearchRequestDTO = {
   contactName: null,
   companyName: null,
   customerEmail: null,
+  searchBy: "RMANumberRange",
 };

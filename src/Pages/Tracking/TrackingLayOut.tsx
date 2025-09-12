@@ -8,7 +8,7 @@ import { TabListSyle, TabIndicatorStyle, TabBorderStyle } from "../../Components
 
 import TrackByStage from "./TrackByStage/TrackByStage";
 import { TabContext, TabPanel } from "@mui/lab";
-import TheReports from "../TheReports/TheReports";
+import TheReports from "./Reports/TheReports";
 import Search from "./Searching/Search";
 import ViewRMA from "./ViewRMA/ViewRMA";
 const TrackingLayOut = () => {
@@ -46,8 +46,6 @@ const TrackingLayOut = () => {
           <TabPanel value="4" sx={{ padding: "0px" }}>
             <ViewRMA />
           </TabPanel>
-
-
         </TabContext>
       </Box>
     </LayoutInLetWrapper>

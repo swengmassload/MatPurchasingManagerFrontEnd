@@ -19,6 +19,9 @@ export const useGetSearchRMA = (param: RMASearchRequestDTO | undefined, enabledG
       CRUDApi<RMASearchRequestDTO, RMATrackingReportDetailResponseDTO[]>(
         `${BASEAPIURL}${RMAManagerEnpoints.GetTrackingDetailsBySpecifics}`
       ).getDataSinglewtQryParams(param as RMASearchRequestDTO),
+          gcTime: 0, // Do not cache
+    staleTime: 0, // Always stale, always refetch
+    
     enabled: validateTrackingRequest(param) && enabledGetTrackingDetails,
   });
 };

@@ -1,21 +1,41 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 import dayjs, { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { SimpleBoxborder } from "../../../Components/Common/SimpleBoxborder";
+import { RMASearchRequestDTO, SearchByOptions } from "../../../Models/RMAManagerModels/Dto";
+import { useState } from "react";
 
 interface DateRangeComponentProps {
-  startDate: Dayjs | null;
-  endDate: Dayjs | null;
-  setStartDate: React.Dispatch<React.SetStateAction<dayjs.Dayjs | null>>;
-  setEndDate: React.Dispatch<React.SetStateAction<dayjs.Dayjs | null>>;
+  handleSearchRMA: (input: RMASearchRequestDTO) => Promise<void>;
   caption: string;
-  //
+  SearchBy: SearchByOptions;
 }
 
-const DateRangeComponent = ({ startDate, endDate, setStartDate, setEndDate, caption }: DateRangeComponentProps) => {
+const DateRangeComponent = ({ handleSearchRMA, caption, SearchBy }: DateRangeComponentProps) => {
+  const [startDate, setStartDate] = useState<Dayjs | null>(dayjs());
+  const [endDate, setEndDate] = useState<Dayjs | null>(dayjs().add(1, "year"));
+  const handleSubmit = () => {
+    var data: RMASearchRequestDTO = {
+      startDateIssued: SearchBy === "IssuedDate" ? (startDate ? startDate.format("YYYY-MM-DD") : null) : null,
+      endDateIssued: SearchBy === "IssuedDate" ? (endDate ? endDate.format("YYYY-MM-DD") : null) : null,
+      searchBy: SearchBy,
+      startDateReceived: SearchBy === "ReceivedDate" ? (startDate ? startDate.format("YYYY-MM-DD") : null) : null,
+      endDateReceived: SearchBy === "ReceivedDate" ? (endDate ? endDate.format("YYYY-MM-DD") : null) : null,
+      salesOrderId: null,
+      rmaNumberStart: null,
+      rmaNumberEnd: null,
+      stage: null,
+      salesPerson: null,
+      contactName: null,
+      companyName: null,
+      customerEmail: null,
+    };
+    handleSearchRMA(data);
+  };
+
   return (
     <Box
       sx={{
@@ -25,48 +45,51 @@ const DateRangeComponent = ({ startDate, endDate, setStartDate, setEndDate, capt
         justifyContent: "center",
         alignItems: "center",
         display: "flex",
-        flexDirection: "row",
+        flexDirection: "column",
         padding: "1rem",
       }}
     >
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Box
-          sx={{
-            width: "50%",
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "1rem",
-          }}
-        >
-          <DatePicker
-            label={caption + "Start Date"}
-            value={startDate}
-           // format="MMM DD, YYYY"
-            onChange={(newValue) => setStartDate(dayjs.isDayjs(newValue) && newValue.isValid() ? newValue : null)}
-          />
-        </Box>
-        <Box
-          sx={{
-            width: "50%",
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "1rem",
-          }}
-        >
-          <DatePicker
-            label={caption + "End Date"}
-            value={endDate}
-            //format="MMM DD, YYYY"
-            onChange={(newValue) => setEndDate(dayjs.isDayjs(newValue) && newValue.isValid() ? newValue : null)}
-          />
-        </Box>
-      </LocalizationProvider>
+      <Box sx={{ width: "100%", display: "flex",  flexDirection: "row",justifyContent: "space-between" }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Box
+            sx={{
+              width: "50%",
+
+              gap: "1rem",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "1rem",
+            }}
+          >
+            <DatePicker
+              label={caption + "Start Date"}
+              value={startDate}
+              // format="MMM DD, YYYY"
+              onChange={(newValue) => setStartDate(dayjs.isDayjs(newValue) && newValue.isValid() ? newValue : null)}
+            />
+          </Box>
+          <Box
+            sx={{
+              width: "50%",
+
+              gap: "1rem",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "1rem",
+            }}
+          >
+            <DatePicker
+              label={caption + "End Date"}
+              value={endDate}
+              //format="MMM DD, YYYY"
+              onChange={(newValue) => setEndDate(dayjs.isDayjs(newValue) && newValue.isValid() ? newValue : null)}
+            />
+          </Box>
+        </LocalizationProvider>
+      </Box>
+      <Box sx={{  gap: "1rem", width: "100%", justifyContent: "center", padding: "1rem" }}>
+        <Button onClick={handleSubmit}>Search</Button>
+      </Box>
     </Box>
   );
 };

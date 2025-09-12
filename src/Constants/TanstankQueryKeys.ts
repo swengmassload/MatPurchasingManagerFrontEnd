@@ -9,6 +9,10 @@ export const QueryKeys = {
 
 
 
+  useGetIndicatorsModelsKey: {
+    mainKey: "useGetIndicatorsModelsKey",
+  },
+  
 useGetSearchRMA: {
     mainKey: "useGetSearchRMA",
     subKeys: (params: { req: RMASearchRequestDTO }) => [params],

@@ -1,5 +1,4 @@
-import { Box, Button } from "@mui/material";
-import dayjs, { Dayjs } from "dayjs";
+import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import CircularSpinner from "../../../Components/Common/CircularSpinner";
 import { defaultRMASearchRequestDTOParamsValue, RMASearchRequestDTO } from "../../../Models/RMAManagerModels/Dto";
@@ -8,18 +7,6 @@ import { useGetSearchRMA } from "../../../Hooks/useGetSearchRMA";
 import TrackingDetailsDialog from "../TrackingShared/TrackingDetailsDialog";
 
 const Search = () => {
-  const [startDateIssued, setStartDateIssued] = useState<Dayjs | null>(dayjs());
-  const [endDateIssued, setEndDateIssued] = useState<Dayjs | null>(dayjs().add(1, "year"));
-  const [startDateReceived, setStartDateReceived] = useState<Dayjs | null>(dayjs());
-  const [endDateReceived, setEndDateReceived] = useState<Dayjs | null>(dayjs().add(1, "year"));
-  const [salesOrderId, setSalesOrderId] = useState<string>("");
-  const [customerEmail, setCustomerEmail] = useState<string>("");
-  const [contactName, setContactName] = useState<string>("");
-  const [companyName, setCompanyName] = useState<string>("");
-  const [startRMANumber, setStartRMANumber] = useState<number | null>(null);
-  const [endRMANumber, setEndRMANumber] = useState<number | null>(null);
-  const [salesPerson, setSalesPerson] = useState<string>("ALL");
-  const [stage, setStage] = useState<string>("ALL");
   const [searchParams, setSearchParams] = useState<RMASearchRequestDTO>(defaultRMASearchRequestDTOParamsValue);
   const [enableSearch, setEnableSearch] = useState<boolean>(false);
   const searchRMARequest = useGetSearchRMA(searchParams, enableSearch);
@@ -27,28 +14,28 @@ const Search = () => {
 
   useEffect(() => {
     if (enableSearch) {
- 
       searchRMARequest.refetch();
     }
   }, [enableSearch]);
 
-  const handleSearchRMA = async () => {
+  const handleSearchRMA = async (input: RMASearchRequestDTO) => {
     var data: RMASearchRequestDTO = {
-      startDateIssued: startDateIssued ? startDateIssued.format("YYYY-MM-DD") : null,
-      endDateIssued: endDateIssued ? endDateIssued.format("YYYY-MM-DD") : null,
-      endDateReceived: endDateReceived ? endDateReceived.format("YYYY-MM-DD") : null,
-      startDateReceived: startDateReceived ? startDateReceived.format("YYYY-MM-DD") : null,
-      salesOrderId: salesOrderId,
-      rmaNumberStart: startRMANumber,
-      rmaNumberEnd: endRMANumber,
-      stage: stage,
-      salesPerson: salesPerson,
-      contactName: contactName,
-      companyName: companyName,
-      customerEmail: customerEmail,
+      startDateIssued: input.startDateIssued,
+      endDateIssued: input.endDateIssued,
+      endDateReceived: input.endDateReceived,
+      startDateReceived: input.startDateReceived,
+      salesOrderId: input.salesOrderId,
+      rmaNumberStart: input.rmaNumberStart,
+      rmaNumberEnd: input.rmaNumberEnd,
+      stage: input.stage,
+      salesPerson: input.salesPerson,
+      contactName: input.contactName,
+      companyName: input.companyName,
+      customerEmail: input.customerEmail,
+      searchBy: input.searchBy,
     };
     try {
-       console.log("Search Params:", data);
+      console.log("Search Params:", data);
       setSearchParams(data);
       setEnableSearch(true);
 
@@ -109,38 +96,11 @@ const Search = () => {
             additionalInfo={` (${searchRMARequest.data?.length}   Items)`}
           />
         )}
-        <RMASearchSpecifier
-          startDateIssued={startDateIssued}
-          endDateIssued={endDateIssued}
-          setStartDateIssued={setStartDateIssued}
-          setEndDateIssued={setEndDateIssued}
-          startDateReceived={startDateReceived}
-          endDateReceived={endDateReceived}
-          setStartDateReceived={setStartDateReceived}
-          setEndDateReceived={setEndDateReceived}
-          startRMANumber={startRMANumber}
-          endRMANumber={endRMANumber}
-          setStartRMANumber={setStartRMANumber}
-          setEndRMANumber={setEndRMANumber}
-          companyName={companyName}
-          setCompanyName={setCompanyName}
-          contactName={contactName}
-          setContactName={setContactName}
-          customerEmail={customerEmail}
-          setCustomerEmail={setCustomerEmail}
-          salesOrderId={salesOrderId}
-          setSalesOrderId={setSalesOrderId}
-          stage={stage}
-          setStage={setStage}
-          salesPerson={salesPerson}
-          setSalesPerson={setSalesPerson}
-          // handleGenerateReport={handleGenerateReport}
-          RMASearchSpecifierCaption="Search Filters"
-        />
+        <RMASearchSpecifier RMASearchSpecifierCaption="Search Filters" handleSearchRMA={handleSearchRMA} />
 
-        <Box sx={{ display: "flex", gap: "1rem", width: "100%", justifyContent: "center", padding: "1rem" }}>
+        {/* <Box sx={{ display: "flex", gap: "1rem", width: "100%", justifyContent: "center", padding: "1rem" }}>
           <Button onClick={handleSearchRMA}>Search</Button>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );

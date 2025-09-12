@@ -10,6 +10,59 @@
 // /* eslint-disable */
 // // ReSharper disable InconsistentNaming
 
+
+
+
+export interface ProductResponseDTO {
+  productId: number;
+  modelVersionId: number;
+  modelName: string;
+  modelType: string;
+  capacity: number;
+  testCapacity: number;
+  resistance: number;
+  nominalOutput: number;
+  nominalOutputPercentage: number;
+  nonlinearityPercentage: number;
+  timestamp?: Date;
+  stage: string;
+  currentStatus: string;
+  invoiceId?: string | undefined;
+  salesOrderId?: string | undefined;
+  cableLength?: number;
+  inspectionResult: number;
+  testingMode: string;
+  processFlowGroupName?: string | undefined;
+  thermexPurcharseOrderNo?: string | undefined;
+  machiningPurcharseOrderNo?: string | undefined;
+  steelPurcharseOrderNo?: string | undefined;
+  batchNo: number;
+  modelVersionGuid?: string;
+  hasBeenExercised: boolean;
+  loadDirection?: string | undefined;
+  calibrationType: string | undefined;
+  weightUnit: string | undefined;
+  safeLoad?: number;
+  ultimateLoad?: number;
+  compensatedTempRangeLow: number;
+  compensatedTempRangeHigh: number;
+  ratedExcitationMin: number;
+  ratedExcitationMax: number;
+  operatingTempMin: number;
+  operatingTempMax: number;
+  isRMA: boolean;
+  noOfGauges: number;
+  guidId: string;
+}
+export interface IndicatorsModel {
+  indicatorType: string;
+  name: string;
+  guidId: string;
+}
+
+
+
+
 // export interface AmplifierBoardCreateRequestDTO {
 //   amplifierBoardId?: number;
 //   brand?: string | undefined;
@@ -920,47 +973,6 @@
 //   timeStamp?: Date;
 //   guidId?: string;
 // }
-export interface ProductResponseDTO {
-  productId: number;
-  modelVersionId: number;
-  modelName: string;
-  modelType: string;
-  capacity: number;
-  testCapacity: number;
-  resistance: number;
-  nominalOutput: number;
-  nominalOutputPercentage: number;
-  nonlinearityPercentage: number;
-  timestamp?: Date;
-  stage: string;
-  currentStatus: string;
-  invoiceId?: string | undefined;
-  salesOrderId?: string | undefined;
-  cableLength?: number;
-  inspectionResult: number;
-  testingMode: string;
-  processFlowGroupName?: string | undefined;
-  thermexPurcharseOrderNo?: string | undefined;
-  machiningPurcharseOrderNo?: string | undefined;
-  steelPurcharseOrderNo?: string | undefined;
-  batchNo: number;
-  modelVersionGuid?: string;
-  hasBeenExercised: boolean;
-  loadDirection?: string | undefined;
-  calibrationType: string | undefined;
-  weightUnit: string | undefined;
-  safeLoad?: number;
-  ultimateLoad?: number;
-  compensatedTempRangeLow: number;
-  compensatedTempRangeHigh: number;
-  ratedExcitationMin: number;
-  ratedExcitationMax: number;
-  operatingTempMin: number;
-  operatingTempMax: number;
-  isRMA: boolean;
-  noOfGauges: number;
-  guidId: string;
-}
 
 // export interface ProductSealingEventCreateRequestDTO {
 //   productId?: number;
@@ -1942,11 +1954,6 @@ export interface ProductResponseDTO {
 //   afterCalibrationData: CalibrationDataPlusScaleError[];
 // }
 
-// export interface IndicatorsModel {
-//   indicatorType: string;
-//   name: string;
-//   guidId: string;
-// }
 
 // export interface TransmitterModelModel {
 //   transmitterType: string;
