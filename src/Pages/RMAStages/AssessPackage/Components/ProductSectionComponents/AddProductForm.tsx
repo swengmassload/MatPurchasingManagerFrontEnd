@@ -18,6 +18,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import { ProductItemDTO } from "../../../../../Models/RMAManagerModels/Dto";
 import { standardInputSx, standardFormControlSx } from "../../../../../Constants/ComponentStyles";
+import { useGetIndicatorsModels } from "../../../../../Hooks/useGetIndicatorsModels";
 
 interface AddProductFormProps {
   newProduct: ProductItemDTO;
@@ -43,7 +44,8 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
   solutionTypes,
 }) => {
   const productUnits = ["lbs", "kg"];
-  const indicatorTypes = ["Digital", "Analog", "LCD", "LED", "None"];
+//   const indicatorTypes = ["Digital", "Analog", "LCD", "LED", "None"];
+const indicatorsRequest =useGetIndicatorsModels();
 
   const handleClearForm = () => {
     setNewProduct({
@@ -190,9 +192,9 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
               label="indicatorName *"
               onChange={(e) => setNewProduct({ ...newProduct, indicatorName: e.target.value })}
             >
-              {indicatorTypes.map((indicator) => (
-                <MenuItem key={indicator} value={indicator}>
-                  {indicator}
+              {indicatorsRequest.data && indicatorsRequest.data?.length > 0 && indicatorsRequest.data.map((indicator) => (
+                <MenuItem key={indicator.guidId} value={indicator.name}>
+                  {indicator.indicatorType} - {indicator.name}
                 </MenuItem>
               ))}
             </Select>
