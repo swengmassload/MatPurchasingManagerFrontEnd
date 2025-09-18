@@ -95,7 +95,7 @@ describe("EndPoints constants", () => {
   describe("Endpoint object structure", () => {
     it("should have ProductManagerEnpoints object with expected properties", () => {
       expect(ProductManagerEnpoints).toHaveProperty("ProductMovingEvents");
-      expect(Object.keys(ProductManagerEnpoints)).toHaveLength(2);
+      expect(Object.keys(ProductManagerEnpoints)).toHaveLength(3);
     });
 
     it("should have RMAManagerEnpoints object with expected properties", () => {
