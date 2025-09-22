@@ -170,7 +170,7 @@ const AddSalesOrder = () => {
                         onChange={handleFieldChange("salesOrderId")}
                         error={Boolean(errors.salesOrderId)}
                         helperText={errors.salesOrderId || "Enter the sales order number for this RMA"}
-                        placeholder="e.g., 25-234"
+                        placeholder="e.g., SO-2024-001234"
                       />
 
                       <TextField

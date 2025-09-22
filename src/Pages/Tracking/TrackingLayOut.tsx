@@ -26,7 +26,7 @@ const TrackingLayOut = () => {
         }}
       >
         <TabContext value={value}>
-          <Tabs value={value} onChange={handleChange} sx={TabListSyle} TabIndicatorProps={TabIndicatorStyle}>
+          <Tabs value={value} onChange={handleChange} sx={TabListSyle} slotProps={{ indicator: TabIndicatorStyle }}>
             <Tab sx={TabBorderStyle} label="Track by Stage" value="1" />
             <Tab sx={TabBorderStyle} label="Search RMA" value="2" />
             <Tab sx={TabBorderStyle} label="Report" value="3" />
