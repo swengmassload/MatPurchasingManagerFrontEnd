@@ -12,25 +12,25 @@ const TimeB4Red = 10;
 const CountdownTimer: React.FC<CountdownTimerProps> = ({ initialTimeMs, onExpire }) => {
   const [timeLeft, setTimeLeft] = useState(initialTimeMs);
 
-  useEffect(() => {
-    if (timeLeft <= 0) {
-      if (onExpire) onExpire();
-      return;
-    }
 
+  useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => {
         const newTime = prevTime - 1000;
-        if (newTime <= 0 && onExpire) {
+        if (newTime <= 0) {
           clearInterval(timer);
-          onExpire();
+          if (onExpire) {
+            // Use setTimeout to avoid calling onExpire during render
+            setTimeout(() => onExpire(), 0);
+          }
+          return 0;
         }
         return newTime;
       });
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft, onExpire]);
+  }, [onExpire]);
 
   // Convert milliseconds to minutes and seconds
   const minutes = Math.floor(timeLeft / 60000);
@@ -40,20 +40,17 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ initialTimeMs, onExpire
     <>
       {TimeB4Showing > minutes && (
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <AccessTimeIcon 
-          fontSize="small" 
-          sx={{ color: minutes < TimeB4Red ? "error.main" : "inherit" }}
-        />
-        <Typography 
-          sx={{ 
-            color: minutes < TimeB4Red ? "error.main" : "inherit",
-            fontSize: minutes < TimeB4Red ? "20px" : "small",
-            fontWeight: minutes < TimeB4Red ? "bold" : "normal"
-          }}
-        >
-          Session expires in: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
-        </Typography>
-      </Box>
+          <AccessTimeIcon fontSize="small" sx={{ color: minutes < TimeB4Red ? "error.main" : "inherit" }} />
+          <Typography
+            sx={{
+              color: minutes < TimeB4Red ? "error.main" : "inherit",
+              fontSize: minutes < TimeB4Red ? "20px" : "small",
+              fontWeight: minutes < TimeB4Red ? "bold" : "normal",
+            }}
+          >
+            Session expires in: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+          </Typography>
+        </Box>
       )}
     </>
   );

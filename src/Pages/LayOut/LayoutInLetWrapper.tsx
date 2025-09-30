@@ -29,20 +29,19 @@ const LayoutInLetWrapper = ({
   const appUser = useSelector((state: RootState) => state.loginUser);
   const [isAllowed, setIsAllowed] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
-
-  // Move all validation logic to useEffect to avoid render-time side effects
+  const [sessionExpire, setSessionExpire] = useState(false);
 
   useEffect(() => {
-    console.count("LayoutInLetWrapper - If this is always count then there is problem");
-  
-    //const currentToken = localStorage.getItem("currentToken");
+    if (sessionExpire) {
+      toast.error("Your session has expired. Logging out...");
+      navigate(SideBarMenuName.LoggedOut.route);
+    }
+  }, [sessionExpire]);
 
+  useEffect(() => {
     const RmaUser = JSON.parse(localStorage.getItem(RMAUserStorageKey) || "{}") as LoginUserStateSliceProps;
     if (RmaUser && RmaUser.token) {
-      dispatch(
-        setTokenNameBarcode({ token: RmaUser.token, email: RmaUser.email, userName:RmaUser.userName})
-        //  setTokenNameBarcode({ token:currentToken,   email: decoded["Email"],  userName: decoded["UserName"]})
-      );
+      dispatch(setTokenNameBarcode({ token: RmaUser.token, email: RmaUser.email, userName: RmaUser.userName }));
     }
     const isTokenvalid = RmaUser.token ? IsTokenValid(RmaUser.token) : IsTokenValid(appUser?.token);
 
@@ -53,11 +52,11 @@ const LayoutInLetWrapper = ({
       if (layOutAccessClaim === "") {
         setIsAllowed(true);
       } else {
-        const hasAccess = IsAcccessClaimInToken(layOutAccessClaim, RmaUser.token?RmaUser.token:appUser?.token);
+        const hasAccess = IsAcccessClaimInToken(layOutAccessClaim, RmaUser.token ? RmaUser.token : appUser?.token);
         setIsAllowed(hasAccess);
 
         if (!hasAccess) {
-          toast.error(`Access to ${pageTitle} denied for ${RmaUser.token?RmaUser.userName:appUser.userName}`);
+          toast.error(`Access to ${pageTitle} denied for ${RmaUser.token ? RmaUser.userName : appUser.userName}`);
           setTimeout(() => {
             navigate(SideBarMenuName.dashBoard.route);
           }, 3000);
@@ -73,8 +72,7 @@ const LayoutInLetWrapper = ({
   }, [layOutAccessClaim, pageTitle, navigate]);
 
   const handleSessionExpire = () => {
-    toast.error("Your session has expired. Logging out...");
-    navigate(SideBarMenuName.LoggedOut.route);
+    setSessionExpire(true);
   };
   return (
     <>
