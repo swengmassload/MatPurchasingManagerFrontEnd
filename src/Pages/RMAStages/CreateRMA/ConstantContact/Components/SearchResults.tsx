@@ -1,37 +1,29 @@
 import React from "react";
 import { Box, Typography, Stack } from "@mui/material";
-import {
-  Contact,
-  DetailContact,
-  ConstantContactSearchResponse,
-} from "../../../../../Models/ConstantContactModels/ConstantContactDTO";
-import ContactCard from "./ContactCard";
+import { Lead, Opportunity, SharpSpringResult,  } from "../../../../../Models/ConstantContactModels/ConstantContactDTO";
+
+import SharpSpringContactBasicInfo from "./SharpSpringContactBasicInfo";
 
 interface SearchResultsProps {
-  result: ConstantContactSearchResponse | undefined;
+  result: SharpSpringResult | undefined;
   searchEmail: string;
-  selectedContact: Contact | null;
-  showingDetails: string | null;
-  contactDetails: DetailContact | null;
-  isLoadingDetails: boolean;
-  fetchingContactId: string | null;
-  onFetchDetails: (contact: Contact) => void;
-  onUseContactDetails: (details: DetailContact) => void;
+  selectedLead: Lead | null;
+  onUseLeadDetails: (details: Lead) => void;
+  onUseOpportunityDetails: (details: Opportunity) => void;
 }
 
 const SearchResults: React.FC<SearchResultsProps> = ({
   result,
   searchEmail,
-  selectedContact,
-  showingDetails,
-  contactDetails,
-  isLoadingDetails,
-  fetchingContactId,
-  onFetchDetails,
-  onUseContactDetails,
+  selectedLead,
+  onUseLeadDetails,
+  onUseOpportunityDetails
 }) => {
   // Search Results
-  if (result?.contacts && result.contacts.length > 0) {
+
+
+
+  if (result?.isSuccess) {
     return (
       <Box>
         <Typography
@@ -42,29 +34,26 @@ const SearchResults: React.FC<SearchResultsProps> = ({
             color: "text.primary",
           }}
         >
-          Search Results ({result.contacts.length} contact{result.contacts.length !== 1 ? "s" : ""} found)
+          Search Results ({result.dataFromLeadsFromLead.companyName}  with  {result.opportunityList.length}  Opportunit{result.opportunityList.length < 1 ? "y" : "ies"}   found)
         </Typography>
         <Stack spacing={2}>
-          {result.contacts.map((contact) => (
-            <ContactCard
-              key={contact.contact_id}
-              contact={contact}
-              selectedContact={selectedContact}
-              showingDetails={showingDetails}
-              contactDetails={contactDetails}
-              isLoadingDetails={isLoadingDetails}
-              fetchingContactId={fetchingContactId}
-              onFetchDetails={onFetchDetails}
-              onUseContactDetails={onUseContactDetails}
+        
+            <SharpSpringContactBasicInfo
+              key={result.dataFromLeadsFromLead.id}
+              lead={result.dataFromLeadsFromLead}
+              opportunityList={result.opportunityList}
+              selectedLead={selectedLead && ({ id: selectedLead.id } as Lead)}
+              onUseLeadDetails={onUseLeadDetails}
+              onUseOpportunityDetails={onUseOpportunityDetails}
             />
-          ))}
+         
         </Stack>
       </Box>
     );
   }
 
   // No Results
-  if (result?.contacts && result.contacts.length === 0 && searchEmail) {
+  if (!result?.isSuccess && searchEmail) {
     return (
       <Box
         sx={{

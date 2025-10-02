@@ -73,6 +73,12 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
     if (!newRepair.description.trim()) {
       errors.description = "Description is required";
     }
+
+    if (newRepair.description && newRepair.description.trim().length > 400) {
+      errors.description = "description must be at most 400 characters long";
+    }
+
+
     if (newRepair.hoursUsed <= 0) {
       errors.hoursUsed = "Hours must be greater than 0";
     }
@@ -170,7 +176,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
               value={newRepair.description}
               onChange={(e) => setNewRepair({ ...newRepair, description: e.target.value })}
               error={Boolean(repairErrors.description)}
-              helperText={repairErrors.description}
+              helperText={repairErrors.description|| "Describe the repair done (Max  400 characters)"}
               sx={{
                 flex: 2,
                 minWidth: 300,
@@ -268,7 +274,7 @@ const ProductDetailsPanel: React.FC<ProductDetailsPanelProps> = ({
               value={newPart.description}
               onChange={(e) => setNewPart({ ...newPart, description: e.target.value })}
               error={Boolean(partErrors.description)}
-              helperText={partErrors.description}
+              helperText={partErrors.description || "Describe the part used (Max 400 characters)"}
               sx={{
                 flex: 3,
                 minWidth: 300,

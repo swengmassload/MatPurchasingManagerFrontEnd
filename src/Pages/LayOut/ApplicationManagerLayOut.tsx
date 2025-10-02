@@ -4,18 +4,13 @@ import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import { SideBarListItems } from "./SideBar/SideBarListItems";
 import MassfussionAppBar from "./MassfussionAppBar";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import ApplicationManagerOutlet from "./ApplicationManagerOutlet";
 import { useCallback, useEffect } from "react";
 import { sideBardrawerWidth, SideBarMenuName } from "../../Constants/SideBarMenuNames";
 import { useNavigate } from "react-router";
 import Footer from "./Footer/Footer";
-//import { TryJwtDecode } from "../../Utils/TryJwtDecode";
-//import { JwtAccessTokenFormat } from "../../Models/JWTModels/JwtAccessTokenFormat";
-import { LoginUserStateSliceProps, setTokenNameBarcode } from "../../Redux/State/LoginUserSlice";
-import axios from "axios";
-import { RMAUserStorageKey } from "../../Constants/APINames";
 
 const AppbarHeight = 120; // Adjust this value based on your app bar height`
 
@@ -23,7 +18,7 @@ export function ApplicationManagerLayOut() {
 
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
   const appEmail = useSelector((state: RootState) => state.loginUser).email;
 
   const handleLogout = useCallback(() => {
@@ -31,17 +26,7 @@ export function ApplicationManagerLayOut() {
   }, []);
   useEffect(() => {
 
-  
-      const RmaUser = JSON.parse(localStorage.getItem(RMAUserStorageKey) || "{}") as LoginUserStateSliceProps;
-    if (RmaUser.token) {
-    
-        axios.defaults.headers.common["Authorization" ] = `Bearer ${RmaUser.token}`;
-
-      dispatch(
-         setTokenNameBarcode({ token: RmaUser.token, email: RmaUser.email, userName:RmaUser.userName})
- 
-      );
-    } else if (appEmail === "" || appEmail === undefined || appEmail === null) {
+ if (appEmail === "" || appEmail === undefined || appEmail === null) {
       alert("No Email.. loging out ");
       handleLogout();
     }

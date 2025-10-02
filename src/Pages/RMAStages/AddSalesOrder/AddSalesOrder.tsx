@@ -86,13 +86,9 @@ const AddSalesOrder = () => {
       newErrors.salesOrderId = "Sales Order Number must be at least 3 characters long";
     }
 
-
-
-    if (formData.notes &&formData.notes.trim().length >300 ) {
+    if (formData.notes && formData.notes.trim().length > 300) {
       newErrors.notes = "Notes must be at most 300 characters long";
     }
-
-
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;

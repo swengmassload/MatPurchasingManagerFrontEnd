@@ -158,7 +158,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
   };
 
   const validateNewProduct = (): boolean => {
-    debugger
+
     const errors: typeof validationErrors = {};
 
     if (!newProduct.productCapacity) {
@@ -190,9 +190,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ products, onProductsCha
       errors.problemType = "Problem type is required";
     }
 
-    // if (!newProduct.problemNotes.trim()) {
-    //   errors.problemNotes = "Problem notes are required";
-    // }
+
 
 
   if (newProduct.problemNotes &&newProduct.problemNotes.trim().length >400 ) {

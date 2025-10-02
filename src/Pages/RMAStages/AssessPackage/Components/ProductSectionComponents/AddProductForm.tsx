@@ -313,7 +313,7 @@ const indicatorsRequest =useGetIndicatorsModels();
               value={newProduct.problemNotes}
               onChange={(e) => setNewProduct({ ...newProduct, problemNotes: e.target.value })}
               error={Boolean(validationErrors.problemNotes)}
-              helperText={validationErrors.problemNotes || "Describe the issue in detail"}
+              helperText={validationErrors.problemNotes || "Describe the issue in detail (Max  400 characters)"}
               rows={3}
               variant="outlined"
               fullWidth
@@ -365,7 +365,7 @@ const indicatorsRequest =useGetIndicatorsModels();
               variant="outlined"
               fullWidth
               error={Boolean(validationErrors.solutionNotes)}
-              helperText={validationErrors.solutionNotes || "Optional:Describe the planned solution"}
+              helperText={validationErrors.solutionNotes || "Optional:Describe the planned solution (Max  400 characters)"}
               sx={standardInputSx}
             />
           </Box>

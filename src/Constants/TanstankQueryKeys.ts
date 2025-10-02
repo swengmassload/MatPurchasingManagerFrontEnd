@@ -1,4 +1,4 @@
-import { useGetConfirmIfUserHasExistingValidTokenProps } from "../Hooks/useGetConfirmIfUserHasExistingValidToken";
+
 import { useGetContactByContactIdProps } from "../Hooks/useGetContactByContactId";
 import { RMAGetRequestByStage, RMAGetTrackingDetailRequestDTO, RMASearchRequestDTO } from "../Models/RMAManagerModels/Dto";
 
@@ -37,10 +37,6 @@ useGetSearchRMA: {
 
   useGetRMAProblemTypesKey: {
     mainKey: "useGetRMAProblemTypes",
-  },
-  useGetConfirmIfUserHasExistingValidTokenPropsKey: {
-    mainKey: "UserId",
-    subKeys: (params: { data: useGetConfirmIfUserHasExistingValidTokenProps }) => [params.data.UserId],
   },
 
   useGetRMANumberKey: {

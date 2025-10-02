@@ -3,7 +3,6 @@ import assets from "../../assets";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setTokenNameBarcode } from "../../Redux/State/LoginUserSlice";
-import { ConstantContactSearchEmailKey, RMAUserStorageKey } from "../../Constants/APINames";
 import { useBlackListToken } from "../../Hooks/useBlackListToken";
 
 const LoggedOut = () => {
@@ -15,8 +14,7 @@ const LoggedOut = () => {
   useEffect(() => {
     // Move the API call to useEffect so it only runs once on mount
     
-  localStorage.removeItem(ConstantContactSearchEmailKey);
-  localStorage.removeItem(RMAUserStorageKey);
+
     blackListTokenMutation.mutateAsync().catch((error) => {
       console.error("Failed to blacklist token:", error);
     });

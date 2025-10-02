@@ -6,5 +6,5 @@ export const AUTHAPINAME = "AuthAPI";
 export const COMPRESSIONTESTERAPINAME = `/CompressionTesterAPI`;
 export const RMAAPINAME = `/RMAManagerAPI`;
 
-export const RMAUserStorageKey = "RMAUSER";     
-export const ConstantContactSearchEmailKey = "ConstantContactSearchEmail"; 
+//export const RMAUserStorageKey = "RMAUSER";     
+//export const ConstantContactSearchEmailKey = "ConstantContactSearchEmail"; 

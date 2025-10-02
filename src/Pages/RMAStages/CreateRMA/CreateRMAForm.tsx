@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography, Paper, Stack } from "@mui/material";
-import { Contact } from "../../../Models/ConstantContactModels/ConstantContactDTO";
-import { ValidToken } from "../../../Hooks/useGetConfirmIfUserHasExistingValidToken";
+import {  Lead } from "../../../Models/ConstantContactModels/ConstantContactDTO";
+
 import { useCreateRMAForm } from "./Hooks/useCreateRMAForm";
 import CustomerInformationSection from "./Components/CustomerInformationSection";
 import AddressInformationSection from "./Components/AddressInformationSection";
@@ -10,11 +10,11 @@ import ContactOptionsSection from "./Components/ContactOptionsSection";
 import FormActions from "./Components/FormActions";
 
 interface CreateRMAFormProps {
-  selectedContact?: Contact | null;
-  tokenValidationResult?: ValidToken | null;
+  selectedLead?: Lead | null;
+  
 }
 
-const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact, tokenValidationResult }) => {
+const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedLead }) => {
   const {
     formData,
     errors,
@@ -23,7 +23,7 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact, tokenVal
     handleDateChange,
     handleCreateContactChange,
     handleSubmit,
-  } = useCreateRMAForm(selectedContact);
+  } = useCreateRMAForm(selectedLead);
 
   return (
     <Box sx={{ maxWidth: 1200, margin: "0 auto", padding: 2, pt: 0 }}>
@@ -47,7 +47,7 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedContact, tokenVal
 
             <ContactOptionsSection
               formData={formData}
-              tokenValidationResult={tokenValidationResult}
+            
               onCreateContactChange={handleCreateContactChange}
             />
 

@@ -3,7 +3,6 @@ import { useNavigate, useSearchParams } from "react-router";
 import { SideBarMenuName } from "../../../../Constants/SideBarMenuNames";
 import { useExchangeCodeForToken } from "../../../../Hooks/useExchangeCodeForToken";
 import axios from "axios";
-import { RMAUserStorageKey } from "../../../../Constants/APINames";
 
 export interface exchageData {code: string;}
   
@@ -25,7 +24,7 @@ const OAuthCallback = () => {
     const exchange = async () => {
       try {  
    /// the token must have been saved in localStorage or state
-        const RmaUser = JSON.parse(localStorage.getItem(RMAUserStorageKey) || "{}") as { token?: string };
+        const RmaUser = JSON.parse(localStorage.getItem("UNUSUED") || "{}") as { token?: string };
         if (!RmaUser.token) {
           console.error("No token found in localStorage or state.");
           alert("No token found. Please log in again.");

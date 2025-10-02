@@ -45,7 +45,9 @@ const RepairsDoneSection: React.FC<RepairsDoneSectionProps> = ({ repairsDone, on
     if (!newRepair.description.trim()) {
       errors.description = "Description is required";
     }
-
+if (newRepair.description && newRepair.description.trim().length > 400) {
+      errors.description = "description must be at most 400 characters long";
+    }
     if (newRepair.hoursUsed <= 0) {
       errors.hoursUsed = "Hours must be greater than 0";
     }

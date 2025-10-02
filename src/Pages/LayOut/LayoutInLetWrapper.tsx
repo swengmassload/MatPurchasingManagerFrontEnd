@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { LayOutHeader } from "../../Components/Common/Headers";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../Redux/store";
 import { IsAcccessClaimInToken, IsTokenValid } from "../../Utils/IsTokenValidAndFunctionClaimInToken";
 import { useNavigate } from "react-router";
 import { SideBarMenuName } from "../../Constants/SideBarMenuNames";
 import toast from "react-hot-toast";
 import CountdownTimer from "./SideBar/CountdownTimer";
-import { LoginUserStateSliceProps, setTokenNameBarcode } from "../../Redux/State/LoginUserSlice";
-import { RMAUserStorageKey } from "../../Constants/APINames";
 
 interface LayoutInLetWrapperProps {
   children?: React.ReactNode;
@@ -25,7 +23,7 @@ const LayoutInLetWrapper = ({
   layOutAccessClaim,
 }: LayoutInLetWrapperProps) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
   const appUser = useSelector((state: RootState) => state.loginUser);
   const [isAllowed, setIsAllowed] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
@@ -39,11 +37,8 @@ const LayoutInLetWrapper = ({
   }, [sessionExpire]);
 
   useEffect(() => {
-    const RmaUser = JSON.parse(localStorage.getItem(RMAUserStorageKey) || "{}") as LoginUserStateSliceProps;
-    if (RmaUser && RmaUser.token) {
-      dispatch(setTokenNameBarcode({ token: RmaUser.token, email: RmaUser.email, userName: RmaUser.userName }));
-    }
-    const isTokenvalid = RmaUser.token ? IsTokenValid(RmaUser.token) : IsTokenValid(appUser?.token);
+
+    const isTokenvalid =IsTokenValid(appUser?.token);
 
     if (isTokenvalid.isvalid) {
       const calcRemainingTime = isTokenvalid.exp ? isTokenvalid.exp * 1000 - new Date().getTime() : 0;
@@ -52,11 +47,11 @@ const LayoutInLetWrapper = ({
       if (layOutAccessClaim === "") {
         setIsAllowed(true);
       } else {
-        const hasAccess = IsAcccessClaimInToken(layOutAccessClaim, RmaUser.token ? RmaUser.token : appUser?.token);
+        const hasAccess = IsAcccessClaimInToken(layOutAccessClaim,  appUser?.token);
         setIsAllowed(hasAccess);
 
         if (!hasAccess) {
-          toast.error(`Access to ${pageTitle} denied for ${RmaUser.token ? RmaUser.userName : appUser.userName}`);
+          toast.error(`Access to ${pageTitle} denied for ${ appUser.userName}`);
           setTimeout(() => {
             navigate(SideBarMenuName.dashBoard.route);
           }, 3000);

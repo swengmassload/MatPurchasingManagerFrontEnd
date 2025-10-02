@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { RMACreateRequestDTO, RMAResponseDTO } from "../../../../Models/RMAManagerModels/Dto";
-import { Contact } from "../../../../Models/ConstantContactModels/ConstantContactDTO";
+import {  Lead } from "../../../../Models/ConstantContactModels/ConstantContactDTO";
 import { useCreateRMA } from "../../../../Hooks/useCreateRMA";
-//import { useGetRMANumber } from "../../../../Hooks/useGetRMANumber";
+
 import { DefaultRMAFormValues } from "../CreateRMADTODefaultValues";
 import toast from "react-hot-toast";
 
-export const useCreateRMAForm = (selectedContact?: Contact | null) => {
-  // const nextNumberRequest = useGetRMANumber();
+export const useCreateRMAForm = (selectedContact?: Lead | null) => {
+
   const createRMAMutation = useCreateRMA();
   const [formData, setFormData] = useState<RMACreateRequestDTO>(DefaultRMAFormValues);
   const [errors, setErrors] = useState<Partial<RMACreateRequestDTO>>({});
@@ -16,15 +16,15 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
     if (selectedContact) {
       setFormData((prev) => ({
         ...prev,
-        customerEmail: selectedContact.email_address?.address || "",
-        street: selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.street || "",
-        city: selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.city || "",
-        zipCode: selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.postal_code || "",
-        province: selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.state || "",
-        country: selectedContact.street_addresses?.filter((addr) => addr.kind === "work")[0]?.country || "",
-        contactName: `${selectedContact.first_name || ""} ${selectedContact.last_name || ""}`.trim(),
-        companyName: selectedContact.company_name || "",
-        phoneNumber: selectedContact.phone_numbers?.filter((phone) => phone.kind === "work")[0]?.phone_number || "",
+        customerEmail: selectedContact?.emailAddress || "",
+        street: selectedContact?.street || "",
+        city: selectedContact?.city || "",
+        zipCode: selectedContact?.zipcode || "",
+        province: selectedContact?.state || "",
+        country: selectedContact?.country || "",
+        contactName: `${selectedContact?.firstName || ""} ${selectedContact?.lastName || ""}`.trim(),
+        companyName: selectedContact?.companyName || "",
+        phoneNumber: selectedContact?.officePhoneNumber || selectedContact?.phoneNumber || "",
 
         // Handle custom_fields based on array length
         // rMAProblemDescription: (() => {
@@ -45,7 +45,7 @@ export const useCreateRMAForm = (selectedContact?: Contact | null) => {
         //   return "";
         // })(),
       }));
-      toast.success(`Form populated with contact: ${selectedContact.first_name} ${selectedContact.last_name}`);
+      toast.success(`Form populated with contact: ${selectedContact.firstName} ${selectedContact.lastName }`);
     }
   }, [selectedContact]);
 

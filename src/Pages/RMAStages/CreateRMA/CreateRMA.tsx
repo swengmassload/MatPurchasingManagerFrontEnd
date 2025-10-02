@@ -2,21 +2,15 @@ import { useState } from "react";
 import { Box, Typography, Paper } from "@mui/material";
 import SearchConstantContact from "./ConstantContact/SearchConstantContact";
 import CreateRMAForm from "./CreateRMAForm";
-import { Contact } from "../../../Models/ConstantContactModels/ConstantContactDTO";
-import { ValidToken } from "../../../Hooks/useGetConfirmIfUserHasExistingValidToken";
+import { Lead } from "../../../Models/ConstantContactModels/ConstantContactDTO";
 
 const CreateRMA = () => {
-  const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
-  const [tokenValidationResult, setTokenValidationResult] = useState<ValidToken | null>(null);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
-  const handleContactSelected = (contact: Contact | null) => {
-    setSelectedContact(contact);
+  const handleLeadSelected = (lead: Lead | null) => {
+    setSelectedLead(lead);
   };
 
-  const handleTokenValidationChange = (result: ValidToken | null) => {
-    console.log("Token validation change in CreateRMA:", result);
-    setTokenValidationResult(result);
-  };
 
   return (
     <Box sx={{ width: "100%", padding: 0 }}>
@@ -40,15 +34,16 @@ const CreateRMA = () => {
         <Box sx={{ flex: { lg: "0 0 40%" }, width: { xs: "100%", lg: "40%" } }}>
           <Paper elevation={3} sx={{ minHeight: "600px" }}>
             <SearchConstantContact
-              onContactSelected={handleContactSelected}
-              onTokenValidationChange={handleTokenValidationChange}
+              onLeadSelected={handleLeadSelected}
+
             />
           </Paper>
         </Box>
 
         {/* Right Side - RMA Form */}
         <Box sx={{ flex: { lg: "1" }, width: { xs: "100%", lg: "60%" } }}>
-          <CreateRMAForm selectedContact={selectedContact} tokenValidationResult={tokenValidationResult} />
+
+           <CreateRMAForm selectedLead={selectedLead} />
         </Box>
       </Box>
     </Box>
