@@ -12,14 +12,6 @@ describe("EndPoints constants", () => {
     });
   });
 
-  describe("RMAManagerEnpoints", () => {
-    it("should have the correct ExchangeEndPoint", () => {
-      expect(RMAManagerEnpoints.ExchangeEndPoint).toBe(`${RMAAPINAME}/v1/ConstantContact/exchangeCode`);
-    });
-
-    it("should have the correct SearchEndPoint", () => {
-      expect(RMAManagerEnpoints.SearchEndPoint).toBe(`${RMAAPINAME}/v1/ConstantContact/searchContact`);
-    });
 
     it("should have the correct SearchContactEndPoint", () => {
       expect(RMAManagerEnpoints.SearchContactEndPoint).toBe(
@@ -27,11 +19,7 @@ describe("EndPoints constants", () => {
       );
     });
 
-    it("should have the correct ConfirmIfUserHasExistingValidToken endpoint", () => {
-      expect(RMAManagerEnpoints.ConfirmIfUserHasExistingValidToken).toBe(
-        `${RMAAPINAME}/v1/ConstantContact/ConfirmIfUserHasExistingValidToken`
-      );
-    });
+
 
     it("should have the correct RMAEndpoints", () => {
       expect(RMAManagerEnpoints.RMAEndpoints).toBe(`${RMAAPINAME}/v1/RMAs`);
@@ -100,10 +88,10 @@ describe("EndPoints constants", () => {
 
     it("should have RMAManagerEnpoints object with expected properties", () => {
       const expectedProperties = [
-        "ExchangeEndPoint",
+      
         "SearchEndPoint",
         "SearchContactEndPoint",
-        "ConfirmIfUserHasExistingValidToken",
+  
         "RMAEndpoints",
         "ProductAssessedEventsEndPoints",
         "SalesOrderAddedEventsEndPoints",
@@ -153,10 +141,10 @@ describe("EndPoints constants", () => {
   describe("Constant Contact endpoints", () => {
     it("should group all Constant Contact endpoints under ConstantContact path", () => {
       const constantContactEndpoints = [
-        RMAManagerEnpoints.ExchangeEndPoint,
+     //   RMAManagerEnpoints.ExchangeEndPoint,
         RMAManagerEnpoints.SearchEndPoint,
         RMAManagerEnpoints.SearchContactEndPoint,
-        RMAManagerEnpoints.ConfirmIfUserHasExistingValidToken,
+     //   RMAManagerEnpoints.ConfirmIfUserHasExistingValidToken,
       ];
 
       constantContactEndpoints.forEach((endpoint) => {
@@ -181,4 +169,4 @@ describe("EndPoints constants", () => {
       });
     });
   });
-});
+

@@ -16,11 +16,11 @@ export const ProductManagerEnpoints = {
 };
 
 export const RMAManagerEnpoints = {
-  ExchangeEndPoint: `${RMAAPINAME}/v1/ConstantContact/exchangeCode`,
+  //ExchangeEndPoint: `${RMAAPINAME}/v1/ConstantContact/exchangeCode`,
   SearchEndPoint: `${RMAAPINAME}/v1/ConstantContact/searchContact`,
   getContactFromLeads: `${RMAAPINAME}/v1/ConstantContact/getContactFromLeads`,
   SearchContactEndPoint: `${RMAAPINAME}/v1/ConstantContact/searchContactByContactId`,
-  ConfirmIfUserHasExistingValidToken: `${RMAAPINAME}/v1/ConstantContact/ConfirmIfUserHasExistingValidToken`,
+  //ConfirmIfUserHasExistingValidToken: `${RMAAPINAME}/v1/ConstantContact/ConfirmIfUserHasExistingValidToken`,
   RMAEndpoints: `${RMAAPINAME}/v1/RMAs`,
   ProductAssessedEventsEndPoints: `${RMAAPINAME}/v1/ProductAssessedEvents`,
   SalesOrderAddedEventsEndPoints: `${RMAAPINAME}/v1/SalesOrderAddedEvents`,

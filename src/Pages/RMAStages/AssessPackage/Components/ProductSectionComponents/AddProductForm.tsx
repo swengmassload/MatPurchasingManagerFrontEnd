@@ -13,7 +13,7 @@ import {
   FormControlLabel,
   CircularProgress,
 } from "@mui/material";
-import  AddIcon from "@mui/icons-material/Add";
+import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 
 import { ProductItemDTO } from "../../../../../Models/RMAManagerModels/Dto";
@@ -44,8 +44,8 @@ const AddProductForm: React.FC<AddProductFormProps> = ({
   solutionTypes,
 }) => {
   const productUnits = ["lbs", "kg"];
-//   const indicatorTypes = ["Digital", "Analog", "LCD", "LED", "None"];
-const indicatorsRequest =useGetIndicatorsModels();
+
+  const indicatorsRequest = useGetIndicatorsModels();
 
   const handleClearForm = () => {
     setNewProduct({
@@ -192,11 +192,17 @@ const indicatorsRequest =useGetIndicatorsModels();
               label="indicatorName *"
               onChange={(e) => setNewProduct({ ...newProduct, indicatorName: e.target.value })}
             >
-              {indicatorsRequest.data && indicatorsRequest.data?.length > 0 && indicatorsRequest.data.map((indicator) => (
-                <MenuItem key={indicator.guidId} value={indicator.name}>
-                  {indicator.indicatorType} - {indicator.name}
-                </MenuItem>
-              ))}
+              {indicatorsRequest.data &&
+                indicatorsRequest.data?.length > 0 &&
+                // Filter out existing "Others" indicators and add custom one
+                [
+                  ...indicatorsRequest.data.filter((indicator) => indicator.name !== "Others"),
+                  { guidId: "01993071-8a1d-7dda-910f-7d911e9838e3", indicatorType: "Others", name: "Others" },
+                ].map((indicator) => (
+                  <MenuItem key={indicator.guidId} value={indicator.name}>
+                    {indicator.indicatorType} - {indicator.name}
+                  </MenuItem>
+                ))}
             </Select>
             {validationErrors.indicator && <FormHelperText>{validationErrors.indicator}</FormHelperText>}
           </FormControl>
@@ -337,8 +343,7 @@ const indicatorsRequest =useGetIndicatorsModels();
           }}
         >
           <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", md: "1fr 2fr" }, gap: 3 }}>
-        
-                  <FormControl fullWidth error={Boolean(validationErrors.solutionType)} sx={standardFormControlSx}>
+            <FormControl fullWidth error={Boolean(validationErrors.solutionType)} sx={standardFormControlSx}>
               <InputLabel>Solution Type</InputLabel>
               <Select
                 value={newProduct.solutionType}
@@ -365,7 +370,9 @@ const indicatorsRequest =useGetIndicatorsModels();
               variant="outlined"
               fullWidth
               error={Boolean(validationErrors.solutionNotes)}
-              helperText={validationErrors.solutionNotes || "Optional:Describe the planned solution (Max  400 characters)"}
+              helperText={
+                validationErrors.solutionNotes || "Optional:Describe the planned solution (Max  400 characters)"
+              }
               sx={standardInputSx}
             />
           </Box>

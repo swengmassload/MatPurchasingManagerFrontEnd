@@ -7,7 +7,6 @@ import ApplicationManagerLayOut from "../Pages/LayOut/ApplicationManagerLayOut";
 
 import { SideBarMenuName } from "../Constants/SideBarMenuNames";
 import CreateRMALayOut from "../Pages/RMAStages/CreateRMA/CreateRMALayOut";
-import OAuthCallback from "../Pages/RMAStages/CreateRMA/ConstantContact/OAuthCallback";
 import PackageReceivedLayOut from "../Pages/RMAStages/PackageReceived/PackageReceivedLayOut";
 import AssessPackageLayOut from "../Pages/RMAStages/AssessPackage/AssessPackageLayOut";
 import CloseRMALayOut from "../Pages/RMAStages/CloseRMA/CloseRMALayOut";
@@ -22,10 +21,6 @@ export const RoutesProvider = [
     errorElement: <NotFound />,
   },
 
-  {
-    path: "/oauth/callback",
-    element: <OAuthCallback />,
-  },
   {
     path: SideBarMenuName.NoAuthPage.route,
     element: <NoAuthPage />,
