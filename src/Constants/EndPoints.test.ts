@@ -119,7 +119,8 @@ describe("EndPoints constants", () => {
         "GetRMAProblemTypesEndPoint",
         "GetRMASolutionTypesEndPoint",
         "GetReportsEndpoint",
-        "GetTrackingDetailsBySpecifics"
+        "GetTrackingDetailsBySpecifics",
+        "getContactFromLeads",
 
 
 

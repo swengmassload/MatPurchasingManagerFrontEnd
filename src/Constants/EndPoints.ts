@@ -12,7 +12,7 @@ export const RegistrationEnpoints = {
 export const ProductManagerEnpoints = {
   ProductMovingEvents: `${PRODUCTAPINAME}/v1/ProductMovingEvents`,
   GetProductById: `${PRODUCTAPINAME}/v1/Products/`,
-    IndicatorsModelEndpoint: `${PRODUCTAPINAME}/v1/IndicatorModels`,
+  IndicatorsModelEndpoint: `${PRODUCTAPINAME}/v1/IndicatorModels`,
 };
 
 export const RMAManagerEnpoints = {
