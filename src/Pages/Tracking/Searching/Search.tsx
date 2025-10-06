@@ -41,7 +41,7 @@ const Search = () => {
 
       if (searchRMARequest.data) {
         alert("Search Completed");
-        console.log("Search Results:", searchRMARequest.data);
+ 
       }
     } catch (error) {
       console.error("Error generating report:", error);

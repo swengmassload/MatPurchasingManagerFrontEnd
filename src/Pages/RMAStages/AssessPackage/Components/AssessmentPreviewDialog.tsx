@@ -275,7 +275,7 @@ const AssessmentPreviewDialog: React.FC<AssessmentPreviewDialogProps> = ({
                         Pin Diameter:
                       </Typography>
                       <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                        {product.pinDiameter} mm
+                        {product.pinDiameter} inches
                       </Typography>
                     </Box>
                   )}

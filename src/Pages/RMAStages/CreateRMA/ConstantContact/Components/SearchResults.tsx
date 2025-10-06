@@ -8,6 +8,7 @@ interface SearchResultsProps {
   result: SharpSpringResult | undefined;
   searchEmail: string;
   selectedLead: Lead | null;
+  selectedOpportunity?: Opportunity | null;
   onUseLeadDetails: (details: Lead) => void;
   onUseOpportunityDetails: (details: Opportunity) => void;
 }
@@ -16,16 +17,13 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   result,
   searchEmail,
   selectedLead,
+  selectedOpportunity,
   onUseLeadDetails,
   onUseOpportunityDetails
 }) => {
-  // Search Results
 
-
-
-  if (result?.isSuccess) {
-    return (
-      <Box>
+return  ( (result?.isSuccess  && result.dataFromLeadsFromLead  && result.opportunityList.length >0)  ?
+ (      <Box>
         <Typography
           variant="h6"
           sx={{
@@ -42,20 +40,16 @@ const SearchResults: React.FC<SearchResultsProps> = ({
               key={result.dataFromLeadsFromLead.id}
               lead={result.dataFromLeadsFromLead}
               opportunityList={result.opportunityList}
+              selectedOpportunity={selectedOpportunity && ({ id: selectedOpportunity.id } as Opportunity)}
               selectedLead={selectedLead && ({ id: selectedLead.id } as Lead)}
               onUseLeadDetails={onUseLeadDetails}
               onUseOpportunityDetails={onUseOpportunityDetails}
             />
          
         </Stack>
-      </Box>
-    );
-  }
-
-  // No Results
-  if (!result?.isSuccess && searchEmail) {
-    return (
-      <Box
+      </Box>)
+ :
+ (      <Box
         sx={{
           textAlign: "center",
           py: 4,
@@ -70,11 +64,9 @@ const SearchResults: React.FC<SearchResultsProps> = ({
         <Typography variant="body1" sx={{ color: "#856404" }}>
           No contacts were found for "{searchEmail}"
         </Typography>
-      </Box>
-    );
-  }
+      </Box>)
 
-  return null;
+)
 };
 
 export default SearchResults;

@@ -45,7 +45,7 @@ const StatusMessages: React.FC<StatusMessagesProps> = ({
           }}
         >
           <Typography variant="body1" sx={{ color: "#1565c0" }}>
-            Processing OAuth authentication and searching...
+             searching...
           </Typography>
         </Box>
       )}

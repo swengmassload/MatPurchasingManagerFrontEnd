@@ -21,6 +21,10 @@ const SharpSpringContactBasicInfo: React.FC<LeadBasicInfoProps> = ({
   onUseLeadDetails,
   onUseOpportunityDetails,
 }) => {
+
+  console.log("Rendering SharpSpringContactBasicInfo with selectedLead:", selectedLead);
+  console.log("Rendering SharpSpringContactBasicInfo with selectedOpportunity:", selectedOpportunity);
+
   return (
     <Box>
       <Typography

@@ -3,7 +3,7 @@ import {   Lead, Opportunity } from "../../../../../Models/ConstantContactModels
 import { useGetContactInSharpSpringByEmail } from "../../../../../Hooks/useGetContactInSharpSpringByEmail";
 import toast from "react-hot-toast";
 
-export const useSearchConstantContact = (onLeadSelected?: (contact: Lead | null) => void, onOpportunitySelected?: (contact: Opportunity | null) => void) => {
+export const useSearchConstantContact = (onLeadSelected?: (contact: Lead | null) => void, onOpportunitySelected?: (opportunity: Opportunity | null) => void) => {
 
   const [searchEmail, setSearchEmail] = useState<string>("");
   const [startSearching, setStartSearching] = useState<boolean>(false);
@@ -16,6 +16,8 @@ export const useSearchConstantContact = (onLeadSelected?: (contact: Lead | null)
     isLoading,
     error,
   } = useGetContactInSharpSpringByEmail(searchEmail ? { contactEmail: searchEmail } : undefined, startSearching);
+
+
 
 
   useEffect(() => {
@@ -43,14 +45,16 @@ export const useSearchConstantContact = (onLeadSelected?: (contact: Lead | null)
 
 
   const handleUseOpportunityDetails = (details: Opportunity) => {
+   
     setSelectedOpportunity(details);
-    setSuccessMessage(`✅ selected for RMA`);
+    setSuccessMessage(`✅ Opportunity selected for RMA`);
     onOpportunitySelected?.(details);
   };
 
   const handleUseLeadDetails = (details: Lead) => {
+   
     setSelectedLead(details);
-   setSuccessMessage(`✅ selected for RMA`);
+   setSuccessMessage(`✅ Contact selected for RMA`);
     onLeadSelected?.(details);
     toast.success(`Contact selected for RMA creation!`);
   };

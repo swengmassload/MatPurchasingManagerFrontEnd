@@ -7,10 +7,14 @@ import ContactDetailField from "./ContactDetailField";
 interface OpportunityListProps {
   opportunityList: Opportunity[];
   onUseOpportunityDetails: (details: Opportunity) => void;
-    selectedOpportunity?: Opportunity | null;
+  selectedOpportunity?: Opportunity | null;
 }
 
-const OpportunityList: React.FC<OpportunityListProps> = ({ opportunityList, onUseOpportunityDetails, selectedOpportunity }) => {
+const OpportunityList: React.FC<OpportunityListProps> = ({
+  opportunityList,
+  onUseOpportunityDetails,
+  selectedOpportunity,
+}) => {
   const [expandedOpportunities, setExpandedOpportunities] = useState<Set<string>>(new Set());
 
   const toggleOpportunity = (opportunityId: string) => {
@@ -29,15 +33,38 @@ const OpportunityList: React.FC<OpportunityListProps> = ({ opportunityList, onUs
     return null;
   }
 
+  // Sort opportunities by updateTimestamp in descending order (most recent first)
+  const sortedOpportunities = [...opportunityList].sort((a, b) => {
+    const dateA = new Date(a.updateTimestamp || 0).getTime();
+    const dateB = new Date(b.updateTimestamp || 0).getTime();
+    return dateB - dateA; // Descending order
+  });
+
+  // Helper function to format timestamp for display
+  const formatTimestamp = (timestamp: string | null) => {
+    if (!timestamp) return "N/A";
+    try {
+      return new Date(timestamp).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } catch {
+      return timestamp;
+    }
+  };
+
   return (
     <Box sx={{ mt: 3 }}>
       <Divider sx={{ my: 2 }} />
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-        Opportunities ({opportunityList.length})
+        Opportunities : ({opportunityList.length})
       </Typography>
 
       <Stack spacing={2}>
-        {opportunityList.map((opportunity) => (
+        {sortedOpportunities.map((opportunity) => (
           <Card key={opportunity.id} variant="outlined" sx={{ borderRadius: 2 }}>
             <CardContent sx={{ pb: 1 }}>
               <Box
@@ -53,7 +80,7 @@ const OpportunityList: React.FC<OpportunityListProps> = ({ opportunityList, onUs
                   <Typography variant="subtitle1" fontWeight={600}>
                     {opportunity.opportunityName || `Opportunity ${opportunity.id}`}
                   </Typography>
-                  <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
+                  <Box sx={{ display: "flex", gap: 1, mt: 1, flexWrap: "wrap" }}>
                     <Chip label={`$${opportunity.amount || "0"}`} size="small" color="primary" variant="outlined" />
                     <Chip
                       label={`${opportunity.probability || "0"}% probability`}
@@ -62,9 +89,26 @@ const OpportunityList: React.FC<OpportunityListProps> = ({ opportunityList, onUs
                       variant="outlined"
                     />
                     <Chip
-                      label={opportunity.isWon === "1" ? "Won" : opportunity.isClosed === "1" ? "Closed" : "Active"}
+                      label={opportunity.isWon === "1" ? "Won" : "Loss"}
                       size="small"
-                      color={opportunity.isWon === "1" ? "success" : opportunity.isClosed === "1" ? "error" : "info"}
+                      color={opportunity.isWon === "1" ? "success" : "error"}
+                    />
+                    <Chip
+                      label={opportunity.isClosed === "1" ? "Closed" : "Open"}
+                      size="small"
+                      color={opportunity.isClosed === "1" ? "error" : "info"}
+                    />
+                                        <Chip
+                      label={opportunity.isActive === "1" ? "Active" : "Archived"}
+                      size="small"
+                      color={opportunity.isActive === "1" ? "info" : "error"}
+                    />
+                    <Chip
+                      label={`Updated: ${formatTimestamp(opportunity.updateTimestamp)}`}
+                      size="small"
+                      color="default"
+                      variant="outlined"
+                      sx={{ fontWeight: 500 }}
                     />
                   </Box>
                 </Box>
@@ -90,6 +134,8 @@ const OpportunityList: React.FC<OpportunityListProps> = ({ opportunityList, onUs
                     <ContactDetailField label="Created" value={opportunity.createTimestamp} />
                     <ContactDetailField label="Updated" value={opportunity.updateTimestamp} />
                     <ContactDetailField label="Primary Lead ID" value={opportunity.primaryLeadID} />
+                    <ContactDetailField label="Is Closed" value={opportunity.isClosed} />
+                    <ContactDetailField label="Is Active" value={opportunity.isActive} />
                     {opportunity.product_enquiry_633487faea1c8 && (
                       <ContactDetailField label="Product Enquiry" value={opportunity.product_enquiry_633487faea1c8} />
                     )}
@@ -102,20 +148,20 @@ const OpportunityList: React.FC<OpportunityListProps> = ({ opportunityList, onUs
                   </Stack>
                 </Box>
               </Collapse>
-                    <Button
-        variant={selectedOpportunity?.id === opportunity.id ? "outlined" : "contained"}
-        size="small"
-        onClick={() => onUseOpportunityDetails(opportunity)}
-        disabled={selectedOpportunity?.id === opportunity.id}
-        sx={{
-          textTransform: "none",
-          borderRadius: 2,
-          minWidth: 130,
-          mt: 2,
-        }}
-      >
-        {selectedOpportunity?.id === opportunity.id ? "Selected" : "Use Opportunity Details"}
-      </Button>
+              <Button
+                variant={selectedOpportunity?.id === opportunity.id ? "outlined" : "contained"}
+                size="small"
+                onClick={() => onUseOpportunityDetails(opportunity)}
+                disabled={selectedOpportunity?.id === opportunity.id}
+                sx={{
+                  textTransform: "none",
+                  borderRadius: 2,
+                  minWidth: 130,
+                  mt: 2,
+                }}
+              >
+                {selectedOpportunity?.id === opportunity.id ? "Selected" : "Use Opportunity Details"}
+              </Button>
             </CardContent>
           </Card>
         ))}

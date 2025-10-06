@@ -2,13 +2,18 @@ import { useState } from "react";
 import { Box, Typography, Paper } from "@mui/material";
 import SearchConstantContact from "./ConstantContact/SearchConstantContact";
 import CreateRMAForm from "./CreateRMAForm";
-import { Lead } from "../../../Models/ConstantContactModels/ConstantContactDTO";
+import { Lead, Opportunity } from "../../../Models/ConstantContactModels/ConstantContactDTO";
 
 const CreateRMA = () => {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [selectedOpportunity, setSelectedOpportunity] = useState<Opportunity | null>(null);
 
   const handleLeadSelected = (lead: Lead | null) => {
     setSelectedLead(lead);
+  };
+
+  const handleOpportunitySelected = (opportunity: Opportunity | null) => {
+    setSelectedOpportunity(opportunity);
   };
 
 
@@ -35,6 +40,7 @@ const CreateRMA = () => {
           <Paper elevation={3} sx={{ minHeight: "600px" }}>
             <SearchConstantContact
               onLeadSelected={handleLeadSelected}
+              onOpportunitySelected={handleOpportunitySelected}
 
             />
           </Paper>
@@ -43,7 +49,7 @@ const CreateRMA = () => {
         {/* Right Side - RMA Form */}
         <Box sx={{ flex: { lg: "1" }, width: { xs: "100%", lg: "60%" } }}>
 
-           <CreateRMAForm selectedLead={selectedLead} />
+           <CreateRMAForm selectedLead={selectedLead} selectedOpportunity={selectedOpportunity} />
         </Box>
       </Box>
     </Box>

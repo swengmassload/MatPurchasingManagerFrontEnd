@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { RMACreateRequestDTO, RMAResponseDTO } from "../../../../Models/RMAManagerModels/Dto";
-import {  Lead } from "../../../../Models/ConstantContactModels/ConstantContactDTO";
+import { Lead, Opportunity } from "../../../../Models/ConstantContactModels/ConstantContactDTO";
 import { useCreateRMA } from "../../../../Hooks/useCreateRMA";
 
 import { DefaultRMAFormValues } from "../CreateRMADTODefaultValues";
 import toast from "react-hot-toast";
 
-export const useCreateRMAForm = (selectedContact?: Lead | null) => {
-
+export const useCreateRMAForm = (selectedContact?: Lead | null, selectedOpportunity?: Opportunity | null) => {
   const createRMAMutation = useCreateRMA();
   const [formData, setFormData] = useState<RMACreateRequestDTO>(DefaultRMAFormValues);
   const [errors, setErrors] = useState<Partial<RMACreateRequestDTO>>({});
@@ -26,28 +25,41 @@ export const useCreateRMAForm = (selectedContact?: Lead | null) => {
         companyName: selectedContact?.companyName || "",
         phoneNumber: selectedContact?.officePhoneNumber || selectedContact?.phoneNumber || "",
 
-        // Handle custom_fields based on array length
-        // rMAProblemDescription: (() => {
-         
-        //   const customFields = selectedContact.custom_fields || [];
-          
 
-        //   if (customFields.length === 0) return "";
-        //   if (customFields.length === 1) return customFields[0].value || "";
-        //   if (customFields.length >= 2) return customFields[0].value || "";
-        //   return "";
-        // })(),
-        // notes: (() => {
-        //   const customFields = selectedContact.custom_fields || [];
-        //   if (customFields.length === 0) return "";
-        //   if (customFields.length === 1) return "";
-        //   if (customFields.length >= 2) return customFields[1].value || "";
-        //   return "";
-        // })(),
       }));
-      toast.success(`Form populated with contact: ${selectedContact.firstName} ${selectedContact.lastName }`);
+      toast.success(`Form populated with contact: ${selectedContact.firstName} ${selectedContact.lastName}`);
     }
   }, [selectedContact]);
+
+  useEffect(() => {
+    if (selectedOpportunity) {
+      const noteFields = [
+        //selectedOpportunity?.opportunityName,
+        { label: "Service Type", value: selectedOpportunity?.type_of_service_633489e2066cb },
+        { label: "Product Enquiry", value: selectedOpportunity?.product_enquiry_633487faea1c8 },
+        { label: "Message", value: selectedOpportunity?.message_633489f949d24 },
+        { label: "RFQ Data", value: selectedOpportunity?.rfq_data_dump_6334bf377f7f6 },
+        { label: "Quote Source", value: selectedOpportunity?.quote_source_634de14fe2552 },
+        { label: "Opportunity Details", value: selectedOpportunity?.opportunity_6398afa43a373 },
+        { label: "Contact By", value: selectedOpportunity?.contact_by_633489cc3366e },
+        { label: "Loss Reason", value: selectedOpportunity?.reasons_for_loss__outbound_sales___6859ca4e19edb },
+      ]
+        .filter((field) => field.value && field.value.trim() !== "") // Filter out empty/null values
+        .map((field) => `${field.label}: ${field.value}`); // Format as "Label: Value"
+
+      const note = noteFields.length > 0 ? noteFields.join(" | ") : "No additional details available";
+      console.log("Generated note from opportunity:", selectedOpportunity);
+      console.log("Generated note from opportunity:", note);
+
+      setFormData((prev) => ({
+        ...prev,
+
+        rMAProblemDescription: selectedOpportunity?.opportunityName || "",
+        notes: note,
+      }));
+      toast.success(`Form populated with Opportunity: ${selectedOpportunity?.opportunityName || ""}`);
+    }
+  }, [selectedOpportunity]);
 
   const handleFieldChange =
     (field: keyof RMACreateRequestDTO) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | any) => {
@@ -78,11 +90,8 @@ export const useCreateRMAForm = (selectedContact?: Lead | null) => {
       newErrors.customerEmail = "Invalid email format";
     }
 
-  //   if (!formData.rMAProblemDescription) {
-  //  //   newErrors.rMAProblemDescription = "Problem description is required";
-  //   } else 
-      
-      if (formData.rMAProblemDescription  &&formData.rMAProblemDescription.length > 400) {
+
+    if (formData.rMAProblemDescription && formData.rMAProblemDescription.length > 400) {
       newErrors.rMAProblemDescription = "Problem description must be at most 400 characters";
     }
     if (formData.notes && formData.notes.length > 300) {
@@ -227,10 +236,9 @@ export const useCreateRMAForm = (selectedContact?: Lead | null) => {
       console.log("RMA created successfully:", createdRMA);
 
       if (createdRMA) {
-  
         toast.success(`RMA  created successfully!`);
 
-               const filename = `RMAShippingLabel-No_${createdRMA.rmaData.rmaNumber}_${createdRMA.rmaData.contactName}_${new Date().toISOString().split("T")[0]}.doc`;
+        const filename = `RMAShippingLabel-No_${createdRMA.rmaData.rmaNumber}_${createdRMA.rmaData.contactName}_${new Date().toISOString().split("T")[0]}.doc`;
         downloadDocumentFromBytes(createdRMA.rmaLabel, filename);
 
         // If it's a regular response object, open mail client

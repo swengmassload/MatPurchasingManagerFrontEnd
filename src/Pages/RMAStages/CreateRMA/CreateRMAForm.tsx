@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography, Paper, Stack } from "@mui/material";
-import {  Lead } from "../../../Models/ConstantContactModels/ConstantContactDTO";
+import {  Lead, Opportunity } from "../../../Models/ConstantContactModels/ConstantContactDTO";
 
 import { useCreateRMAForm } from "./Hooks/useCreateRMAForm";
 import CustomerInformationSection from "./Components/CustomerInformationSection";
@@ -11,10 +11,11 @@ import FormActions from "./Components/FormActions";
 
 interface CreateRMAFormProps {
   selectedLead?: Lead | null;
+  selectedOpportunity?: Opportunity | null;
   
 }
 
-const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedLead }) => {
+const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedLead, selectedOpportunity }) => {
   const {
     formData,
     errors,
@@ -23,7 +24,7 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedLead }) => {
     handleDateChange,
     handleCreateContactChange,
     handleSubmit,
-  } = useCreateRMAForm(selectedLead);
+  } = useCreateRMAForm(selectedLead, selectedOpportunity);
 
   return (
     <Box sx={{ maxWidth: 1200, margin: "0 auto", padding: 2, pt: 0 }}>
@@ -45,11 +46,11 @@ const CreateRMAForm: React.FC<CreateRMAFormProps> = ({ selectedLead }) => {
               onDateChange={handleDateChange}
             />
 
-            <ContactOptionsSection
+            {/* <ContactOptionsSection
               formData={formData}
             
               onCreateContactChange={handleCreateContactChange}
-            />
+            /> */}
 
             <FormActions isSubmitting={isSubmitting} />
           </Stack>

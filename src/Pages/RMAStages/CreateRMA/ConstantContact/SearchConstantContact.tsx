@@ -16,7 +16,6 @@ const SearchConstantContact: React.FC<SearchConstantContactProps> = ({
   onOpportunitySelected
 
 }) => {
-  console.log("🔄 SearchConstantContact component rendered");
 
   const {
     searchEmail,
@@ -71,6 +70,7 @@ const SearchConstantContact: React.FC<SearchConstantContactProps> = ({
           result={result}
           searchEmail={searchEmail}
           selectedLead={selectedLead}
+          selectedOpportunity={selectedOpportunity}
           onUseLeadDetails={handleUseLeadDetails}
           onUseOpportunityDetails={handleUseOpportunityDetails}
 
