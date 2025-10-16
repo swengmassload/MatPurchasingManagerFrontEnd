@@ -60,7 +60,7 @@ const OpportunityList: React.FC<OpportunityListProps> = ({
     <Box sx={{ mt: 3 }}>
       <Divider sx={{ my: 2 }} />
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-        Opportunities : ({opportunityList.length})
+        <span>Opportunit{opportunityList.length < 2 ? "y" : "ies"}</span> found: ({opportunityList.length})
       </Typography>
 
       <Stack spacing={2}>
@@ -81,18 +81,14 @@ const OpportunityList: React.FC<OpportunityListProps> = ({
                     {opportunity.opportunityName || `Opportunity ${opportunity.id}`}
                   </Typography>
                   <Box sx={{ display: "flex", gap: 1, mt: 1, flexWrap: "wrap" }}>
-                    <Chip label={`$${opportunity.amount || "0"}`} size="small" color="primary" variant="outlined" />
+                    {/* <Chip label={`$${opportunity.amount || "0"}`} size="small" color="primary" variant="outlined" />
                     <Chip
                       label={`${opportunity.probability || "0"}% probability`}
                       size="small"
                       color="secondary"
                       variant="outlined"
-                    />
-                    <Chip
-                      label={opportunity.isWon === "1" ? "Won" : "Loss"}
-                      size="small"
-                      color={opportunity.isWon === "1" ? "success" : "error"}
-                    />
+                    /> */}
+
                     <Chip
                       label={opportunity.isClosed === "1" ? "Closed" : "Open"}
                       size="small"

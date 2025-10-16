@@ -32,7 +32,7 @@ return  ( (result?.isSuccess  && result.dataFromLeadsFromLead  && result.opportu
             color: "text.primary",
           }}
         >
-          Search Results ({result.dataFromLeadsFromLead.companyName}  with  {result.opportunityList.length}  Opportunit{result.opportunityList.length < 1 ? "y" : "ies"}   found)
+         {result.dataFromLeadsFromLead.companyName} company with  {result.opportunityList.length}  Opportunit{result.opportunityList.length < 2 ? "y" : "ies"}   found
         </Typography>
         <Stack spacing={2}>
         

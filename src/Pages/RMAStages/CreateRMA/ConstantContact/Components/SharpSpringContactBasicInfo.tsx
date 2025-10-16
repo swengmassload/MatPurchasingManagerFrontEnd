@@ -35,7 +35,7 @@ const SharpSpringContactBasicInfo: React.FC<LeadBasicInfoProps> = ({
           mb: 0.5,
         }}
       >
-        {lead.firstName || "N/A"} {lead.lastName || "N/A"}
+       Name : {lead.firstName || ""} {lead.lastName || ""}
       </Typography>
 
       <Stack spacing={1.5}>
