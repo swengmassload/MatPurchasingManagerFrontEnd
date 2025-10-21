@@ -1,103 +1,103 @@
-import React from "react";
-import { Box, Typography } from "@mui/material";
-import DateRangeComponent from "./DateRangeComponent";
-import RMANumberRange from "./ProductIdNumberRange";
-import CustomerEmail from "./CustomerEmail";
-import SalesOrderId from "./SalesOrderId";
-import AllStagesDropDown from "./StageComponents/SearchingComponenets/AllStagesDropDown";
+// import React from "react";
+// import { Box, Typography } from "@mui/material";
+// import DateRangeComponent from "./DateRangeComponent";
+// import RMANumberRange from "./ProductIdNumberRange";
+// import CustomerEmail from "./CustomerEmail";
+// import SalesOrderId from "./SalesOrderId";
+// import AllStagesDropDown from "./StageComponents/SearchingComponenets/AllStagesDropDown";
 
-import { SimpleBoxborder } from "../../../Components/Common/SimpleBoxborder";
-import { RMASearchRequestDTO } from "../../../Models/RMAManagerModels/Dto";
-import CompanyContactSearch from "./CompanyContactSearch";
-import AllUsers from "./StageComponents/SearchingComponenets/AllUsers";
+// import { SimpleBoxborder } from "../../../Components/Common/SimpleBoxborder";
+// import { RMASearchRequestDTO } from "../../../Models/RMAManagerModels/Dto";
+// import CompanyContactSearch from "./CompanyContactSearch";
+// import AllUsers from "./StageComponents/SearchingComponenets/AllUsers";
 
-interface RMASearchSpecifierProps {
-  RMASearchSpecifierCaption: string;
-  handleSearchRMA: (input: RMASearchRequestDTO) => Promise<void>;
-}
+// interface RMASearchSpecifierProps {
+//   RMASearchSpecifierCaption: string;
+//   handleSearchRMA: (input: RMASearchRequestDTO) => Promise<void>;
+// }
 
-const RMASearchSpecifier: React.FC<RMASearchSpecifierProps> = ({ RMASearchSpecifierCaption, handleSearchRMA }) => {
-  return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem", width: "100%", alignItems: "flex-start" }}>
-      {/* Title */}
-      <Box sx={{ display: "flex", gap: "1rem", width: "100%", justifyContent: "center", padding: "1rem" }}>
-        <Typography
-          sx={{ fontFamily: "Inter", fontWeight: 500, fontSize: "18px", lineHeight: "30px", letterSpacing: "-1%" }}
-        >
-          {RMASearchSpecifierCaption}
-        </Typography>
-      </Box>
-      {/* Date Range Filters */}
-      <Box
-        sx={{ display: "flex", gap: "1rem", width: "100%", justifyContent: "left", alignItems: "flex-start", mt: 0 }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            gap: "1rem",
-            flexDirection: "column",
-            justifyContent: "left",
-            alignItems: "flex-start",
-            width: "100%",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              gap: "1rem",
+// const RMASearchSpecifier: React.FC<RMASearchSpecifierProps> = ({ RMASearchSpecifierCaption, handleSearchRMA }) => {
+//   return (
+//     <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem", width: "100%", alignItems: "flex-start" }}>
+//       {/* Title */}
+//       <Box sx={{ display: "flex", gap: "1rem", width: "100%", justifyContent: "center", padding: "1rem" }}>
+//         <Typography
+//           sx={{ fontFamily: "Inter", fontWeight: 500, fontSize: "18px", lineHeight: "30px", letterSpacing: "-1%" }}
+//         >
+//           {RMASearchSpecifierCaption}
+//         </Typography>
+//       </Box>
+//       {/* Date Range Filters */}
+//       <Box
+//         sx={{ display: "flex", gap: "1rem", width: "100%", justifyContent: "left", alignItems: "flex-start", mt: 0 }}
+//       >
+//         <Box
+//           sx={{
+//             display: "flex",
+//             gap: "1rem",
+//             flexDirection: "column",
+//             justifyContent: "left",
+//             alignItems: "flex-start",
+//             width: "100%",
+//           }}
+//         >
+//           <Box
+//             sx={{
+//               display: "flex",
+//               gap: "1rem",
 
-              width: "100%",
-            }}
-          >
-            <DateRangeComponent handleSearchRMA={handleSearchRMA} caption="Issued" SearchBy={"IssuedDate"} />
-            <DateRangeComponent handleSearchRMA={handleSearchRMA} caption="Received " SearchBy={"ReceivedDate"} />
-          </Box>
-          {/* RMA Number Range and Company/Contact Info */}
-          <Box
-            sx={{
-              ...SimpleBoxborder,
-              display: "flex",
-              gap: "1rem",
-              alignContent: "flex-start",
-              padding: "1rem",
-              width: "100%",
-            }}
-          >
-            <RMANumberRange handleSearchRMA={handleSearchRMA} />
-            <CompanyContactSearch handleSearchRMA={handleSearchRMA} />
-          </Box>
-        </Box>
-      </Box>
-      {/* Email and Sales Order */}
-      <Box
-        sx={{
-          ...SimpleBoxborder,
-          display: "flex",
-          gap: "1rem",
-          width: "100%",
-          justifyContent: "left",
-          alignItems: "flex-start",
-          mt: 0,
-          p: 2,
-          pl: 0,
-        }}
-      >
-        <Box sx={{ display: "flex", width: "100%", gap: "2rem", padding: "1rem" }}>
-          <CustomerEmail handleSearchRMA={handleSearchRMA} />
-          <SalesOrderId handleSearchRMA={handleSearchRMA} />
-        </Box>
-      </Box>
-      {/* Stage and Sales Person */}
-      <Box
-        sx={{ display: "flex", gap: "1rem", width: "100%", justifyContent: "left", alignItems: "flex-start", mt: 0 }}
-      >
-        <Box sx={{ ...SimpleBoxborder, width: "100%", gap: "2rem", padding: "1rem" }}>
-          <AllStagesDropDown handleSearchRMA={handleSearchRMA} />
-          <AllUsers handleSearchRMA={handleSearchRMA} />
-        </Box>
-      </Box>
-    </Box>
-  );
-};
+//               width: "100%",
+//             }}
+//           >
+//             <DateRangeComponent handleSearchRMA={handleSearchRMA} caption="Issued" SearchBy={"IssuedDate"} />
+//             <DateRangeComponent handleSearchRMA={handleSearchRMA} caption="Received " SearchBy={"ReceivedDate"} />
+//           </Box>
+//           {/* RMA Number Range and Company/Contact Info */}
+//           <Box
+//             sx={{
+//               ...SimpleBoxborder,
+//               display: "flex",
+//               gap: "1rem",
+//               alignContent: "flex-start",
+//               padding: "1rem",
+//               width: "100%",
+//             }}
+//           >
+//             <RMANumberRange handleSearchRMA={handleSearchRMA} />
+//             <CompanyContactSearch handleSearchRMA={handleSearchRMA} />
+//           </Box>
+//         </Box>
+//       </Box>
+//       {/* Email and Sales Order */}
+//       <Box
+//         sx={{
+//           ...SimpleBoxborder,
+//           display: "flex",
+//           gap: "1rem",
+//           width: "100%",
+//           justifyContent: "left",
+//           alignItems: "flex-start",
+//           mt: 0,
+//           p: 2,
+//           pl: 0,
+//         }}
+//       >
+//         <Box sx={{ display: "flex", width: "100%", gap: "2rem", padding: "1rem" }}>
+//           <CustomerEmail handleSearchRMA={handleSearchRMA} />
+//           <SalesOrderId handleSearchRMA={handleSearchRMA} />
+//         </Box>
+//       </Box>
+//       {/* Stage and Sales Person */}
+//       <Box
+//         sx={{ display: "flex", gap: "1rem", width: "100%", justifyContent: "left", alignItems: "flex-start", mt: 0 }}
+//       >
+//         <Box sx={{ ...SimpleBoxborder, width: "100%", gap: "2rem", padding: "1rem" }}>
+//           <AllStagesDropDown handleSearchRMA={handleSearchRMA} />
+//           <AllUsers handleSearchRMA={handleSearchRMA} />
+//         </Box>
+//       </Box>
+//     </Box>
+//   );
+// };
 
-export default RMASearchSpecifier;
+// export default RMASearchSpecifier;

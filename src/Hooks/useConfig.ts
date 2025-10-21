@@ -83,6 +83,7 @@ export function useConfigUrls() {
       port: keyof Pick<
         AppConfig,
         "DASHBOARD_PORT" | "REGISTRATIONFRONT_PORT" | "MODELMANAGERFRONT_PORT" | "PRODUCTMANAGERFRONT_PORT"
+        | "RMAMANAGERFRONT_PORT" | "MATERIALPURCHASINGFRONT_PORT"
       >,
       path?: string
     ) => {

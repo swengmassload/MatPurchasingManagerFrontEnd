@@ -1,4 +1,4 @@
-import { PRODUCTAPINAME, RegistrationAPINAME, RMAAPINAME } from "./APINames";
+import { PRODUCTAPINAME, MATERIALPURCHASINGAPINAME, RegistrationAPINAME, RMAAPINAME } from "./APINames";
 
 
 export const RegistrationEnpoints = {
@@ -9,6 +9,13 @@ export const RegistrationEnpoints = {
 
 };
   
+
+export const MaterialPurchasingManagerEnpoints = {
+  PurchasingByStage: `${MATERIALPURCHASINGAPINAME}/v1/Purchasing/Stage`,
+};
+
+
+
 export const ProductManagerEnpoints = {
   ProductMovingEvents: `${PRODUCTAPINAME}/v1/ProductMovingEvents`,
   GetProductById: `${PRODUCTAPINAME}/v1/Products/`,

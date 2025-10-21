@@ -8,11 +8,10 @@ export interface AppConfig {
   REGISTRATIONFRONT_PORT: string;
   MODELMANAGERFRONT_PORT: string;
   PRODUCTMANAGERFRONT_PORT: string;
+  MATERIALPURCHASINGFRONT_PORT: string;
   RMAMANAGERFRONT_PORT: string;
   GATEWAY_PORT: string;
-  CLIENTID: string;
-  REDIRECTROUTE: string;
-  CONSTANTAUTHURL: string;
+
 
 }
 
@@ -35,11 +34,14 @@ class ConfigService {
 
     this.configPromise = this.fetchConfig();
     this.config = await this.configPromise;
+
+
     return this.config;
   }
 
   private async fetchConfig(): Promise<AppConfig> {
     try {
+      debugger
       const response = await fetch("/config.json");
       if (!response.ok) {
         throw new Error(`Failed to load config: ${response.status} ${response.statusText}`);
@@ -52,32 +54,30 @@ class ConfigService {
       return config as AppConfig;
     } catch (error) {
       console.error("Error loading configuration:", error);
-      // Use hardcoded fallback values instead of environment variables
+
       return this.getFallbackConfig();
     }
   }
 
   private validateConfig(config: any): void {
     const requiredFields: (keyof AppConfig)[] = [
-    //  "ENVIRONMENT",
+      // Remember that this will throw if any required field is missing
       "APPLICATIONSTAGE",
       "GATEWAYSERVERIP",
       "SERVERPROTOCOL",
       "FRONTENDPROTOCOL",
       "DASHBOARD_PORT",
-      "REGISTRATIONFRONT_PORT",
-      "MODELMANAGERFRONT_PORT",
-      "PRODUCTMANAGERFRONT_PORT",
-      "RMAMANAGERFRONT_PORT",
       "GATEWAY_PORT",
-      "CLIENTID",
-      "REDIRECTROUTE",
-      "CONSTANTAUTHURL",  
+      "MATERIALPURCHASINGFRONT_PORT",
+     
     ];
 
     for (const field of requiredFields) {
       if (!(field in config)) {
-        throw new Error(`Missing required configuration field: ${field}`);
+
+        console.error(`validateConfig method threw Missing required field ${field} in  config.ts: `);
+        alert(`validateConfig method threw Missing required field ${field} in  config.ts: `);
+        throw new Error(`validateConfig method threw Missing required field  ${field} in  config.ts:`);
       }
     }
   }
@@ -87,7 +87,7 @@ class ConfigService {
     return {
      // ENVIRONMENT: "UNKNOWN ENVIRONMENT",
       APPLICATIONSTAGE: "UNKNOWN",
-      GATEWAYSERVERIP: "UNKNOWN",
+      GATEWAYSERVERIP: "PROBLEM_FETCHING_GATEWAY_SERVER_IP",
 
       SERVERPROTOCOL: "https://",
       FRONTENDPROTOCOL: "http://",
@@ -97,9 +97,8 @@ class ConfigService {
       PRODUCTMANAGERFRONT_PORT: ":5173",
       RMAMANAGERFRONT_PORT: ":5175",
       GATEWAY_PORT: ":7179",
-      CLIENTID: "UNKNOWN_CLIENT_ID",
-      REDIRECTROUTE: "UNKNWOWN_REDIRECT_ROUTE",
-      CONSTANTAUTHURL: "UNKNOWN_CONSTANT_AUTH_URL",
+      MATERIALPURCHASINGFRONT_PORT: ":5176",
+
     };
   }
 
@@ -140,8 +139,8 @@ class ConfigService {
   async buildFrontendUrl(
     port: keyof Pick<
       AppConfig,
-     "DASHBOARD_PORT" | "REGISTRATIONFRONT_PORT" | "MODELMANAGERFRONT_PORT" | "PRODUCTMANAGERFRONT_PORT" | "RMAMANAGERFRONT_PORT"
-    //| "GATEWAY_PORT"| "CLIENTID" | "CONSTANTAUTHURL"| "REDIRECTROUTE"   
+     "DASHBOARD_PORT" | "REGISTRATIONFRONT_PORT" | "MODELMANAGERFRONT_PORT" | "PRODUCTMANAGERFRONT_PORT" | "RMAMANAGERFRONT_PORT" | "MATERIALPURCHASINGFRONT_PORT"
+    //| "GATEWAY_PORT"| "CLIENTID" | "CONSTANTAUTHURL"| "REDIRECTROUTE"
      >,
     path: string = ""
   ): Promise<string> {
@@ -161,9 +160,7 @@ export const buildGatewayUrl = (endpoint?: string) => configService.buildGateway
 export const buildFrontendUrl = (
   port: keyof Pick<
     AppConfig,
-    "DASHBOARD_PORT" | "REGISTRATIONFRONT_PORT" | "MODELMANAGERFRONT_PORT" | "PRODUCTMANAGERFRONT_PORT" | "RMAMANAGERFRONT_PORT"
-  //  | "GATEWAY_PORT"| "CLIENTID" | "CONSTANTAUTHURL"| "REDIRECTROUTE"
-    
+    "DASHBOARD_PORT" | "REGISTRATIONFRONT_PORT" | "MODELMANAGERFRONT_PORT" | "PRODUCTMANAGERFRONT_PORT" | "RMAMANAGERFRONT_PORT" | "MATERIALPURCHASINGFRONT_PORT"
   >,
   path?: string
 ) => configService.buildFrontendUrl(port, path);

@@ -13,68 +13,23 @@ export interface SideBarItemProps {
   subitem?: SideBarItemProps[];
 }
 export const SideBarContent: SideBarItemProps[] = [
-  // {
-  //   sideBarText: SideBarMenuName.ProductionStages.stage,
-  //   sidebarIconUrl: assets.icons.productionstages,
-  //   iconClosed: KeyboardArrowDownIcon,
-  //   iconOpened: KeyboardArrowUpIcon,
-  //   menuNumber: 1,
-  //   level: 9,
-  //   subitem: [
-
-    
-  //   ],
-  // },
 
 
     {
-    sideBarText: SideBarMenuName.CreateRMA.description,
+    sideBarText: SideBarMenuName.KanbanScanned.description,
     sidebarIconUrl: assets.icons.defects,
-    sideBarLink: SideBarMenuName.CreateRMA.route,
+    sideBarLink: SideBarMenuName.KanbanScanned.route,
     level: 0,
     menuNumber: 1,
   },
 
 
   {
-    sideBarText: SideBarMenuName.RECEIVEPACKAGE.description,
+    sideBarText: SideBarMenuName.RECEIVE_Material.description,
     sidebarIconUrl: assets.icons.defects,
-    sideBarLink: SideBarMenuName.RECEIVEPACKAGE.route,
+    sideBarLink: SideBarMenuName.RECEIVE_Material.route,
     level: 0,
     menuNumber: 2,
   },
-  {
-    sideBarText: SideBarMenuName.ACCESSEDPRODUCT.description,
-    sidebarIconUrl: assets.icons.defects,
-    sideBarLink: SideBarMenuName.ACCESSEDPRODUCT.route,
-    level: 0,
-    menuNumber: 3,
-  },
-  {
-    sideBarText: SideBarMenuName.ADDSALESORDER.description,
-    sidebarIconUrl: assets.icons.defects,
-    sideBarLink: SideBarMenuName.ADDSALESORDER.route,
-    level: 0,
-    menuNumber: 4,
-  },
-  {
-    sideBarText: SideBarMenuName.REPAIRPRODUCT.description,
-    sidebarIconUrl: assets.icons.defects,
-    sideBarLink: SideBarMenuName.REPAIRPRODUCT.route,
-    level: 0,
-    menuNumber: 5,
-  },
-  {
-    sideBarText: SideBarMenuName.CLOSEDRMA.description,
-    sidebarIconUrl: assets.icons.defects,
-    sideBarLink: SideBarMenuName.CLOSEDRMA.route,
-    level: 0,
-    menuNumber: 6,
-  },{
-    sideBarText: SideBarMenuName.TRACKING.description,
-    sidebarIconUrl: assets.icons.defects,
-    sideBarLink: SideBarMenuName.TRACKING.route,
-    level: 0,
-    menuNumber: 7,
-  }
+ 
 ]; //as SideBarItemProps[];

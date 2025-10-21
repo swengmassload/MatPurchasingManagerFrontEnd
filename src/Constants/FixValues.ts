@@ -13,10 +13,9 @@ let currentConfig: AppConfig = {
   MODELMANAGERFRONT_PORT: ":5172",
   PRODUCTMANAGERFRONT_PORT: ":5173",
   RMAMANAGERFRONT_PORT: ":5175",
+  MATERIALPURCHASINGFRONT_PORT: ":5176",
   GATEWAY_PORT: ":7179",
-  CLIENTID: "UNKNOWN_CLIENT_ID", // Default client ID
-  REDIRECTROUTE: "/oauth/callback", // Default redirect route
-  CONSTANTAUTHURL: "UNKNOWN_CONSTANT_AUTH_URL", // Default auth URL
+
 };
 
 // Exports for backward compatibility (will be updated by initializeConfig)
@@ -27,6 +26,7 @@ export let RegistrationFrontURL = `${currentConfig.FRONTENDPROTOCOL}${currentCon
 export let ModelManagerFrontURL = `${currentConfig.FRONTENDPROTOCOL}${currentConfig.GATEWAYSERVERIP}${currentConfig.MODELMANAGERFRONT_PORT}`;
 export let RMAManagerFrontURL = `${currentConfig.FRONTENDPROTOCOL}${currentConfig.GATEWAYSERVERIP}${currentConfig.RMAMANAGERFRONT_PORT}`;
 export let ProductManagerFrontURL = `${currentConfig.FRONTENDPROTOCOL}${currentConfig.GATEWAYSERVERIP}${currentConfig.PRODUCTMANAGERFRONT_PORT}`;
+export let MaterialPurchasingFrontEndurl = `${currentConfig.FRONTENDPROTOCOL}${currentConfig.GATEWAYSERVERIP}${currentConfig.MATERIALPURCHASINGFRONT_PORT}`;
 
 export let FronUrls = {
   REGISTRATIONMANAGER_FRONTURL: RegistrationFrontURL,
@@ -34,6 +34,7 @@ export let FronUrls = {
   PRODUCT_MANAGER_FRONTURL: ProductManagerFrontURL,
   MODEL_MANAGER_FRONTURL: ModelManagerFrontURL,
   RMA_MANAGER_FRONTURL: RMAManagerFrontURL,
+  MATERIAL_PURCHASING_MANAGER_FRONTURL: MaterialPurchasingFrontEndurl,
 };
 
 export let AuthUrls = {
@@ -78,6 +79,8 @@ function updateConfigValues(config: AppConfig): void {
   RegistrationFrontURL = `${config.FRONTENDPROTOCOL}${config.GATEWAYSERVERIP}${config.REGISTRATIONFRONT_PORT}`;
   ModelManagerFrontURL = `${config.FRONTENDPROTOCOL}${config.GATEWAYSERVERIP}${config.MODELMANAGERFRONT_PORT}`;
   RMAManagerFrontURL = `${config.FRONTENDPROTOCOL}${config.GATEWAYSERVERIP}${config.RMAMANAGERFRONT_PORT}`;
+  ProductManagerFrontURL = `${config.FRONTENDPROTOCOL}${config.GATEWAYSERVERIP}${config.PRODUCTMANAGERFRONT_PORT}`;
+  MaterialPurchasingFrontEndurl = `${config.FRONTENDPROTOCOL}${config.GATEWAYSERVERIP}${config.MATERIALPURCHASINGFRONT_PORT}`;
 
   // Update front URLs
   FronUrls = {
@@ -86,6 +89,7 @@ function updateConfigValues(config: AppConfig): void {
     MODEL_MANAGER_FRONTURL: ModelManagerFrontURL,
     RMA_MANAGER_FRONTURL: RMAManagerFrontURL,
     PRODUCT_MANAGER_FRONTURL: ProductManagerFrontURL,
+    MATERIAL_PURCHASING_MANAGER_FRONTURL: MaterialPurchasingFrontEndurl,
   };
 
   // Update auth URLs

@@ -58,7 +58,7 @@ export const SideBarListItems: React.FC<SideBarListItemsProps> = ({ toggleDrawer
                 textWrap: "wrap",
               }}
             >
-              RMA Manager
+              Material  Purchasing Manager
             </Typography>{" "}
           </Box>
         )}

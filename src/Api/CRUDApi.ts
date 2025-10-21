@@ -86,7 +86,7 @@ export interface CRUDApiInterface<CreateType, ResponseType> {
               if(data==null || data==undefined || data==="") 
                 {
                   alert("No Data Provided");
-                  console.log("No Data Provided1",data);  
+                  console.log("No Data Provided2",data);  
                   return Promise.reject(new Error("No Data Provided"));
                 }
               const query = ConvertToQueryString(data as unknown as object);
@@ -104,7 +104,7 @@ export interface CRUDApiInterface<CreateType, ResponseType> {
       updateData: (data: TRequestDTO) => baseRequest.PutData(axiosInstance, data),
       addData: (data?: TRequestDTO ) =>  { 
 
-        console.log("No Data Provided1",data);
+        console.log("No Data Provided3",data);
         console.log("addData",axiosInstance);
         return baseRequest.PostData(axiosInstance, data) 
       
@@ -126,7 +126,7 @@ function ConvertToQueryString(data: object) {
     
     {
     alert("No Data Provided");
-    console.log("No Data Provided1",data);  
+    console.log("No Data Provided4",data);  
       return "";
     }
   

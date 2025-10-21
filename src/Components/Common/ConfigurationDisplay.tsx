@@ -23,6 +23,7 @@ export const ConfigurationDisplay: React.FC = () => {
   React.useEffect(() => {
     const loadUrls = async () => {
       try {
+        alert("Loading URLs");
         const [gateway, dashboard, registration] = await Promise.all([
           buildGatewayUrl("/api"),
           buildFrontendUrl("DASHBOARD_PORT"),

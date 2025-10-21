@@ -82,7 +82,7 @@ const PlayGround = () => {
             textAlign: "center",
           }}
         >
-          &nbsp;RMA Manager,
+          &nbsp;Material Purchasing Manager,
         </Typography>
         <Typography
           style={{
