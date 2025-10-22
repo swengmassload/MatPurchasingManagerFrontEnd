@@ -140,8 +140,7 @@ class ConfigService {
     port: keyof Pick<
       AppConfig,
      "DASHBOARD_PORT" | "REGISTRATIONFRONT_PORT" | "MODELMANAGERFRONT_PORT" | "PRODUCTMANAGERFRONT_PORT" | "RMAMANAGERFRONT_PORT" | "MATERIALPURCHASINGFRONT_PORT"
-    //| "GATEWAY_PORT"| "CLIENTID" | "CONSTANTAUTHURL"| "REDIRECTROUTE"
-     >,
+       >,
     path: string = ""
   ): Promise<string> {
     const config = await this.loadConfig();

@@ -6,10 +6,10 @@ pipeline {
     }
 
     environment {
-        PROJECT_NAME = "RMAMANAGERFRONTEND"
-        DEPLOY_PATH = "E:\\MASSFUSION2DEPLOYMENTS\\FRONTENDS\\RMAMANAGERFRONTEND"
+        PROJECT_NAME = "MATPURCHASINGMANAGERFRONTEND"
+        DEPLOY_PATH = "E:\\MASSFUSION2DEPLOYMENTS\\FRONTENDS\\MATPURCHASINGMANAGERFRONTEND"
         BACKUP_PATH = "E:\\MASSFUSION2DEPLOYMENTS\\FRONTENDS\\BACKUPS"
-        CONFIG_PATH = "E:\\MASSFUSION2DEPLOYMENTS\\FRONTENDS\\CONFIGURATIONFILES\\RMAMANAGERFRONTEND"
+        CONFIG_PATH = "E:\\MASSFUSION2DEPLOYMENTS\\FRONTENDS\\CONFIGURATIONFILES\\MATPURCHASINGMANAGERFRONTEND"
     }
 
     stages {
@@ -17,7 +17,7 @@ pipeline {
             steps {
                 git branch: 'main', 
                     credentialsId: 'userpassoladejiAtmassload', 
-                    url: 'https://github.com/swengmassload/RMAManagerFrontEnd.git'
+                    url: 'https://github.com/swengmassload/MatPurchasingManagerFrontEnd.git'
             }
         }
 

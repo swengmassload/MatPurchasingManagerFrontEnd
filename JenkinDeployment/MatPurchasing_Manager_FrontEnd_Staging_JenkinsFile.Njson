@@ -6,8 +6,8 @@ pipeline {
     }
 
     environment {
-        PROJECT_FOLDER_NAME = "RMAMANAGERFRONTEND" // Define the project folder name as an environment variable
-        GIT_REPO_URL = "https://github.com/swengmassload/RMAManagerFrontEnd.git"
+        PROJECT_FOLDER_NAME = "MATPURCHASINGMANAGERFRONTEND" // Define the project folder name as an environment variable
+        GIT_REPO_URL = "https://github.com/swengmassload/MatPurchasingManagerFrontEnd.git"
         GIT_CREDENTIALS_ID = "userpassoladejiAtmassload"
         GIT_BRANCH = "main"
         SOURCE_DIR = "dist"
