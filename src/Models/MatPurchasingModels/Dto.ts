@@ -100,10 +100,34 @@ export interface KanbanContainerUpdateRequestDTO {
     guidId?: string;
 }
 
+
 export interface MaterialRequestCreateRequestDTO {
     id?: string;
-    partCode?: string | undefined;
     requestDate?: Date;
+    userName?: string | undefined;
+    description?: string | undefined;
+    notes?: string | undefined;
+    stage?: string | undefined;
+    guidId?: string;
+}
+
+export interface MaterialRequestDetailsCreateRequestDTO {
+    materialRequestId?: string;
+    partCode?: string | undefined;
+    pONumber?: string | undefined;
+    userName?: string | undefined;
+    notes?: string | undefined;
+    stage?: string | undefined;
+    guidId?: string;
+}
+
+export interface MaterialRequestDetailsResponseDTO {
+    value?: any | undefined;
+}
+
+export interface MaterialRequestDetailsUpdateRequestDTO {
+    materialRequestId?: string;
+    partCode?: string | undefined;
     pONumber?: string | undefined;
     userName?: string | undefined;
     notes?: string | undefined;
@@ -117,10 +141,9 @@ export interface MaterialRequestResponseDTO {
 
 export interface MaterialRequestUpdateRequestDTO {
     id?: string;
-    partCode?: string | undefined;
     requestDate?: Date;
-    pONumber?: string | undefined;
     userName?: string | undefined;
+    description?: string | undefined;
     notes?: string | undefined;
     stage?: string | undefined;
     guidId?: string;
