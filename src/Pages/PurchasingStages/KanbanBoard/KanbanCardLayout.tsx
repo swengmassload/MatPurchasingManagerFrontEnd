@@ -6,8 +6,9 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { TabBorderStyle, TabIndicatorStyle, TabListSyle } from '../../../Components/Common/TabListStyle';
 //import { EstablishedClaims } from '../../../Constants/EstablishedClaims';
-import ScanKanbanBoard from './ScanKanbanBoard/ScanKanbanBoard';
+
 import AddKanbanItem from './AddKanbanItem/AddKanbanItem';
+import ScanKanbanCard from './ScanKanbanCard/ScanKanbanCard';
 
 const KanbanCardLayout= () => {
   const [value, setValue] = useState("1");
@@ -27,7 +28,7 @@ const KanbanCardLayout= () => {
             <Tab sx={TabBorderStyle} label="Add/View Kanban Item" value="1" />
           </Tabs>
           <TabPanel value="2" sx={{ padding: "0px" }}>
-            <ScanKanbanBoard />
+            <ScanKanbanCard />
           </TabPanel>
           <TabPanel value="1" sx={{ padding: "0px" }}>
             <AddKanbanItem />
