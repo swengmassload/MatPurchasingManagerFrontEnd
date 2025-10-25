@@ -9,20 +9,20 @@ export interface Status {
   code: string;
 }
 
-
 export interface PurchasingStage {
   stage: string;
-  code: string;// code is used for routing
+  code: string; // code is used for routing
   priority?: number;
   CommonName: string;
   stageCardName?: string;
 }
 
 export class PurchasingStages {
-  public static readonly KARBANSCANNED: PurchasingStage = {
-    stage: "KARBAN_SCANNED",
-    code: "KARBANSCANNED",
-    CommonName: "Karban Scanned",
+  public static readonly KANBANSCANNED: PurchasingStage = {
+    stage: "KANBAN_SCANNED",
+    code: "KANBANSCANNED",
+    CommonName: "Kanban Board",
+
 
     priority: 1,
   };
@@ -40,13 +40,11 @@ export class PurchasingStages {
     priority: 4,
   };
   public static readonly AllStages: PurchasingStage[] = [
-    PurchasingStages.KARBANSCANNED,
+    PurchasingStages.KANBANSCANNED,
     PurchasingStages.MATERIALRECEIVED,
     PurchasingStages.TRACKING,
   ];
-
 }
-
 
 // export interface RMAStage {
 //   stage: string;

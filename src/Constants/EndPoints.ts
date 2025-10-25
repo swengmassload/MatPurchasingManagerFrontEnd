@@ -12,6 +12,7 @@ export const RegistrationEnpoints = {
 
 export const MaterialPurchasingManagerEnpoints = {
   PurchasingByStage: `${MATERIALPURCHASINGAPINAME}/v1/Purchasing/Stage`,
+  GetKanbanDetailsEndPoint: `${MATERIALPURCHASINGAPINAME}/v1/Purchasing/KanbanDetails`,
 };
 
 

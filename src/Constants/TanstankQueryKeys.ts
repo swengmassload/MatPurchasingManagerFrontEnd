@@ -1,58 +1,68 @@
+import { RMAGetTrackingDetailRequestDTO } from "../Models/RMAManagerModels/Dto";
 
-import { useGetContactByContactIdProps } from "../Hooks/useGetContactByContactId";
-import { RMAGetRequestByStage, RMAGetTrackingDetailRequestDTO, RMASearchRequestDTO } from "../Models/RMAManagerModels/Dto";
 
 export const QueryKeys = {
-  useGetContactByEmailKey: {
-    mainKey: "Contacts",
+
+useGetKanbanDetailsKey: {
+    mainKey: "useGetKanbanDetailsKey",
   },
-
-
-
-  useGetIndicatorsModelsKey: {
-    mainKey: "useGetIndicatorsModelsKey",
-  },
-  
-useGetSearchRMA: {
-    mainKey: "useGetSearchRMA",
-    subKeys: (params: { req: RMASearchRequestDTO }) => [params],
-  },
-
+//make sure  you remove this later
   useGetRMATrackingDetails: {
     mainKey: "useGetRMATrackingDetails",
     subKeys: (params: { req: RMAGetTrackingDetailRequestDTO }) => [params.req.stage, params.req.rMANumber],
   },
 
-  useGetRMASolutionTypesKey: {
-    mainKey: "useGetRMASolutionTypes",
-  },
 
-  useGenerateReportsKey: {
-    mainKey: "useGenerateReports",
-  },
-  useGetRMAByStage: {
-    mainKey: "useGetRMAByStage",
-    subKeys: (params: { req: RMAGetRequestByStage }) => [params.req.Stage],
-  },
+//   useGetContactByEmailKey: {
+//     mainKey: "Contacts",
+//   },
 
-  useGetRMAProblemTypesKey: {
-    mainKey: "useGetRMAProblemTypes",
-  },
 
-  useGetRMANumberKey: {
-    mainKey: "RMANextNumber",
-  },
 
-  useGetContactByContactIdKey: {
-    mainKey: "ContactsByContactId",
-    subKeys: (params: { data: useGetContactByContactIdProps }) => [params.data.ContactId],
-  },
+//   useGetIndicatorsModelsKey: {
+//     mainKey: "useGetIndicatorsModelsKey",
+//   },
+  
+// useGetSearchRMA: {
+//     mainKey: "useGetSearchRMA",
+//     subKeys: (params: { req: RMASearchRequestDTO }) => [params],
+//   },
 
-  useCreateRMAKey: {
-    mainKey: "CreateRMA",
-  },
+//   useGetRMATrackingDetails: {
+//     mainKey: "useGetRMATrackingDetails",
+//     subKeys: (params: { req: RMAGetTrackingDetailRequestDTO }) => [params.req.stage, params.req.rMANumber],
+//   },
 
-  useGetRMAByIdKey: {
-    mainKey: "useGetRMAById",
-  },
+//   useGetRMASolutionTypesKey: {
+//     mainKey: "useGetRMASolutionTypes",
+//   },
+
+//   useGenerateReportsKey: {
+//     mainKey: "useGenerateReports",
+//   },
+//   useGetRMAByStage: {
+//     mainKey: "useGetRMAByStage",
+//     subKeys: (params: { req: RMAGetRequestByStage }) => [params.req.Stage],
+//   },
+
+//   useGetRMAProblemTypesKey: {
+//     mainKey: "useGetRMAProblemTypes",
+//   },
+
+//   useGetRMANumberKey: {
+//     mainKey: "RMANextNumber",
+//   },
+
+//   useGetContactByContactIdKey: {
+//     mainKey: "ContactsByContactId",
+//     subKeys: (params: { data: useGetContactByContactIdProps }) => [params.data.ContactId],
+//   },
+
+//   useCreateRMAKey: {
+//     mainKey: "CreateRMA",
+//   },
+
+//   useGetRMAByIdKey: {
+//     mainKey: "useGetRMAById",
+//   },
 };

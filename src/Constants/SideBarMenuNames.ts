@@ -9,10 +9,10 @@ export interface MenuName {
 
 export class SideBarMenuName {
   public static readonly KanbanScanned: MenuName = {
-    stage: PurchasingStages.KARBANSCANNED.stage,
-    route: PurchasingStages.KARBANSCANNED.code,
-    barCode: PurchasingStages.KARBANSCANNED.code,
-    description: PurchasingStages.KARBANSCANNED.CommonName,
+    stage: PurchasingStages.KANBANSCANNED.stage,
+    route: PurchasingStages.KANBANSCANNED.code,
+    barCode: PurchasingStages.KANBANSCANNED.code,
+    description: PurchasingStages.KANBANSCANNED.CommonName,
   };
 
   public static readonly RECEIVE_Material: MenuName = {

@@ -5,6 +5,7 @@ import NoAuthPage from "../Pages/NoAuthPage/NoAuthPage";
 import LoggedOut from "../Pages/LoggedOut/LoggedOut";
 import ApplicationManagerLayOut from "../Pages/LayOut/ApplicationManagerLayOut";
 import { SideBarMenuName } from "../Constants/SideBarMenuNames";
+import KanbanBoardLayout from "../Pages/PurchasingStages/KanbanBoard/KanbanBoardLayout";
 
 //import TrackingLayOut from "../Pages/Tracking/TrackingLayOut";
 
@@ -42,10 +43,10 @@ export const RoutesProvider = [
         index: true,
         element: <PlayGround />,
       },
-      // {
-      //   path: SideBarMenuName.CreateRMA.route,
-      //   element: <CreateRMALayOut />,
-      // },
+      {
+        path: SideBarMenuName.KanbanScanned.route,
+        element: <KanbanBoardLayout />,
+      },
 
       // {
       //   path: SideBarMenuName.RECEIVEPACKAGE.route,
