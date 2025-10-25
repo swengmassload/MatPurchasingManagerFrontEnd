@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { RMASolutionTypeResponseDTO } from '../Models/RMAManagerModels/Dto'
-import { BASEAPIURL } from '../Constants/FixValues'
-import CRUDApi from '../Api/CRUDApi'
-import { RMAManagerEnpoints } from '../Constants/EndPoints'
-import { QueryKeys } from '../Constants/TanstankQueryKeys'
+import { RMASolutionTypeResponseDTO } from '../../Models/RMAManagerModels/Dto'
+import { BASEAPIURL } from '../../Constants/FixValues'
+import CRUDApi from '../../Api/CRUDApi'
+import { RMAManagerEnpoints } from '../../Constants/EndPoints'
+import { QueryKeys } from '../../Constants/TanstankQueryKeys'
 
 export const useGetRMASolutionTypes = () => {
   return  useQuery<RMASolutionTypeResponseDTO[] | undefined, Error>({

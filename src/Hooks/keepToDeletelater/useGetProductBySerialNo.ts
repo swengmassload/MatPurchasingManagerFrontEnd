@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import CRUDApi from "../Api/CRUDApi";
-import { ProductManagerEnpoints } from "../Constants/EndPoints";
-import { BASEAPIURL } from "../Constants/FixValues";
+import CRUDApi from "../../Api/CRUDApi";
+import { ProductManagerEnpoints } from "../../Constants/EndPoints";
+import { BASEAPIURL } from "../../Constants/FixValues";
 
-import { ProductResponseDTO } from "../Models/ProductmanagerModels/Dto";
+import { ProductResponseDTO } from "../../Models/ProductmanagerModels/Dto";
 //import { QueryKeys } from "../Constants/TanstankQueryKeys";
 
 const isValidSerialNo = (serialNo: string | null | undefined, enabledGetProduct: boolean): boolean => {

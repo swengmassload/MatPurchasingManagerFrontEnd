@@ -1,4 +1,4 @@
-import { RMAGetTrackingDetailRequestDTO } from "../Models/RMAManagerModels/Dto";
+import { RMAGetRequestByStage, RMAGetTrackingDetailRequestDTO } from "../Models/RMAManagerModels/Dto";
 
 
 export const QueryKeys = {
@@ -12,7 +12,10 @@ useGetKanbanDetailsKey: {
     subKeys: (params: { req: RMAGetTrackingDetailRequestDTO }) => [params.req.stage, params.req.rMANumber],
   },
 
-
+  useGetRMAByStage: {
+    mainKey: "useGetRMAByStage",
+    subKeys: (params: { req: RMAGetRequestByStage }) => [params.req.Stage],
+  },
 //   useGetContactByEmailKey: {
 //     mainKey: "Contacts",
 //   },
@@ -40,10 +43,7 @@ useGetKanbanDetailsKey: {
 //   useGenerateReportsKey: {
 //     mainKey: "useGenerateReports",
 //   },
-//   useGetRMAByStage: {
-//     mainKey: "useGetRMAByStage",
-//     subKeys: (params: { req: RMAGetRequestByStage }) => [params.req.Stage],
-//   },
+
 
 //   useGetRMAProblemTypesKey: {
 //     mainKey: "useGetRMAProblemTypes",

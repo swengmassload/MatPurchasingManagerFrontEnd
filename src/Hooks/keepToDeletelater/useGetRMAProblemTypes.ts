@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import {  RMAManagerEnpoints } from "../Constants/EndPoints";
-import { BASEAPIURL } from "../Constants/FixValues";
-import { RMAProblemTypeResponseDTO } from "../Models/RMAManagerModels/Dto";
-import CRUDApi from "../Api/CRUDApi";
-import { QueryKeys } from "../Constants/TanstankQueryKeys";
+import {  RMAManagerEnpoints } from "../../Constants/EndPoints";
+import { BASEAPIURL } from "../../Constants/FixValues";
+import { RMAProblemTypeResponseDTO } from "../../Models/RMAManagerModels/Dto";
+import CRUDApi from "../../Api/CRUDApi";
+import { QueryKeys } from "../../Constants/TanstankQueryKeys";
 
 
 export const useGetRMAProblemTypes = () => {

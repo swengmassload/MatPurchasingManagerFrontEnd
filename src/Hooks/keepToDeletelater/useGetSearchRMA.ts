@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import CRUDApi from "../Api/CRUDApi";
-import { RMAManagerEnpoints } from "../Constants/EndPoints";
-import { BASEAPIURL } from "../Constants/FixValues";
-import { RMASearchRequestDTO, RMATrackingReportDetailResponseDTO } from "../Models/RMAManagerModels/Dto";
-import { QueryKeys } from "../Constants/TanstankQueryKeys";
+import CRUDApi from "../../Api/CRUDApi";
+import { RMAManagerEnpoints } from "../../Constants/EndPoints";
+import { BASEAPIURL } from "../../Constants/FixValues";
+import { RMASearchRequestDTO, RMATrackingReportDetailResponseDTO } from "../../Models/RMAManagerModels/Dto";
+import { QueryKeys } from "../../Constants/TanstankQueryKeys";
 
 const validateTrackingRequest = (param: RMASearchRequestDTO | undefined): boolean => {
   if (!param) return false;

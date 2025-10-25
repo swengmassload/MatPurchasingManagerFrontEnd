@@ -39,6 +39,14 @@ export class PurchasingStages {
     CommonName: "Tracking",
     priority: 4,
   };
+
+
+  public static readonly Parts: PurchasingStage = {
+    stage: "Parts_Management",
+    code: "Parts",
+    CommonName: "Parts Management",
+    priority: 3,
+  };
   public static readonly AllStages: PurchasingStage[] = [
     PurchasingStages.KANBANSCANNED,
     PurchasingStages.MATERIALRECEIVED,

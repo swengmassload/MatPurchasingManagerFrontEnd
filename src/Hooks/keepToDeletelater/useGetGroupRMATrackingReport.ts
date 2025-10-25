@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import CRUDApi from "../Api/CRUDApi";
-import { BASEAPIURL } from "../Constants/FixValues";
-import { RMAManagerEnpoints } from "../Constants/EndPoints";
-import { TrackingGroupedProductDTO } from "../Models/RMAManagerModels/Dto";
+import CRUDApi from "../../Api/CRUDApi";
+import { BASEAPIURL } from "../../Constants/FixValues";
+import { RMAManagerEnpoints } from "../../Constants/EndPoints";
+import { TrackingGroupedProductDTO } from "../../Models/RMAManagerModels/Dto";
 
 export const useGetGroupRMATrackingReport = () => {
   return useQuery<TrackingGroupedProductDTO[] | undefined, Error>({

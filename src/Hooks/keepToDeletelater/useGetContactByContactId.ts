@@ -2,11 +2,11 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import CRUDApi from "../Api/CRUDApi";
-import { BASEAPIURL } from "../Constants/FixValues";
-import {  DetailContact } from "../Models/ConstantContactModels/ConstantContactDTO";
-import { QueryKeys } from "../Constants/TanstankQueryKeys";
-import { RMAManagerEnpoints } from "../Constants/EndPoints";
+import CRUDApi from "../../Api/CRUDApi";
+import { BASEAPIURL } from "../../Constants/FixValues";
+import {  DetailContact } from "../../Models/ConstantContactModels/ConstantContactDTO";
+import { QueryKeys } from "../../Constants/TanstankQueryKeys";
+import { RMAManagerEnpoints } from "../../Constants/EndPoints";
 
 export interface useGetContactByContactIdProps {
   ContactId: string;

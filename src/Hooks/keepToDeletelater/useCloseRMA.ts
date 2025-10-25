@@ -1,10 +1,10 @@
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import CRUDApi from "../Api/CRUDApi";
-import { RMAManagerEnpoints } from "../Constants/EndPoints";
-import { BASEAPIURL } from "../Constants/FixValues";
-import { CloseRMAEventCreateRequestDTO } from "../Models/RMAManagerModels/Dto";
-import { QueryKeys } from "../Constants/TanstankQueryKeys";
+import CRUDApi from "../../Api/CRUDApi";
+import { RMAManagerEnpoints } from "../../Constants/EndPoints";
+import { BASEAPIURL } from "../../Constants/FixValues";
+import { CloseRMAEventCreateRequestDTO } from "../../Models/RMAManagerModels/Dto";
+import { QueryKeys } from "../../Constants/TanstankQueryKeys";
 
 //useCreatePackageReceived
 

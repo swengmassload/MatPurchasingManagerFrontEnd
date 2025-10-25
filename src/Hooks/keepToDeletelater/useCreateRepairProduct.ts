@@ -1,10 +1,10 @@
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import CRUDApi from "../Api/CRUDApi";
-import { RMAManagerEnpoints } from "../Constants/EndPoints";
-import { BASEAPIURL } from "../Constants/FixValues";
-import { QueryKeys } from "../Constants/TanstankQueryKeys";
-import { RepairInProgressEventCreateRequestDTO } from "../Models/RMAManagerModels/Dto";
+import CRUDApi from "../../Api/CRUDApi";
+import { RMAManagerEnpoints } from "../../Constants/EndPoints";
+import { BASEAPIURL } from "../../Constants/FixValues";
+import { QueryKeys } from "../../Constants/TanstankQueryKeys";
+import { RepairInProgressEventCreateRequestDTO } from "../../Models/RMAManagerModels/Dto";
 //ProductRepairQueryDTO[]
 export const useCreateRepairProduct = () => {
   const queryClient = useQueryClient();

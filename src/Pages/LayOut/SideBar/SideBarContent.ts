@@ -31,5 +31,11 @@ export const SideBarContent: SideBarItemProps[] = [
     level: 0,
     menuNumber: 2,
   },
- 
+  {
+    sideBarText: SideBarMenuName.Parts.description,
+    sidebarIconUrl: assets.icons.defects,
+    sideBarLink: SideBarMenuName.Parts.route,
+    level: 0,
+    menuNumber: 3,
+  },  
 ]; //as SideBarItemProps[];

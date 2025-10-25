@@ -1,10 +1,10 @@
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import CRUDApi from "../Api/CRUDApi";
-import { BASEAPIURL } from "../Constants/FixValues";
-import {  RMAManagerEnpoints } from "../Constants/EndPoints";
+import CRUDApi from "../../Api/CRUDApi";
+import { BASEAPIURL } from "../../Constants/FixValues";
+import {  RMAManagerEnpoints } from "../../Constants/EndPoints";
 
-import { QueryKeys } from "../Constants/TanstankQueryKeys";
-import { RMAReportRequestDTO } from "../Models/RMAManagerModels/Dto";
+import { QueryKeys } from "../../Constants/TanstankQueryKeys";
+import { RMAReportRequestDTO } from "../../Models/RMAManagerModels/Dto";
 
 export const useGenerateReports = () => {
   const queryClient = useQueryClient();

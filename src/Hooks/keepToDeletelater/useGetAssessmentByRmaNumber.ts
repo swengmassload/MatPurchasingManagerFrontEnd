@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 
-import CRUDApi from "../Api/CRUDApi";
-import { BASEAPIURL } from "../Constants/FixValues";
-import { RMAManagerEnpoints } from "../Constants/EndPoints";
-import { ProductAssessedEventCreateRequestDTO } from "../Models/RMAManagerModels/Dto";
+import CRUDApi from "../../Api/CRUDApi";
+import { BASEAPIURL } from "../../Constants/FixValues";
+import { RMAManagerEnpoints } from "../../Constants/EndPoints";
+import { ProductAssessedEventCreateRequestDTO } from "../../Models/RMAManagerModels/Dto";
 
 const isValidRmaNumber = (rmaNumber: string | null | undefined, enabledGetProduct: boolean): boolean => {
   const result = rmaNumber !== null && rmaNumber !== undefined && !isNaN(Number(rmaNumber)) && rmaNumber.trim() !== "";

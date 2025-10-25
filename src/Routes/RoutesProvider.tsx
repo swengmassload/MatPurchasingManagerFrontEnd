@@ -6,6 +6,7 @@ import LoggedOut from "../Pages/LoggedOut/LoggedOut";
 import ApplicationManagerLayOut from "../Pages/LayOut/ApplicationManagerLayOut";
 import { SideBarMenuName } from "../Constants/SideBarMenuNames";
 import KanbanBoardLayout from "../Pages/PurchasingStages/KanbanBoard/KanbanBoardLayout";
+import PartsLayOut from "../Pages/Parts/PartsLayOut";
 
 //import TrackingLayOut from "../Pages/Tracking/TrackingLayOut";
 
@@ -46,6 +47,10 @@ export const RoutesProvider = [
       {
         path: SideBarMenuName.KanbanScanned.route,
         element: <KanbanBoardLayout />,
+      },
+      {
+        path: SideBarMenuName.Parts.route,
+        element: <PartsLayOut />,
       },
 
       // {
