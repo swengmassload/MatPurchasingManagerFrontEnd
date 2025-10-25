@@ -1,6 +1,6 @@
 import { queryOptions, useQuery } from "@tanstack/react-query";
 import { QueryKeys } from "../Constants/TanstankQueryKeys";
-import { KanbanContainerResponseDTO } from "../Models/PurchasingModels/Dto";
+import { KanbanContainerResponseDTO } from "../Models/MatPurchasingModels/Dto";
 import CRUDApi from "../Api/CRUDApi";
 import { BASEAPIURL } from "../Constants/FixValues";
 import { MaterialPurchasingManagerEnpoints } from "../Constants/EndPoints";

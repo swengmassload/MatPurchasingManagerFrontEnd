@@ -1,5 +1,5 @@
-import { useGetAppToken } from "./useGetAppToken";
-import { useAddAppTokenAndLoadApp } from "./useAddAppTokenAndLoadApp";
+import { useGetAppToken } from "../../Hooks/useGetAppToken";
+import { useAddAppTokenAndLoadApp } from "../../Hooks/useAddAppTokenAndLoadApp";
 
 const GeneralLanding = () => {
   

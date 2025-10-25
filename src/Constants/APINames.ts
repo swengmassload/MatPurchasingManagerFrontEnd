@@ -5,7 +5,7 @@ export const RegistrationAPINAME = `/RegistrationManagerAPI`;
 export const AUTHAPINAME = "AuthAPI";
 export const COMPRESSIONTESTERAPINAME = `/CompressionTesterAPI`;
 export const RMAAPINAME = `/RMAManagerAPI`;
-export const MATERIALPURCHASINGAPINAME = `/MaterialPurchasingManagerAPI`;
+export const MATERIALPURCHASINGAPINAME = `/MatPurchaseManagerAPI`;
 
 //export const RMAUserStorageKey = "RMAUSER";     
 //export const ConstantContactSearchEmailKey = "ConstantContactSearchEmail"; 

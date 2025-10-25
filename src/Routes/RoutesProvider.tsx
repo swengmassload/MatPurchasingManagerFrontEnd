@@ -5,8 +5,8 @@ import NoAuthPage from "../Pages/NoAuthPage/NoAuthPage";
 import LoggedOut from "../Pages/LoggedOut/LoggedOut";
 import ApplicationManagerLayOut from "../Pages/LayOut/ApplicationManagerLayOut";
 import { SideBarMenuName } from "../Constants/SideBarMenuNames";
-import KanbanBoardLayout from "../Pages/PurchasingStages/KanbanBoard/KanbanBoardLayout";
 import PartsLayOut from "../Pages/Parts/PartsLayOut";
+import KanbanCardLayout from "../Pages/PurchasingStages/KanbanBoard/KanbanCardLayout";
 
 //import TrackingLayOut from "../Pages/Tracking/TrackingLayOut";
 
@@ -46,7 +46,7 @@ export const RoutesProvider = [
       },
       {
         path: SideBarMenuName.KanbanScanned.route,
-        element: <KanbanBoardLayout />,
+        element: <KanbanCardLayout />,
       },
       {
         path: SideBarMenuName.Parts.route,

@@ -1,8 +1,20 @@
 import { useQuery } from "@tanstack/react-query"
+import { QueryKeys } from "../Constants/TanstankQueryKeys"
+import { PartsTableResponseDTO } from "../Models/MatPurchasingModels/Dto"
+import { MaterialPurchasingManagerEnpoints } from "../Constants/EndPoints"
+import { BASEAPIURL } from "../Constants/FixValues"
+import CRUDApi from "../Api/CRUDApi"
 
-export const useGetParts=()=>{
-    useQuery({
-        queryKey: ['parts'],
-        queryFn: () => fetch('/api/parts').then(res => res.json())
-        })
+export const useGetParts = () => {
+  return useQuery({
+    queryKey: [QueryKeys.useGetPartsKey.mainKey],
+    queryFn: () =>
+      CRUDApi<PartsTableResponseDTO, PartsTableResponseDTO>(
+        BASEAPIURL + MaterialPurchasingManagerEnpoints.PartsTableEndpoint,
+      ).getAllData(),
+    meta: {
+      successMessage: 'Parts fetched successfully!',
+      errorMessage: 'Failed to fetch parts. Please try again.',
+    },
+  })
 }

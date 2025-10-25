@@ -4,7 +4,7 @@ import CRUDApi from "../Api/CRUDApi";
 import { BASEAPIURL } from "../Constants/FixValues";
 import { QueryKeys } from "../Constants/TanstankQueryKeys";
 import { MaterialPurchasingManagerEnpoints } from "../Constants/EndPoints";
-import { PurchasingGetRequestByStage, PurchasingResponseDTO } from "../Models/PurchasingModels/Dto";
+import { PurchasingGetRequestByStage, PurchasingResponseDTO } from "../Models/MatPurchasingModels/Dto";
 
 const isValidStage = (rma: PurchasingGetRequestByStage | null | undefined): boolean => {
   return !!(
@@ -16,7 +16,7 @@ const isValidStage = (rma: PurchasingGetRequestByStage | null | undefined): bool
 
 export const useGetPurchasingByStage = (param: PurchasingGetRequestByStage | undefined, enabledGetProduct: boolean) => {
   return useQuery<PurchasingResponseDTO[] | undefined, Error>({
-    queryKey: [QueryKeys.useGetRMATrackingDetails.mainKey, { stage: param?.Stage }],
+    queryKey: [QueryKeys.useGetPurchasingByStage.mainKey, { stage: param?.Stage }],
     queryFn: () =>
       CRUDApi<PurchasingGetRequestByStage, PurchasingResponseDTO[]>(
         `${BASEAPIURL}${MaterialPurchasingManagerEnpoints.PurchasingByStage}`

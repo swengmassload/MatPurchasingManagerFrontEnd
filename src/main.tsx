@@ -4,21 +4,23 @@ import "./index.css";
 import {  ThemeProvider } from "@mui/material";
 import theme from "./Components/Common/Theme.tsx";
 import { Provider } from "react-redux";
-//import { GlobalStyle } from "./Components/Common/createGlobalStyle.ts";
 import { store } from "./Redux/store.ts";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import queryClient from "./Api/queryClient";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AppProvider } from '@toolpad/core/AppProvider';
-
 import { SideBarContextProvider, SideBarContextData } from "./Pages/LayOut/SideBar/SideBarContext/SideBarContext.tsx";
+
+
+// queryClient is imported from ./Api/queryClient
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
 
-    <QueryClientProvider client={new QueryClient()}>
+    <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
       
         <AppProvider theme={theme}>
-        <SideBarContextProvider initialState ={SideBarContextData}>
+          <SideBarContextProvider initialState={SideBarContextData}>
 
         <App />
       

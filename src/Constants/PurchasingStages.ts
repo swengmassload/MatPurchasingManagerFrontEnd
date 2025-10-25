@@ -21,7 +21,7 @@ export class PurchasingStages {
   public static readonly KANBANSCANNED: PurchasingStage = {
     stage: "KANBAN_SCANNED",
     code: "KANBANSCANNED",
-    CommonName: "Kanban Board",
+    CommonName: "Kanban Card",
 
 
     priority: 1,

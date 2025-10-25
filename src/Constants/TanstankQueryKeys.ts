@@ -1,21 +1,26 @@
-import { RMAGetRequestByStage, RMAGetTrackingDetailRequestDTO } from "../Models/RMAManagerModels/Dto";
-
+import { PartsSearchParams, PurchasingGetRequestByStage } from "../Models/MatPurchasingModels/Dto";
 
 export const QueryKeys = {
 
-useGetKanbanDetailsKey: {
-    mainKey: "useGetKanbanDetailsKey",
-  },
-//make sure  you remove this later
-  useGetRMATrackingDetails: {
-    mainKey: "useGetRMATrackingDetails",
-    subKeys: (params: { req: RMAGetTrackingDetailRequestDTO }) => [params.req.stage, params.req.rMANumber],
+  useGetPartsKey: { mainKey: "useGetPartsKey",},
+  useGetKanbanDetailsKey: {    mainKey: "useGetKanbanDetailsKey",},
+
+  useGetPartByBarcodeoRPartCodeKey: {
+      mainKey: "useGetPartByBarcodeoRPartCodeKey",
+      subKeys: (params: { req: PartsSearchParams }) => [params.req.BarCode, params.req.PartCode, params.req.SearchType, params.req.Description],
+ 
   },
 
-  useGetRMAByStage: {
-    mainKey: "useGetRMAByStage",
-    subKeys: (params: { req: RMAGetRequestByStage }) => [params.req.Stage],
+
+
+  useGetPurchasingByStage: {
+    mainKey: "useGetPurchasingByStage",
+    subKeys: (params: { req: PurchasingGetRequestByStage }) => [params.req.Stage],
   },
+
+
+
+
 //   useGetContactByEmailKey: {
 //     mainKey: "Contacts",
 //   },

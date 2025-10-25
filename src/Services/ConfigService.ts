@@ -41,7 +41,7 @@ class ConfigService {
 
   private async fetchConfig(): Promise<AppConfig> {
     try {
-      debugger
+    
       const response = await fetch("/config.json");
       if (!response.ok) {
         throw new Error(`Failed to load config: ${response.status} ${response.statusText}`);

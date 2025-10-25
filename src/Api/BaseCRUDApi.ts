@@ -40,6 +40,7 @@ const ProcessAxiosError = (error: unknown): NewProblemDetails => {
     try {
       const errorResponse = error.response?.data as unknown as NewProblemDetails;
       // First try thoe you know
+ 
       if (error.response?.status === 401) {
         response = {
           title: "Unauthorized",
@@ -64,14 +65,14 @@ const ProcessAxiosError = (error: unknown): NewProblemDetails => {
           type: "Connection Problems",
           instance: "",
         };
-      } else if (error.code === "ERR_BAD_REQUEST") {
-        response = {
-          title: "Bad Request Error",
-          status: 400,
-          detail: "Check your Parameter",
-          type: "Bad Request Error",
-          instance: "",
-        };
+      // } else if (error.code === "ERR_BAD_REQUEST") {
+      //   response = {
+      //     title: "Bad Request Error",
+      //     status: 400,
+      //     detail: "Check your Parameter",
+      //     type: "Bad Request Error",
+      //     instance: "",
+      //   };
       } else if (error.code === "ERR_CANCELED") {
         response = {
           title: "Operation  Canceled",
