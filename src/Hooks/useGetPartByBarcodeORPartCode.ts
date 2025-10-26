@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { PartsSearchParams, PartsTableResponseDTO } from "../Models/MatPurchasingModels/Dto";
 import { QueryKeys } from "../Constants/TanstankQueryKeys";
 import CRUDApi from "../Api/CRUDApi";
-import { MaterialPurchasingManagerEnpoints } from "../Constants/EndPoints";
+import { MaterialPurchasingManagerEndpoints } from "../Constants/EndPoints";
 import { BASEAPIURL } from "../Constants/FixValues";
 import { isEmptyOrNil } from "../Utils/isEmptyOrNil";
 
@@ -15,7 +15,7 @@ export const useGetPartByBarcodeORPartCode = (param: PartsSearchParams | undefin
       queryKey: [QueryKeys.useGetPartByBarcodeoRPartCodeKey.mainKey, { ...QueryKeys.useGetPartByBarcodeoRPartCodeKey.subKeys }],
       queryFn: () =>
         CRUDApi<PartsSearchParams, PartsTableResponseDTO[]>(
-          BASEAPIURL + MaterialPurchasingManagerEnpoints.PartsBySpecificsEndpoint
+          BASEAPIURL + MaterialPurchasingManagerEndpoints.PartsBySpecificsEndpoint
         ).getDataSinglewtQryParams(param as PartsSearchParams),
       enabled: validateTrackingRequest(param) && enabledGetTrackingDetails,
     

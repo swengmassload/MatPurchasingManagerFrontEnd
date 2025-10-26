@@ -1,4 +1,4 @@
-import { PartsSearchParams, PurchasingGetRequestByStage } from "../Models/MatPurchasingModels/Dto";
+import { MaterialRequestResponseDTO, PartsSearchParams, PurchasingGetRequestByStage } from "../Models/MatPurchasingModels/Dto";
 
 export const QueryKeys = {
 
@@ -13,6 +13,10 @@ export const QueryKeys = {
  
   },
 
+  useGetMaterialRequestByStage: {
+    mainKey: "useGetMaterialRequestByStage",
+    subKeys: (params: { req: MaterialRequestResponseDTO }) => [params.req.stage],
+  },
 
 
   useGetPurchasingByStage: {
@@ -20,7 +24,10 @@ export const QueryKeys = {
     subKeys: (params: { req: PurchasingGetRequestByStage }) => [params.req.Stage],
   },
 
-
+  useGetMaterialDetailsByGuidKey: {
+    mainKey: "useGetMaterialDetailsByGuidKey",
+    subKeys: (params: { materialGuidId: string }) => [params.materialGuidId],
+  },
 
 
 //   useGetContactByEmailKey: {

@@ -10,12 +10,13 @@ export const RegistrationEnpoints = {
 };
   
 
-export const MaterialPurchasingManagerEnpoints = {
+export const MaterialPurchasingManagerEndpoints = {
   PurchasingByStage: `${MATERIALPURCHASINGAPINAME}/v1/Purchasing/Stage`,
   PartsTableEndpoint: `${MATERIALPURCHASINGAPINAME}/v1/PartsTables`,
   PartsBySpecificsEndpoint: `${MATERIALPURCHASINGAPINAME}/v1/PartsTables/PartsBySpecifics`,
   GetKanbanDetailsEndPoint: `${MATERIALPURCHASINGAPINAME}/v1/Purchasing/KanbanDetails`,
   CreateMaterialRequestEndpoint: `${MATERIALPURCHASINGAPINAME}/v1/MaterialRequestDetailss`,
+  MaterialRequestByStage: `${MATERIALPURCHASINGAPINAME}/v1/MaterialRequests/Stage`,
 };
 
 

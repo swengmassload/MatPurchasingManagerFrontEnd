@@ -17,15 +17,25 @@ export interface PurchasingStage {
   stageCardName?: string;
 }
 
+
+
+
 export class PurchasingStages {
   public static readonly KANBANSCANNED: PurchasingStage = {
-    stage: "KANBAN_SCANNED",
-    code: "KANBANSCANNED",
-    CommonName: "Kanban Card",
-
-
+    stage: "Kanban_Scanned",
+    code: "ScanKanban",
+    CommonName: "Material Request",
     priority: 1,
   };
+
+  public static readonly PRODMANAGERAPPROVAL: PurchasingStage = {
+    stage: "ProdManager_Approval",
+    code: "ProdManagerApproval",
+    CommonName: "Production Manager Approval",
+    priority: 1,
+  };
+
+
 
   public static readonly MATERIALRECEIVED: PurchasingStage = {
     stage: "MATERIAL_RECEIVED",
@@ -49,6 +59,7 @@ export class PurchasingStages {
   };
   public static readonly AllStages: PurchasingStage[] = [
     PurchasingStages.KANBANSCANNED,
+    PurchasingStages.PRODMANAGERAPPROVAL,
     PurchasingStages.MATERIALRECEIVED,
     PurchasingStages.TRACKING,
   ];

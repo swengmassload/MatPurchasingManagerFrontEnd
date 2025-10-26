@@ -3,7 +3,7 @@ import {  PurchasingStages } from "../Constants/PurchasingStages";
 import CRUDApi from "../Api/CRUDApi";
 import { BASEAPIURL } from "../Constants/FixValues";
 import { QueryKeys } from "../Constants/TanstankQueryKeys";
-import { MaterialPurchasingManagerEnpoints } from "../Constants/EndPoints";
+import { MaterialPurchasingManagerEndpoints } from "../Constants/EndPoints";
 import { PurchasingGetRequestByStage, PurchasingResponseDTO } from "../Models/MatPurchasingModels/Dto";
 
 const isValidStage = (rma: PurchasingGetRequestByStage | null | undefined): boolean => {
@@ -19,7 +19,7 @@ export const useGetPurchasingByStage = (param: PurchasingGetRequestByStage | und
     queryKey: [QueryKeys.useGetPurchasingByStage.mainKey, { stage: param?.Stage }],
     queryFn: () =>
       CRUDApi<PurchasingGetRequestByStage, PurchasingResponseDTO[]>(
-        `${BASEAPIURL}${MaterialPurchasingManagerEnpoints.PurchasingByStage}`
+        `${BASEAPIURL}${MaterialPurchasingManagerEndpoints.PurchasingByStage}`
       ).getDataSinglewtQryParams(param as PurchasingGetRequestByStage),
     enabled: isValidStage(param) && enabledGetProduct,
   });

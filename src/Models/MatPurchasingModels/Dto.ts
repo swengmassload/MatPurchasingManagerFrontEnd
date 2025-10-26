@@ -102,7 +102,7 @@ export interface KanbanContainerUpdateRequestDTO {
 
 
 export interface MaterialRequestCreateRequestDTO {
-    id?: string;
+
     requestDate?: Date;
     userName?: string | undefined;
     description?: string | undefined;
@@ -125,7 +125,15 @@ export interface MaterialRequestDetailsCreateRequestDTO {
 }
 
 export interface MaterialRequestDetailsResponseDTO {
-    value?: any | undefined;
+    partCode: string ;
+    pONumber?: string | undefined;
+    notes?: string | undefined;
+    
+    description?: string | undefined;
+    supplier?: string | undefined;
+    triggerQuantity?: number;
+    leadTimeInDays?: number;
+    guidId: string;
 }
 
 export interface MaterialRequestDetailsUpdateRequestDTO {
@@ -141,7 +149,12 @@ export interface MaterialRequestDetailsUpdateRequestDTO {
     guidId?: string;
 }
 export interface MaterialRequestResponseDTO {
-    value?: any | undefined;
+    requestDate: Date;
+    userName: string ;
+    description?: string | undefined;
+    notes?: string | undefined;
+    stage?: string | undefined;
+    guidId: string;
 }
 
 export interface MaterialRequestUpdateRequestDTO {

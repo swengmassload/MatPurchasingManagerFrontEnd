@@ -14,6 +14,17 @@ export class SideBarMenuName {
     barCode: PurchasingStages.KANBANSCANNED.code,
     description: PurchasingStages.KANBANSCANNED.CommonName,
   };
+
+
+  public static readonly ProductionManagerApproval: MenuName = {
+    stage: PurchasingStages.PRODMANAGERAPPROVAL.stage,
+    route: PurchasingStages.PRODMANAGERAPPROVAL.code,
+    barCode: PurchasingStages.PRODMANAGERAPPROVAL.code,
+    description: PurchasingStages.PRODMANAGERAPPROVAL.CommonName,
+  };
+
+
+
   public static readonly Parts: MenuName = {
     stage: PurchasingStages.Parts.stage,
     route: PurchasingStages.Parts.code,
@@ -52,6 +63,7 @@ export class SideBarMenuName {
     //    SideBarMenuName.ProductionStages,
 
     SideBarMenuName.KanbanScanned,
+    SideBarMenuName.ProductionManagerApproval,
     SideBarMenuName.RECEIVE_Material,
     SideBarMenuName.TRACKING,
 

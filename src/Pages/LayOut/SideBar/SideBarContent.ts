@@ -22,7 +22,14 @@ export const SideBarContent: SideBarItemProps[] = [
     level: 0,
     menuNumber: 1,
   },
-
+  {
+    sideBarText: SideBarMenuName.ProductionManagerApproval.description,
+    sidebarIconUrl: assets.icons.defects,
+    sideBarLink: SideBarMenuName.ProductionManagerApproval.route,
+    level: 0,
+    menuNumber: 4,  
+  }
+,
 
   {
     sideBarText: SideBarMenuName.RECEIVE_Material.description,

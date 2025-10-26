@@ -3,7 +3,7 @@ import { QueryKeys } from "../Constants/TanstankQueryKeys";
 import { KanbanContainerResponseDTO } from "../Models/MatPurchasingModels/Dto";
 import CRUDApi from "../Api/CRUDApi";
 import { BASEAPIURL } from "../Constants/FixValues";
-import { MaterialPurchasingManagerEnpoints } from "../Constants/EndPoints";
+import { MaterialPurchasingManagerEndpoints } from "../Constants/EndPoints";
 
 export const getUseGetKanbanDetailsQueryOptions = 
   queryOptions
@@ -12,7 +12,7 @@ export const getUseGetKanbanDetailsQueryOptions =
                 queryKey: [QueryKeys.useGetKanbanDetailsKey.mainKey],
                 queryFn:   () =>
                               CRUDApi<KanbanContainerResponseDTO, KanbanContainerResponseDTO>
-                                    ( BASEAPIURL + MaterialPurchasingManagerEnpoints.GetKanbanDetailsEndPoint
+                                    ( BASEAPIURL + MaterialPurchasingManagerEndpoints.GetKanbanDetailsEndPoint
                                     ).getAllData(),
                 staleTime: Infinity, // This will make sure that the data is never considered stale
                 refetchOnWindowFocus: false, // Do not refetch on window focus
