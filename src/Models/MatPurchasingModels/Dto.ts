@@ -112,12 +112,15 @@ export interface MaterialRequestCreateRequestDTO {
 }
 
 export interface MaterialRequestDetailsCreateRequestDTO {
-    materialRequestId?: string;
+  
     partCode?: string | undefined;
     pONumber?: string | undefined;
-    userName?: string | undefined;
     notes?: string | undefined;
-    stage?: string | undefined;
+    
+    description?: string | undefined;
+    supplier?: string | undefined;
+    triggerQuantity?: number;
+    leadTimeInDays?: number;
     guidId?: string;
 }
 
@@ -129,12 +132,14 @@ export interface MaterialRequestDetailsUpdateRequestDTO {
     materialRequestId?: string;
     partCode?: string | undefined;
     pONumber?: string | undefined;
-    userName?: string | undefined;
     notes?: string | undefined;
     stage?: string | undefined;
+    description?: string | undefined;
+    supplier?: string | undefined;
+    triggerQuantity?: number;
+    leadTimeInDays?: number;
     guidId?: string;
 }
-
 export interface MaterialRequestResponseDTO {
     value?: any | undefined;
 }

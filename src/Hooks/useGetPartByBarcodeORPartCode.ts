@@ -15,7 +15,7 @@ export const useGetPartByBarcodeORPartCode = (param: PartsSearchParams | undefin
       queryKey: [QueryKeys.useGetPartByBarcodeoRPartCodeKey.mainKey, { ...QueryKeys.useGetPartByBarcodeoRPartCodeKey.subKeys }],
       queryFn: () =>
         CRUDApi<PartsSearchParams, PartsTableResponseDTO[]>(
-          BASEAPIURL + MaterialPurchasingManagerEnpoints.PartsTableEndpoint
+          BASEAPIURL + MaterialPurchasingManagerEnpoints.PartsBySpecificsEndpoint
         ).getDataSinglewtQryParams(param as PartsSearchParams),
       enabled: validateTrackingRequest(param) && enabledGetTrackingDetails,
     

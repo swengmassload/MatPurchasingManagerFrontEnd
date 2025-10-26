@@ -4,6 +4,8 @@ export const QueryKeys = {
 
   useGetPartsKey: { mainKey: "useGetPartsKey",},
   useGetKanbanDetailsKey: {    mainKey: "useGetKanbanDetailsKey",},
+  useCreateMaterialRequestKey: {    mainKey: "useCreateMaterialRequestKey",},
+
 
   useGetPartByBarcodeoRPartCodeKey: {
       mainKey: "useGetPartByBarcodeoRPartCodeKey",

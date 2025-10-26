@@ -8,7 +8,7 @@ import { QueryKeys } from "../Constants/TanstankQueryKeys";
 
 export const useCreatePart = () => {
   return useMutation({
-    mutationFn: (parts: PartsTableCreateRequestDTO) =>
+      mutationFn: (parts: PartsTableCreateRequestDTO) =>
       CRUDApi<PartsTableCreateRequestDTO, PartsTableCreateRequestDTO >(BASEAPIURL + MaterialPurchasingManagerEnpoints.PartsTableEndpoint).addData(parts),
     meta:{
       successMessage: "Part created successfully!",
