@@ -145,19 +145,47 @@ const ProdManagerApproval: React.FC = () => {
                     fontWeight: 'bold'
                   }}
                 >
-                  {request.userName?.charAt(0)?.toUpperCase() ?? 'U'}
+                  {idx + 1}
                 </Avatar>
                 
                 <CardContent sx={{ flex: 1, p: 0, '&:last-child': { pb: 0 } }}>
                   <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={1.5}>
                     <Box flex={1}>
+                      <Typography variant="caption" color="text.secondary" fontWeight="bold" display="block">
+                        Request #{idx + 1}
+                      </Typography>
                       <Typography variant="h6" color="primary.main" gutterBottom>
                         {request.userName || 'Unknown User'}
                       </Typography>
-                      <Typography variant="caption" color="text.secondary" display="block">
+                    </Box>
+                  </Box>
+                  
+                  <Divider sx={{ my: 1.5 }} />
+                  
+                  <Box display="flex" flexDirection="column" gap={1.5}>
+                    <Box>
+                      <Typography variant="caption" color="text.secondary" fontWeight="bold" display="block">
+                        Request Date
+                      </Typography>
+                      <Typography variant="body2">
                         {formatDate(request.requestDate)}
                       </Typography>
-                      {request.stage && (
+                    </Box>
+
+                    <Box>
+                      <Typography variant="caption" color="text.secondary" fontWeight="bold" display="block">
+                        User Name
+                      </Typography>
+                      <Typography variant="body2">
+                        {request.userName || 'N/A'}
+                      </Typography>
+                    </Box>
+
+                    {request.stage && (
+                      <Box>
+                        <Typography variant="caption" color="text.secondary" fontWeight="bold" display="block">
+                          Stage
+                        </Typography>
                         <Chip 
                           label={request.stage} 
                           size="small" 
@@ -165,13 +193,9 @@ const ProdManagerApproval: React.FC = () => {
                           variant="outlined" 
                           sx={{ mt: 0.5 }}
                         />
-                      )}
-                    </Box>
-                  </Box>
-                  
-                  <Divider sx={{ my: 1.5 }} />
-                  
-                  <Box display="flex" flexDirection="column" gap={1}>
+                      </Box>
+                    )}
+                    
                     {request.description && (
                       <Box>
                         <Typography variant="caption" color="text.secondary" fontWeight="bold" display="block">
@@ -193,6 +217,15 @@ const ProdManagerApproval: React.FC = () => {
                         </Typography>
                       </Box>
                     )}
+
+                    <Box>
+                      <Typography variant="caption" color="text.secondary" fontWeight="bold" display="block">
+                        GUID
+                      </Typography>
+                      <Typography variant="body2" sx={{ fontSize: '0.75rem', wordBreak: 'break-all' }}>
+                        {request.guidId}
+                      </Typography>
+                    </Box>
                   </Box>
                   
                   <Button 

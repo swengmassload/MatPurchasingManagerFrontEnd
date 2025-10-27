@@ -17,7 +17,9 @@ export const MaterialPurchasingManagerEndpoints = {
   GetKanbanDetailsEndPoint: `${MATERIALPURCHASINGAPINAME}/v1/Purchasing/KanbanDetails`,
   CreateMaterialRequestEndpoint: `${MATERIALPURCHASINGAPINAME}/v1/MaterialRequestDetailss`,
   MaterialRequestByStage: `${MATERIALPURCHASINGAPINAME}/v1/MaterialRequests/Stage`,
+  MaterialDetailsRequestByMateriaGuid: `${MATERIALPURCHASINGAPINAME}/v1/MaterialRequestDetailss/MaterialRequest`,
 };
+
 
 
 export const ProductManagerEnpoints = {

@@ -22,7 +22,7 @@ const isValidStage = (materialRequest: MaterialGetRequestByStageDTO | null | und
 };
 
 export const useGetMaterialRequestByStage = (param: MaterialGetRequestByStageDTO | undefined, enabledGetProduct: boolean) => {
-    alert('useGetMaterialRequestByStage called with stage: ' + param?.Stage);
+
   return useQuery<MaterialRequestResponseDTO[] | undefined, Error>({
     queryKey: [QueryKeys.useGetMaterialRequestByStage.mainKey, { stage: param?.Stage }],
     queryFn: () =>

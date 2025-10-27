@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import CRUDApi from "../Api/CRUDApi";
-import { RMAManagerEnpoints } from "../Constants/EndPoints";
+import { MaterialPurchasingManagerEndpoints, RMAManagerEnpoints } from "../Constants/EndPoints";
 import { BASEAPIURL } from "../Constants/FixValues";
 import { QueryKeys } from "../Constants/TanstankQueryKeys";
 import { MaterialRequestDetailsResponseDTO } from "../Models/MatPurchasingModels/Dto";
 
 interface  MaterialRequestDetailsRequestDTO {
-  materialGuidId?: string;
+  MaterialRequest?: string;
 
 }
 
@@ -17,7 +17,7 @@ const isValidSerialNo = (
   return (
     prod !== undefined &&
     prod !== null &&
-    prod?.materialGuidId !== undefined 
+    prod?.MaterialRequest !== undefined 
    
   );
 };
@@ -28,13 +28,12 @@ export const useGetMaterialDetailsByGuid = (
 ) => {
 
   return useQuery<MaterialRequestDetailsResponseDTO[] | undefined, Error>({
-    queryKey: [QueryKeys.useGetMaterialDetailsByGuidKey.mainKey, { materialGuidId: param?.materialGuidId }],
+    queryKey: [QueryKeys.useGetMaterialDetailsByGuidKey.mainKey, { materialGuidId: param?.MaterialRequest }],
     queryFn: () =>
       CRUDApi<MaterialRequestDetailsRequestDTO, MaterialRequestDetailsResponseDTO[]>(
-        `${BASEAPIURL}${RMAManagerEnpoints.RMAProductByStage}`
+               `${BASEAPIURL}${MaterialPurchasingManagerEndpoints.MaterialDetailsRequestByMateriaGuid}`
       ).getDataSinglewtQryParams(param as MaterialRequestDetailsRequestDTO),
     enabled: isValidSerialNo(param) && enabledGetMaterial,
   
   });
 };
-
