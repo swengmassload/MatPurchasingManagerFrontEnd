@@ -8,6 +8,7 @@ import { SideBarMenuName } from "../Constants/SideBarMenuNames";
 import PartsLayOut from "../Pages/Parts/PartsLayOut";
 import KanbanCardLayout from "../Pages/PurchasingStages/KanbanBoard/KanbanCardLayout";
 import ProdManagerScannedApprovalLayout from "../Pages/PurchasingStages/ProdManagerScannedApproval/ProdManagerScannedApprovalLayout";
+import AddPOStageLayout from "../Pages/PurchasingStages/AddPOStage/AddPOStageLayout";
 
 //import TrackingLayOut from "../Pages/Tracking/TrackingLayOut";
 
@@ -46,7 +47,7 @@ export const RoutesProvider = [
         element: <PlayGround />,
       },
       {
-        path: SideBarMenuName.KanbanScanned.route,
+        path: SideBarMenuName.ScanKanbanCard.route,
         element: <KanbanCardLayout />,
       },
       {
@@ -56,6 +57,12 @@ export const RoutesProvider = [
       {
         path: SideBarMenuName.ProductionManagerApproval.route,
         element: <ProdManagerScannedApprovalLayout />,
+        
+      },
+
+      {
+        path: SideBarMenuName.AddPurchaseOrder.route,
+        element: <AddPOStageLayout />,
         
       },
 

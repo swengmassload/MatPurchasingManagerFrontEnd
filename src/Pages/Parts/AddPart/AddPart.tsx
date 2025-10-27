@@ -121,9 +121,7 @@ const AddPart: React.FC = () => {
             <Button type="submit" variant="contained" color="primary" disabled={(createPart as any).isLoading}>
               {(createPart as any).isLoading ? 'Saving...' : 'Save'}
             </Button>
-            <Button type="button" variant="outlined" onClick={() => reset()}>
-              Reset
-            </Button>
+   
           </Box>
         </Box>
       </form>

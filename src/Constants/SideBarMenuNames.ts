@@ -8,7 +8,7 @@ export interface MenuName {
 }
 
 export class SideBarMenuName {
-  public static readonly KanbanScanned: MenuName = {
+  public static readonly ScanKanbanCard: MenuName = {
     stage: PurchasingStages.KANBANSCANNED.stage,
     route: PurchasingStages.KANBANSCANNED.code,
     barCode: PurchasingStages.KANBANSCANNED.code,
@@ -23,7 +23,11 @@ export class SideBarMenuName {
     description: PurchasingStages.PRODMANAGERAPPROVAL.CommonName,
   };
 
-
+public static readonly AddPurchaseOrder: MenuName = {
+    stage: PurchasingStages.AddPOStage.stage,
+    route: PurchasingStages.AddPOStage.code,
+    description: PurchasingStages.AddPOStage.CommonName,
+  };
 
   public static readonly Parts: MenuName = {
     stage: PurchasingStages.Parts.stage,
@@ -62,8 +66,9 @@ export class SideBarMenuName {
   public static readonly AllMenu: MenuName[] = [
     //    SideBarMenuName.ProductionStages,
 
-    SideBarMenuName.KanbanScanned,
+    SideBarMenuName.ScanKanbanCard,
     SideBarMenuName.ProductionManagerApproval,
+    SideBarMenuName.AddPurchaseOrder,
     SideBarMenuName.RECEIVE_Material,
     SideBarMenuName.TRACKING,
 

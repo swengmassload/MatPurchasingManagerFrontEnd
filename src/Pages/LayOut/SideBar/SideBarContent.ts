@@ -16,9 +16,9 @@ export const SideBarContent: SideBarItemProps[] = [
 
 
     {
-    sideBarText: SideBarMenuName.KanbanScanned.description,
+    sideBarText: SideBarMenuName.ScanKanbanCard.description,
     sidebarIconUrl: assets.icons.defects,
-    sideBarLink: SideBarMenuName.KanbanScanned.route,
+    sideBarLink: SideBarMenuName.ScanKanbanCard.route,
     level: 0,
     menuNumber: 1,
   },
@@ -27,9 +27,16 @@ export const SideBarContent: SideBarItemProps[] = [
     sidebarIconUrl: assets.icons.defects,
     sideBarLink: SideBarMenuName.ProductionManagerApproval.route,
     level: 0,
-    menuNumber: 4,  
+    menuNumber: 2,  
   }
 ,
+{
+    sideBarText: SideBarMenuName.AddPurchaseOrder.description,
+    sidebarIconUrl: assets.icons.defects,
+    sideBarLink: SideBarMenuName.AddPurchaseOrder.route,
+    level: 0,
+    menuNumber: 3,
+  },
 
   {
     sideBarText: SideBarMenuName.RECEIVE_Material.description,

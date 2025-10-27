@@ -126,9 +126,9 @@ export interface MaterialRequestDetailsCreateRequestDTO {
 
 export interface MaterialRequestDetailsResponseDTO {
     partCode: string ;
+    materialRequestId: string;
     pONumber?: string | undefined;
     notes?: string | undefined;
-    
     description?: string | undefined;
     supplier?: string | undefined;
     triggerQuantity?: number;
@@ -141,7 +141,6 @@ export interface MaterialRequestDetailsUpdateRequestDTO {
     partCode?: string | undefined;
     pONumber?: string | undefined;
     notes?: string | undefined;
-    stage?: string | undefined;
     description?: string | undefined;
     supplier?: string | undefined;
     triggerQuantity?: number;

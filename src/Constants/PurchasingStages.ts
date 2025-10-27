@@ -34,7 +34,12 @@ export class PurchasingStages {
     CommonName: "Production Manager Approval",
     priority: 1,
   };
-
+  public static readonly AddPOStage: PurchasingStage = {
+    stage: "Add_Purchase_Order",
+    code: "PurchaseAddPO",
+    CommonName: "Add Purchase Order",
+    priority: 1,
+  };
 
 
   public static readonly MATERIALRECEIVED: PurchasingStage = {

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import CRUDApi from "../Api/CRUDApi";
-import { MaterialPurchasingManagerEndpoints, RMAManagerEnpoints } from "../Constants/EndPoints";
+import { MaterialPurchasingManagerEndpoints } from "../Constants/EndPoints";
 import { BASEAPIURL } from "../Constants/FixValues";
 import { QueryKeys } from "../Constants/TanstankQueryKeys";
 import { MaterialRequestDetailsResponseDTO } from "../Models/MatPurchasingModels/Dto";

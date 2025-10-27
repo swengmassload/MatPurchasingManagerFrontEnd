@@ -13,33 +13,34 @@ import {
   Tooltip,
   Collapse,
 } from "@mui/material";
-import {
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Add as AddIcon,
+import { 
+  Edit as EditIcon, 
+  Delete as DeleteIcon, 
+  Add as AddIcon, 
   ExpandMore as ExpandMoreIcon,
+  ArrowForward as ArrowForwardIcon
 } from "@mui/icons-material";
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from "material-react-table";
-import { useGetMaterialRequestByStage } from "../../../Hooks/useGetMaterialRequestByStage";
-import { useGetMaterialDetailsByGuid } from "../../../Hooks/useGetMaterialDetailsByGuid";
-import { useUpdateMaterialRequest } from "../../../Hooks/useUpdateMaterialRequest";
+import { useGetMaterialRequestByStage } from "../../../../Hooks/useGetMaterialRequestByStage";
+import { useGetMaterialDetailsByGuid } from "../../../../Hooks/useGetMaterialDetailsByGuid";
+import { useUpdateMaterialRequest } from "../../../../Hooks/useUpdateMaterialRequest";
 import {
   MaterialRequestDetailsResponseDTO,
   MaterialRequestDetailsUpdateRequestDTO,
-} from "../../../Models/MatPurchasingModels/Dto";
-import { PurchasingStages } from "../../../Constants/PurchasingStages";
+} from "../../../../Models/MatPurchasingModels/Dto";
+import { PurchasingStages } from "../../../../Constants/PurchasingStages";
 import { Guid } from "guid-typescript";
-const ProdManagerApproval: React.FC = () => {
+
+const MergeRequest: React.FC = () => {
   const [tableData, setTableData] = useState<MaterialRequestDetailsResponseDTO[]>([]);
+  const [mergeTableData, setMergeTableData] = useState<MaterialRequestDetailsResponseDTO[]>([]);
   const [selectedGuid, setSelectedGuid] = useState<string | undefined>(undefined);
   const [enabledDetails, setEnabledDetails] = useState(false);
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
 
   // Fetch material requests by stage
   const materialRequestsQuery = useGetMaterialRequestByStage(
-    //DJCHECK: Ensure this stage matches the intended one
     { Stage: PurchasingStages.PRODMANAGERAPPROVAL.code },
-
     true // always enabled
   );
 
@@ -51,11 +52,11 @@ const ProdManagerApproval: React.FC = () => {
 
   const handleUseThis = (guidId: string) => {
     setSelectedGuid(guidId);
-    setEnabledDetails(true); // Enable the query to fetch details
+    setEnabledDetails(true);
   };
 
   const toggleCardExpansion = (guidId: string) => {
-    setExpandedCards((prev) => {
+    setExpandedCards(prev => {
       const newSet = new Set(prev);
       if (newSet.has(guidId)) {
         newSet.delete(guidId);
@@ -70,7 +71,6 @@ const ProdManagerApproval: React.FC = () => {
   useEffect(() => {
     if (materialDetailsQuery.data) {
       if (materialDetailsQuery.data.length > 0) {
-        // Clear existing and populate with new data
         const newData: MaterialRequestDetailsResponseDTO[] = materialDetailsQuery.data.map(
           (detail: MaterialRequestDetailsResponseDTO) => ({
             materialRequestId: detail.materialRequestId,
@@ -86,17 +86,49 @@ const ProdManagerApproval: React.FC = () => {
         );
         setTableData(newData);
       } else {
-        // If no data returned, clear the table
         setTableData([]);
       }
     }
   }, [materialDetailsQuery.data]);
 
+  // Transfer item from column 2 to column 3
+  const handleTransferItem = (index: number) => {
+    const itemToTransfer = tableData[index];
+    if (itemToTransfer) {
+      // Add to merge table with new GUID to avoid conflicts
+      const transferredItem = {
+        ...itemToTransfer,
+        guidId: Guid.create().toString(),
+      };
+      setMergeTableData(prev => [...prev, transferredItem]);
+      
+      // Remove from original table
+      const newTableData = [...tableData];
+      newTableData.splice(index, 1);
+      setTableData(newTableData);
+    }
+  };
+
+  // Delete item from merge table (column 3)
+  const handleDeleteMergeItem = (index: number) => {
+    const newMergeData = [...mergeTableData];
+    newMergeData.splice(index, 1);
+    setMergeTableData(newMergeData);
+  };
+
+  // Perform merge - print all items in column 3
+  const handlePerformMerge = () => {
+    console.log("=== PERFORM MERGE ===");
+    console.log("Items to be merged:", mergeTableData);
+    console.log("Total items:", mergeTableData.length);
+    console.log("Merge data details:", JSON.stringify(mergeTableData, null, 2));
+  };
+
   const columns: MRT_ColumnDef<MaterialRequestDetailsResponseDTO>[] = [
     {
       accessorKey: "partCode",
       header: "Part Code ✏️",
-      size: 120,
+      size: 100,
       enableEditing: true,
       muiEditTextFieldProps: {
         required: true,
@@ -106,7 +138,7 @@ const ProdManagerApproval: React.FC = () => {
     {
       accessorKey: "description",
       header: "Description ✏️",
-      size: 200,
+      size: 150,
       enableEditing: true,
       muiEditTextFieldProps: {
         required: true,
@@ -116,7 +148,7 @@ const ProdManagerApproval: React.FC = () => {
     {
       accessorKey: "supplier",
       header: "Supplier ✏️",
-      size: 150,
+      size: 120,
       enableEditing: true,
       muiEditTextFieldProps: {
         required: true,
@@ -126,7 +158,7 @@ const ProdManagerApproval: React.FC = () => {
     {
       accessorKey: "triggerQuantity",
       header: "Trigger Qty ✏️",
-      size: 120,
+      size: 100,
       enableEditing: true,
       muiEditTextFieldProps: {
         type: "number",
@@ -136,8 +168,8 @@ const ProdManagerApproval: React.FC = () => {
     },
     {
       accessorKey: "leadTimeInDays",
-      header: "Lead Time (days) ✏️",
-      size: 140,
+      header: "Lead Time ✏️",
+      size: 100,
       enableEditing: true,
       muiEditTextFieldProps: {
         type: "number",
@@ -148,12 +180,12 @@ const ProdManagerApproval: React.FC = () => {
     {
       accessorKey: "notes",
       header: "Notes ✏️",
-      size: 200,
+      size: 150,
       enableEditing: true,
       muiEditTextFieldProps: {
         required: false,
         multiline: true,
-        rows: 3,
+        rows: 2,
         placeholder: "Add notes...",
       },
     },
@@ -165,7 +197,6 @@ const ProdManagerApproval: React.FC = () => {
       alert("Please select a material request first by clicking 'Use This' on a card.");
       return;
     }
-    // Trigger the creation dialog
     table.setCreatingRow(true);
   };
 
@@ -174,11 +205,10 @@ const ProdManagerApproval: React.FC = () => {
     data: tableData,
     enableEditing: true,
     enableRowActions: true,
-    createDisplayMode: "modal", // Use modal for creating new rows
-    editDisplayMode: "modal", // Use modal editing for better user experience
+    createDisplayMode: "modal",
+    editDisplayMode: "modal",
     positionActionsColumn: "last",
     onCreatingRowSave: ({ values, table }) => {
-      // Handle creating new row
       if (!selectedGuid) {
         alert("Please select a material request first.");
         table.setCreatingRow(null);
@@ -187,7 +217,7 @@ const ProdManagerApproval: React.FC = () => {
 
       const newRow: MaterialRequestDetailsResponseDTO = {
         ...(values as MaterialRequestDetailsResponseDTO),
-        guidId: Guid.create().toString(), // Generate new GUID for this row
+        guidId: Guid.create().toString(),
         materialRequestId: selectedGuid,
       };
 
@@ -196,27 +226,22 @@ const ProdManagerApproval: React.FC = () => {
       table.setCreatingRow(null);
     },
     onCreatingRowCancel: ({ table }) => {
-      // Just close the modal without saving changes
       table.setCreatingRow(null);
     },
     onEditingRowSave: ({ row, values, table }) => {
-      // Update the data when a row is saved
       const newData = [...tableData];
       const originalRow = newData[row.index];
 
-      // Preserve materialRequestId and guidId from original row
       newData[row.index] = {
         ...(values as MaterialRequestDetailsResponseDTO),
-        materialRequestId: originalRow.materialRequestId, // Preserve original materialRequestId
-        guidId: originalRow.guidId, // Preserve original guidId
+        materialRequestId: originalRow.materialRequestId,
+        guidId: originalRow.guidId,
       };
 
       setTableData(newData);
-      // Close the modal after saving
       table.setEditingRow(null);
     },
     onEditingRowCancel: ({ table }) => {
-      // Just close the modal without saving changes
       table.setEditingRow(null);
     },
     renderRowActions: ({ row }) => (
@@ -226,12 +251,6 @@ const ProdManagerApproval: React.FC = () => {
             color="primary"
             size="small"
             onClick={() => table.setEditingRow(row)}
-            sx={{
-              "&:hover": {
-                backgroundColor: "primary.light",
-                color: "white",
-              },
-            }}
           >
             <EditIcon />
           </IconButton>
@@ -241,12 +260,63 @@ const ProdManagerApproval: React.FC = () => {
             color="error"
             size="small"
             onClick={() => handleDeleteRow(row.index)}
-            sx={{
-              "&:hover": {
-                backgroundColor: "error.light",
-                color: "white",
-              },
-            }}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Transfer to Merge">
+          <IconButton
+            color="success"
+            size="small"
+            onClick={() => handleTransferItem(row.index)}
+          >
+            <ArrowForwardIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    ),
+  });
+
+  const mergeTable = useMaterialReactTable({
+    columns,
+    data: mergeTableData,
+    enableEditing: true,
+    enableRowActions: true,
+    createDisplayMode: "modal",
+    editDisplayMode: "modal",
+    positionActionsColumn: "last",
+    onEditingRowSave: ({ row, values, table }) => {
+      const newData = [...mergeTableData];
+      const originalRow = newData[row.index];
+
+      newData[row.index] = {
+        ...(values as MaterialRequestDetailsResponseDTO),
+        materialRequestId: originalRow.materialRequestId,
+        guidId: originalRow.guidId,
+      };
+
+      setMergeTableData(newData);
+      table.setEditingRow(null);
+    },
+    onEditingRowCancel: ({ table }) => {
+      table.setEditingRow(null);
+    },
+    renderRowActions: ({ row }) => (
+      <Box sx={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+        <Tooltip title="Edit Row">
+          <IconButton
+            color="primary"
+            size="small"
+            onClick={() => table.setEditingRow(row)}
+          >
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete from Merge">
+          <IconButton
+            color="error"
+            size="small"
+            onClick={() => handleDeleteMergeItem(row.index)}
           >
             <DeleteIcon />
           </IconButton>
@@ -267,12 +337,10 @@ const ProdManagerApproval: React.FC = () => {
       items: tableData,
     };
 
-    // Print out the information for debugging
     console.log("Submitting items:", dataToSubmit);
     console.log("Selected Material Request GUID:", selectedGuid);
     console.log("Table Data:", tableData);
 
-    // Convert table data to update request format
     const updateData: MaterialRequestDetailsUpdateRequestDTO[] = tableData.map((item) => ({
       materialRequestId: item.materialRequestId,
       partCode: item.partCode,
@@ -287,22 +355,16 @@ const ProdManagerApproval: React.FC = () => {
 
     console.log("Formatted update data:", updateData);
 
-    // Execute the mutation
     updateMaterialRequestMutation.mutate(updateData, {
       onSuccess: (response) => {
         console.log("Update successful:", response);
-        // Clear the table data after successful submission
         setTableData([]);
-        // Reset the selected GUID and disable details query
         setSelectedGuid(undefined);
         setEnabledDetails(false);
-        // Manually refetch the material requests to ensure fresh data
         materialRequestsQuery.refetch();
-        // You can add success feedback here, like a toast notification
       },
       onError: (error) => {
         console.error("Update failed:", error);
-        // You can add error feedback here, like a toast notification
       },
     });
   };
@@ -319,15 +381,14 @@ const ProdManagerApproval: React.FC = () => {
   };
 
   return (
-    <Box p={10}>
-      <Typography sx={{ p: 5 }} variant="h5" gutterBottom>
-        Production Manager Edit Request
+    <Box sx={{ width: "90%", padding: 2, boxSizing: "border-box" }}    >
+      <Typography sx={{ p: 3 }} variant="h5" gutterBottom>
+        Material Request Merge Manager
       </Typography>
 
-      <Box p={2} sx={{ display: "flex", gap: 2, flexDirection: { xs: "column", md: "row" } }}>
+      <Box p={2} sx={{ display: "flex", gap: 2, flexDirection: { xs: "column", lg: "row" } }}>
         {/* First Column - Material Request Cards */}
-
-        <Paper elevation={3} sx={{ p: 2, width: { xs: "100%", md: "30%" }, maxHeight: "90vh", overflow: "auto" }}>
+        <Paper elevation={3} sx={{ p: 2, width: { xs: "100%", lg: "25%" }, maxHeight: "90vh", overflow: "auto" }}>
           <Typography variant="h6" gutterBottom>
             Material Requests
           </Typography>
@@ -340,7 +401,7 @@ const ProdManagerApproval: React.FC = () => {
                 key={request.guidId ?? idx}
                 variant="outlined"
                 sx={{
-                  p: 2,
+                  p: 1,
                   transition: "all 0.3s",
                   "&:hover": {
                     boxShadow: 4,
@@ -348,13 +409,13 @@ const ProdManagerApproval: React.FC = () => {
                   },
                 }}
               >
-                <Box display="flex" alignItems="flex-start" gap={2}>
+                <Box display="flex" alignItems="flex-start" gap={1}>
                   <Avatar
                     sx={{
                       bgcolor: "primary.main",
-                      width: 56,
-                      height: 56,
-                      fontSize: "1.25rem",
+                      width: 40,
+                      height: 40,
+                      fontSize: "1rem",
                       fontWeight: "bold",
                     }}
                   >
@@ -362,30 +423,21 @@ const ProdManagerApproval: React.FC = () => {
                   </Avatar>
 
                   <CardContent sx={{ flex: 1, p: 0, "&:last-child": { pb: 0 } }}>
-                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={1.5}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                       <Box flex={1}>
                         <Typography variant="caption" color="text.secondary" fontWeight="bold" display="block">
                           Request #{idx + 1}
                         </Typography>
-                        <Box display="flex" justifyContent="space-between" alignItems="center">
-                          <Typography
-                            variant="caption"
-                            color="text.secondary"
-                            fontWeight="600"
-                            sx={{ minWidth: "100px", textAlign: "left" }}
-                          >
-                            Request Date:
-                          </Typography>
-                          <Typography variant="body2" sx={{ textAlign: "right", flex: 1, ml: 1 }}>
-                            {formatDate(request.requestDate)}
-                          </Typography>
-                        </Box>
+                        <Typography variant="body2" color="primary.main">
+                          {request.userName || "Unknown User"}
+                        </Typography>
                       </Box>
                       <IconButton
+                        size="small"
                         onClick={() => toggleCardExpansion(request.guidId)}
                         sx={{
-                          transform: expandedCards.has(request.guidId) ? "rotate(180deg)" : "rotate(0deg)",
-                          transition: "transform 0.2s",
+                          transform: expandedCards.has(request.guidId) ? 'rotate(180deg)' : 'rotate(0deg)',
+                          transition: 'transform 0.2s',
                         }}
                       >
                         <ExpandMoreIcon />
@@ -393,122 +445,50 @@ const ProdManagerApproval: React.FC = () => {
                     </Box>
 
                     <Collapse in={expandedCards.has(request.guidId)}>
-                      <Divider sx={{ mb: 1.5 }} />
+                      <Divider sx={{ mb: 1 }} />
 
-                      <Box display="flex" flexDirection="column" gap={2}>
-                        {/* User Name */}
+                      <Box display="flex" flexDirection="column" gap={1}>
+                        {/* Request Date */}
                         <Box display="flex" justifyContent="space-between" alignItems="center">
-                          <Typography
-                            variant="caption"
-                            color="text.secondary"
-                            fontWeight="600"
-                            sx={{ minWidth: "100px", textAlign: "left" }}
-                          >
-                            User Name:
+                          <Typography variant="caption" color="text.secondary" fontWeight="600">
+                            Request Date:
                           </Typography>
-                          <Typography variant="body2" sx={{ textAlign: "right", flex: 1, ml: 1 }}>
-                            {request.userName || "N/A"}
+                          <Typography variant="caption">
+                            {formatDate(request.requestDate)}
                           </Typography>
                         </Box>
 
                         {/* Stage */}
                         {request.stage && (
                           <Box display="flex" justifyContent="space-between" alignItems="center">
-                            <Typography
-                              variant="caption"
-                              color="text.secondary"
-                              fontWeight="600"
-                              sx={{ minWidth: "100px", textAlign: "left" }}
-                            >
+                            <Typography variant="caption" color="text.secondary" fontWeight="600">
                               Stage:
                             </Typography>
-                            <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-end", ml: 1 }}>
-                              <Chip
-                                label={request.stage}
-                                size="small"
-                                color="primary"
-                                variant="outlined"
-                                sx={{ fontSize: "0.7rem" }}
-                              />
-                            </Box>
-                          </Box>
-                        )}
-
-                        {/* Description */}
-                        {request.description && (
-                          <Box>
-                            <Typography
-                              variant="caption"
-                              color="text.secondary"
-                              fontWeight="600"
-                              display="block"
-                              sx={{ mb: 0.5 }}
-                            >
-                              Description:
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              sx={{
-                                backgroundColor: "grey.50",
-                                p: 1,
-                                borderRadius: 1,
-                                fontSize: "0.85rem",
-                                lineHeight: 1.4,
-                              }}
-                            >
-                              {request.description}
-                            </Typography>
-                          </Box>
-                        )}
-
-                        {/* Notes */}
-                        {request.notes && (
-                          <Box>
-                            <Typography
-                              variant="caption"
-                              color="text.secondary"
-                              fontWeight="600"
-                              display="block"
-                              sx={{ mb: 0.5 }}
-                            >
-                              Notes:
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              sx={{
-                                backgroundColor: "grey.50",
-                                p: 1,
-                                borderRadius: 1,
-                                fontSize: "0.85rem",
-                                lineHeight: 1.4,
-                              }}
-                            >
-                              {request.notes}
-                            </Typography>
+                            <Chip
+                              label={request.stage}
+                              size="small"
+                              color="primary"
+                              variant="outlined"
+                              sx={{ fontSize: "0.6rem" }}
+                            />
                           </Box>
                         )}
 
                         {/* GUID */}
                         <Box>
-                          <Typography
-                            variant="caption"
-                            color="text.secondary"
-                            fontWeight="600"
-                            display="block"
-                            sx={{ mb: 0.5 }}
-                          >
+                          <Typography variant="caption" color="text.secondary" fontWeight="600" display="block">
                             GUID:
                           </Typography>
                           <Typography
-                            variant="body2"
+                            variant="caption"
                             sx={{
-                              fontSize: "0.7rem",
+                              fontSize: "0.6rem",
                               wordBreak: "break-all",
                               fontFamily: "monospace",
                               backgroundColor: "grey.100",
                               p: 0.5,
                               borderRadius: 0.5,
-                              color: "text.secondary",
+                              display: "block",
                             }}
                           >
                             {request.guidId}
@@ -518,10 +498,10 @@ const ProdManagerApproval: React.FC = () => {
 
                       <Button
                         fullWidth
-                        size="medium"
+                        size="small"
                         variant="contained"
                         onClick={() => handleUseThis(request.guidId)}
-                        sx={{ mt: 2 }}
+                        sx={{ mt: 1 }}
                       >
                         Use This
                       </Button>
@@ -533,8 +513,8 @@ const ProdManagerApproval: React.FC = () => {
           </Box>
         </Paper>
 
-        {/* Second Column - Editable Material Details Table */}
-        <Paper elevation={3} sx={{ p: 2, width: { xs: "100%", md: "70%" } }}>
+        {/* Second Column - Material Details Table */}
+        <Paper elevation={3} sx={{ p: 2, width: { xs: "100%", lg: "37.5%" } }}>
           <Typography variant="h6" gutterBottom>
             Material Details
           </Typography>
@@ -545,6 +525,7 @@ const ProdManagerApproval: React.FC = () => {
               onClick={handleCreateNewRow}
               disabled={!selectedGuid}
               color="primary"
+              size="small"
             >
               Add New Row
             </Button>
@@ -552,15 +533,35 @@ const ProdManagerApproval: React.FC = () => {
               variant="contained"
               onClick={handleSubmit}
               disabled={tableData.length === 0 || updateMaterialRequestMutation.isPending}
+              size="small"
             >
               {updateMaterialRequestMutation.isPending ? "Submitting..." : "Submit"}
             </Button>
           </Box>
           <MaterialReactTable table={table} />
         </Paper>
+
+        {/* Third Column - Merge Table */}
+        <Paper elevation={3} sx={{ p: 2, width: { xs: "100%", lg: "37.5%" } }}>
+          <Typography variant="h6" gutterBottom>
+            Merge Collection ({mergeTableData.length} items)
+          </Typography>
+          <Box mb={2} display="flex" justifyContent="flex-end">
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handlePerformMerge}
+              disabled={mergeTableData.length === 0}
+              size="small"
+            >
+              Perform Merge
+            </Button>
+          </Box>
+          <MaterialReactTable table={mergeTable} />
+        </Paper>
       </Box>
     </Box>
   );
 };
 
-export default ProdManagerApproval;
+export default MergeRequest;

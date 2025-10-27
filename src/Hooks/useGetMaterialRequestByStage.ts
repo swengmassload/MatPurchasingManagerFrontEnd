@@ -16,8 +16,8 @@ const isValidStage = (materialRequest: MaterialGetRequestByStageDTO | null | und
   return !!(
     materialRequest?.Stage &&
     materialRequest?.Stage.trim() !== "" 
-   // &&
-  //  PurchasingStages.AllStages.some((stg) => stg.stage === materialRequest?.Stage)
+    &&
+   PurchasingStages.AllStages.some((stg) => stg.code === materialRequest?.Stage)
   );
 };
 
@@ -29,7 +29,9 @@ export const useGetMaterialRequestByStage = (param: MaterialGetRequestByStageDTO
       CRUDApi<MaterialGetRequestByStageDTO, MaterialRequestResponseDTO[]>(
         `${BASEAPIURL}${MaterialPurchasingManagerEndpoints.MaterialRequestByStage}`
       ).getDataSinglewtQryParams(param as MaterialGetRequestByStageDTO),
-    enabled: isValidStage(param) && enabledGetProduct,
+      refetchOnWindowFocus: true,
+      enabled: isValidStage(param) && enabledGetProduct,
+     
   });
 };
 
