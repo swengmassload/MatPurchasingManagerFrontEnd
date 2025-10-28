@@ -5,11 +5,11 @@ import { BASEAPIURL } from "../Constants/FixValues";
 import { QueryKeys } from "../Constants/TanstankQueryKeys";
 import { MaterialRequestDetailsUpdateRequestDTO } from "../Models/MatPurchasingModels/Dto";
 
-export const useUpdateMaterialRequest = () => {
+export const useUpdateMaterialMergerRequest = () => {
   return useMutation({
     mutationFn: (parts: MaterialRequestDetailsUpdateRequestDTO[]) =>
       CRUDApi<MaterialRequestDetailsUpdateRequestDTO[], MaterialRequestDetailsUpdateRequestDTO>(
-        BASEAPIURL + MaterialPurchasingManagerEndpoints.UpdateMaterialRequestEndpoint
+        BASEAPIURL + MaterialPurchasingManagerEndpoints.UpdateMaterialMergerRequestEndpoint
       ).updateData(parts),
     meta: {
       successMessage: "Material request updated successfully!",

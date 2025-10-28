@@ -31,14 +31,15 @@ import {
 } from "@mui/icons-material";
 import { MaterialReactTable, useMaterialReactTable, type MRT_ColumnDef } from "material-react-table";
 import { useGetMaterialRequestByStageWtDetails } from "../../../../Hooks/useGetMaterialRequestByStageWtDetails";
-import { useUpdateMaterialRequest } from "../../../../Hooks/useUpdateMaterialRequest";
+
 import {
   MaterialRequestDetailsResponseDTO,
   MaterialRequestDetailsUpdateRequestDTO,
   MaterialRequestWithDetailsResponseDTO,
 } from "../../../../Models/MatPurchasingModels/Dto";
 import { PurchasingStages } from "../../../../Constants/PurchasingStages";
-import { Guid } from "guid-typescript";
+
+import { useUpdateMaterialMergerRequest } from "../../../../Hooks/useUpdateMaterialMergerRequest";
 
 const MergeRequest: React.FC = () => {
   const [tableData, setTableData] = useState<MaterialRequestDetailsResponseDTO[]>([]);
@@ -57,7 +58,7 @@ const MergeRequest: React.FC = () => {
   );
 
   // Update material request mutation
-  const updateMaterialRequestMutation = useUpdateMaterialRequest();
+  const updateMaterialRequestMutation = useUpdateMaterialMergerRequest();
 
   // Update combined data and available details when data is fetched
   useEffect(() => {
@@ -173,7 +174,7 @@ const MergeRequest: React.FC = () => {
       // Add to merge table with new GUID to avoid conflicts
       const transferredItem = {
         ...itemToTransfer,
-        guidId: Guid.create().toString(),
+       // guidId: Guid.create().toString(),
       };
       setMergeTableData((prev) => [...prev, transferredItem]);
 
@@ -424,44 +425,6 @@ const MergeRequest: React.FC = () => {
     setTableData(newData);
   };
 
-  const handleSubmit = () => {
-    const dataToSubmit = {
-      materialRequestId: selectedGuid,
-      items: tableData,
-    };
-
-    console.log("Submitting items:", dataToSubmit);
-    console.log("Selected Material Request GUID:", selectedGuid);
-    console.log("Table Data:", tableData);
-
-    const updateData: MaterialRequestDetailsUpdateRequestDTO[] = tableData.map((item) => ({
-      materialRequestId: item.materialRequestId,
-      partCode: item.partCode,
-      pONumber: item.pONumber,
-      notes: item.notes,
-      description: item.description,
-      supplier: item.supplier,
-      triggerQuantity: item.triggerQuantity,
-      leadTimeInDays: item.leadTimeInDays,
-      guidId: item.guidId,
-    }));
-
-    console.log("Formatted update data:", updateData);
-
-    updateMaterialRequestMutation.mutate(updateData, {
-      onSuccess: (response) => {
-        console.log("Update successful:", response);
-        setTableData([]);
-        setSelectedGuid(undefined);
-        // Refetch the data to get updated information
-        materialRequestsWithDetailsQuery.refetch();
-      },
-      onError: (error) => {
-        console.error("Update failed:", error);
-      },
-    });
-  };
-
   const formatDate = (date: Date | undefined) => {
     if (!date) return "N/A";
     return new Date(date).toLocaleDateString("en-US", {
@@ -505,14 +468,45 @@ const MergeRequest: React.FC = () => {
       materialRequestId: selectedMergeTarget,
     }));
 
-    setMergeTableData(updatedMergeData);
-    setShowMergeDialog(false);
-    setSelectedMergeTarget("");
-
     console.log("Successfully updated merge collection with new materialRequestId:", selectedMergeTarget);
     console.log("Updated merge data:", updatedMergeData);
 
-    alert(`Successfully merged ${mergeTableData.length} items into ${requestLabel}.`);
+    // Format the data for the mutation
+    const updateData: MaterialRequestDetailsUpdateRequestDTO[] = updatedMergeData.map((item) => ({
+      materialRequestId: item.materialRequestId,
+      partCode: item.partCode,
+      pONumber: item.pONumber,
+      notes: item.notes,
+      description: item.description,
+      supplier: item.supplier,
+      triggerQuantity: item.triggerQuantity,
+      leadTimeInDays: item.leadTimeInDays,
+      guidId: item.guidId,
+    }));
+
+    console.log("Formatted update data for merge:", updateData);
+
+    // Perform the update mutation
+    updateMaterialRequestMutation.mutate(updateData, {
+      onSuccess: (response) => {
+        console.log("Merge update successful:", response);
+        // Clear the merge table data
+        setMergeTableData([]);
+        setShowMergeDialog(false);
+        setSelectedMergeTarget("");
+        // Clear table data and selection
+        setTableData([]);
+        setSelectedGuid(undefined);
+        // Refetch the data to get updated information
+        materialRequestsWithDetailsQuery.refetch();
+
+        alert(`Successfully merged ${updatedMergeData.length} items into ${requestLabel}.`);
+      },
+      onError: (error) => {
+        console.error("Merge update failed:", error);
+        alert("Failed to merge items. Please try again.");
+      },
+    });
   };
 
   // Handle merge dialog cancel button
@@ -671,7 +665,7 @@ const MergeRequest: React.FC = () => {
           <Typography variant="h6" gutterBottom>
             Material Details
           </Typography>
-          <Box mb={2} display="flex" justifyContent="space-between" alignItems="center">
+          <Box mb={2} display="flex" justifyContent="flex-start" alignItems="center">
             <Button
               variant="outlined"
               startIcon={<AddIcon />}
@@ -681,14 +675,6 @@ const MergeRequest: React.FC = () => {
               size="small"
             >
               Add New Row
-            </Button>
-            <Button
-              variant="contained"
-              onClick={handleSubmit}
-              disabled={tableData.length === 0 || updateMaterialRequestMutation.isPending}
-              size="small"
-            >
-              {updateMaterialRequestMutation.isPending ? "Submitting..." : "Submit"}
             </Button>
           </Box>
           <MaterialReactTable table={table} />
