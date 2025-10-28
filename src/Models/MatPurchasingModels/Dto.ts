@@ -165,6 +165,14 @@ export interface MaterialRequestUpdateRequestDTO {
     stage?: string | undefined;
     guidId?: string;
 }
+
+
+    export interface MaterialRequestWithDetailsResponseDTO {
+        MaterialRequests: MaterialRequestResponseDTO[],
+        MaterialRequestDetails: MaterialRequestDetailsResponseDTO[]
+    };  
+
+
 export interface PartsTableCreateRequestDTO {
     partCode: string | undefined;
     //barcodeCode?: string | undefined;
