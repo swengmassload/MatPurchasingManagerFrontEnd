@@ -64,6 +64,7 @@ export class PurchasingStages {
   };
   public static readonly AllStages: PurchasingStage[] = [
     PurchasingStages.KANBANSCANNED,
+    PurchasingStages.AddPOStage,
     PurchasingStages.PRODMANAGERAPPROVAL,
     PurchasingStages.MATERIALRECEIVED,
     PurchasingStages.TRACKING,

@@ -18,6 +18,7 @@ export const MaterialPurchasingManagerEndpoints = {
   CreateMaterialRequestEndpoint: `${MATERIALPURCHASINGAPINAME}/v1/MaterialRequestDetailss`,
   UpdateMaterialRequestEndpoint: `${MATERIALPURCHASINGAPINAME}/v1/MaterialRequestDetailss`,
   MaterialRequestByStage: `${MATERIALPURCHASINGAPINAME}/v1/MaterialRequests/Stage`,
+  MaterialRequestByStagewtDetails: `${MATERIALPURCHASINGAPINAME}/v1/MaterialRequests/GetRequestByStageWithDetails`,
   MaterialDetailsRequestByMateriaGuid: `${MATERIALPURCHASINGAPINAME}/v1/MaterialRequestDetailss/MaterialRequest`,
 };
 

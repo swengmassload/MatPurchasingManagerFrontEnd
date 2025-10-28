@@ -8,223 +8,215 @@
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
-
-
 export interface AddPOEventCreateRequestDTO {
-    materialRequestId?: string;
-    userName?: string | undefined;
-    timeStamp?: Date;
-    notes?: string | undefined;
-    guidId?: string;
+  materialRequestId?: string;
+  userName?: string | undefined;
+  timeStamp?: Date;
+  notes?: string | undefined;
+  guidId?: string;
 }
 
 export interface AddPOEventResponseDTO {
-    value?: any | undefined;
+  value?: any | undefined;
 }
 
 export interface AddPOEventUpdateRequestDTO {
-    materialRequestId?: string;
-    userName?: string | undefined;
-    timeStamp?: Date;
-    notes?: string | undefined;
-    guidId?: string;
+  materialRequestId?: string;
+  userName?: string | undefined;
+  timeStamp?: Date;
+  notes?: string | undefined;
+  guidId?: string;
 }
 
 export interface ApprovalEventCreateRequestDTO {
-    materialRequestId?: string;
-    userName?: string | undefined;
-    timeStamp?: Date;
-    notes?: string | undefined;
-    guidId?: string;
+  materialRequestId?: string;
+  userName?: string | undefined;
+  timeStamp?: Date;
+  notes?: string | undefined;
+  guidId?: string;
 }
 
 export interface ApprovalEventResponseDTO {
-    value?: any | undefined;
+  value?: any | undefined;
 }
 
 export interface ApprovalEventUpdateRequestDTO {
-    materialRequestId?: string;
-    userName?: string | undefined;
-    timeStamp?: Date;
-    notes?: string | undefined;
-    guidId?: string;
+  materialRequestId?: string;
+  userName?: string | undefined;
+  timeStamp?: Date;
+  notes?: string | undefined;
+  guidId?: string;
 }
 
 export interface CloseRequestEventCreateRequestDTO {
-    materialRequestId?: string;
-    userName?: string | undefined;
-    timeStamp?: Date;
-    notes?: string | undefined;
-    guidId?: string;
+  materialRequestId?: string;
+  userName?: string | undefined;
+  timeStamp?: Date;
+  notes?: string | undefined;
+  guidId?: string;
 }
 
 export interface CloseRequestEventResponseDTO {
-    value?: any | undefined;
+  value?: any | undefined;
 }
 
 export interface CloseRequestEventUpdateRequestDTO {
-    materialRequestId?: string;
-    userName?: string | undefined;
-    timeStamp?: Date;
-    notes?: string | undefined;
-    guidId?: string;
+  materialRequestId?: string;
+  userName?: string | undefined;
+  timeStamp?: Date;
+  notes?: string | undefined;
+  guidId?: string;
 }
 
 export interface KanbanContainerCreateRequestDTO {
-    partCode?: string | undefined;
-    barcodeCode?: string | undefined;
-    description?: string | undefined;
-    supplier?: string | undefined;
-    triggerQuantity?: number | undefined;
-    leadTimeInDays?: number | undefined;
-    guidId?: string;
+  partCode?: string | undefined;
+  barcodeCode?: string | undefined;
+  description?: string | undefined;
+  supplier?: string | undefined;
+  triggerQuantity?: number | undefined;
+  leadTimeInDays?: number | undefined;
+  guidId?: string;
 }
 
 export interface KanbanContainerResponseDTO {
-    partCode: string ;
-    barcodeCode: string ;
-    description: string ;
-    supplier: string;
-    triggerQuantity?: number | undefined;
-    leadTimeInDays?: number | undefined;
-    guidId: string;
+  partCode: string;
+  barcodeCode: string;
+  description: string;
+  supplier: string;
+  triggerQuantity?: number | undefined;
+  leadTimeInDays?: number | undefined;
+  guidId: string;
 }
 
 export interface KanbanContainerUpdateRequestDTO {
-    partCode?: string | undefined;
-    barcodeCode?: string | undefined;
-    description?: string | undefined;
-    supplier?: string | undefined;
-    triggerQuantity?: number | undefined;
-    leadTimeInDays?: number | undefined;
-    guidId?: string;
+  partCode?: string | undefined;
+  barcodeCode?: string | undefined;
+  description?: string | undefined;
+  supplier?: string | undefined;
+  triggerQuantity?: number | undefined;
+  leadTimeInDays?: number | undefined;
+  guidId?: string;
 }
 
-
 export interface MaterialRequestCreateRequestDTO {
-
-    requestDate?: Date;
-    userName?: string | undefined;
-    description?: string | undefined;
-    notes?: string | undefined;
-    stage?: string | undefined;
-    guidId?: string;
+  requestDate?: Date;
+  userName?: string | undefined;
+  description?: string | undefined;
+  notes?: string | undefined;
+  stage?: string | undefined;
+  guidId?: string;
 }
 
 export interface MaterialRequestDetailsCreateRequestDTO {
-  
-    partCode?: string | undefined;
-    pONumber?: string | undefined;
-    notes?: string | undefined;
-    
-    description?: string | undefined;
-    supplier?: string | undefined;
-    triggerQuantity?: number;
-    leadTimeInDays?: number;
-    guidId?: string;
+  partCode?: string | undefined;
+  pONumber?: string | undefined;
+  notes?: string | undefined;
+
+  description?: string | undefined;
+  supplier?: string | undefined;
+  triggerQuantity?: number;
+  leadTimeInDays?: number;
+  guidId?: string;
 }
 
 export interface MaterialRequestDetailsResponseDTO {
-    partCode: string ;
-    materialRequestId: string;
-    pONumber?: string | undefined;
-    notes?: string | undefined;
-    description?: string | undefined;
-    supplier?: string | undefined;
-    triggerQuantity?: number;
-    leadTimeInDays?: number;
-    guidId: string;
+  partCode: string;
+  materialRequestId: string;
+  pONumber?: string | undefined;
+  notes?: string | undefined;
+  description?: string | undefined;
+  supplier?: string | undefined;
+  triggerQuantity?: number;
+  leadTimeInDays?: number;
+  guidId: string;
 }
 
 export interface MaterialRequestDetailsUpdateRequestDTO {
-    materialRequestId?: string;
-    partCode?: string | undefined;
-    pONumber?: string | undefined;
-    notes?: string | undefined;
-    description?: string | undefined;
-    supplier?: string | undefined;
-    triggerQuantity?: number;
-    leadTimeInDays?: number;
-    guidId?: string;
+  materialRequestId?: string;
+  partCode?: string | undefined;
+  pONumber?: string | undefined;
+  notes?: string | undefined;
+  description?: string | undefined;
+  supplier?: string | undefined;
+  triggerQuantity?: number;
+  leadTimeInDays?: number;
+  guidId?: string;
 }
 export interface MaterialRequestResponseDTO {
-    requestDate: Date;
-    userName: string ;
-    description?: string | undefined;
-    notes?: string | undefined;
-    stage?: string | undefined;
-    guidId: string;
+  requestDate: Date;
+  userName: string;
+  description?: string | undefined;
+  notes?: string | undefined;
+  stage?: string | undefined;
+  guidId: string;
 }
 
 export interface MaterialRequestUpdateRequestDTO {
-    id?: string;
-    requestDate?: Date;
-    userName?: string | undefined;
-    description?: string | undefined;
-    notes?: string | undefined;
-    stage?: string | undefined;
-    guidId?: string;
+  id?: string;
+  requestDate?: Date;
+  userName?: string | undefined;
+  description?: string | undefined;
+  notes?: string | undefined;
+  stage?: string | undefined;
+  guidId?: string;
 }
 
-
-    export interface MaterialRequestWithDetailsResponseDTO {
-        MaterialRequests: MaterialRequestResponseDTO[],
-        MaterialRequestDetails: MaterialRequestDetailsResponseDTO[]
-    };  
-
+export interface MaterialRequestWithDetailsResponseDTO {
+  materialRequests: MaterialRequestResponseDTO[];
+  materialRequestDetails: MaterialRequestDetailsResponseDTO[];
+}
 
 export interface PartsTableCreateRequestDTO {
-    partCode: string | undefined;
-    //barcodeCode?: string | undefined;
-    description: string | undefined;
-    supplier?: string | undefined;
-    triggerQuantity?: number | undefined;
-    leadTimeInDays?: number | undefined;
+  partCode: string | undefined;
+  //barcodeCode?: string | undefined;
+  description: string | undefined;
+  supplier?: string | undefined;
+  triggerQuantity?: number | undefined;
+  leadTimeInDays?: number | undefined;
   //  guidId?: string;
 }
 
 export interface PartsTableResponseDTO {
-    partCode?: string | undefined;
-    barcodeCode?: string | undefined;
-    description?: string | undefined;
-    supplier?: string | undefined;
-    triggerQuantity?: number | undefined;
-    leadTimeInDays?: number | undefined;
-    guidId?: string;
+  partCode?: string | undefined;
+  barcodeCode?: string | undefined;
+  description?: string | undefined;
+  supplier?: string | undefined;
+  triggerQuantity?: number | undefined;
+  leadTimeInDays?: number | undefined;
+  guidId?: string;
 }
 
 export interface PartsTableUpdateRequestDTO {
-    partCode?: string | undefined;
-    barcodeCode?: string | undefined;
-    description?: string | undefined;
-    supplier?: string | undefined;
-    triggerQuantity?: number | undefined;
-    leadTimeInDays?: number | undefined;
-    guidId?: string;
+  partCode?: string | undefined;
+  barcodeCode?: string | undefined;
+  description?: string | undefined;
+  supplier?: string | undefined;
+  triggerQuantity?: number | undefined;
+  leadTimeInDays?: number | undefined;
+  guidId?: string;
 }
 
 /** Line item for Purchase Order */
 export interface PurchaseOrderLineItem {
-    itemName: string;
-    description?: string | undefined;
-    quantity: number;
-    rate?: number | undefined;
-    amount?: number | undefined;
+  itemName: string;
+  description?: string | undefined;
+  quantity: number;
+  rate?: number | undefined;
+  amount?: number | undefined;
 }
 
 //
 export interface PartsSearchParams {
   SearchType: "BarCode" | "PartCode" | "Description" | "";
-  BarCode:  string | null;
-  PartCode:  string | null;
+  BarCode: string | null;
+  PartCode: string | null;
   Description: string | null;
- 
 }
 
-export const defaultPartsSearchParamsValue: PartsSearchParams = {  
+export const defaultPartsSearchParamsValue: PartsSearchParams = {
   SearchType: "",
-  BarCode:  null,
-  PartCode:  null,
+  BarCode: null,
+  PartCode: null,
   Description: null,
 };
 //Note the following DTOs are used in Purchasing Stages Kanban Card

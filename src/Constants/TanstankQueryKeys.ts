@@ -18,6 +18,11 @@ export const QueryKeys = {
     subKeys: (params: { req: MaterialRequestResponseDTO }) => [params.req.stage],
   },
 
+  useGetMaterialRequestByStageWtDetails: {
+    mainKey: "useGetMaterialRequestByStageWtDetails",
+    subKeys: (params: { req: MaterialRequestResponseDTO }) => [params.req.stage],
+  },
+
 
   useGetPurchasingByStage: {
     mainKey: "useGetPurchasingByStage",

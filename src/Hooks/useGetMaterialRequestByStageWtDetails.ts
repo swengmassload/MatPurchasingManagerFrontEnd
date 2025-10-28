@@ -22,13 +22,14 @@ const isValidStage = (materialRequest: MaterialGetRequestByStageDTO | null | und
 export const useGetMaterialRequestByStageWtDetails = (param: MaterialGetRequestByStageDTO | undefined, enabledGetProduct: boolean) => {
 
   return useQuery<MaterialRequestWithDetailsResponseDTO | undefined, Error>({
-    queryKey: [QueryKeys.useGetMaterialRequestByStage.mainKey, { stage: param?.Stage }],
+    queryKey: [QueryKeys.useGetMaterialRequestByStageWtDetails.mainKey, { stage: param?.Stage }],
     queryFn: () =>
       CRUDApi<MaterialGetRequestByStageDTO, MaterialRequestWithDetailsResponseDTO>(
-        `${BASEAPIURL}${MaterialPurchasingManagerEndpoints.MaterialRequestByStage}`
+        `${BASEAPIURL}${MaterialPurchasingManagerEndpoints.MaterialRequestByStagewtDetails}`
       ).getDataSinglewtQryParams(param as MaterialGetRequestByStageDTO),
       refetchOnWindowFocus: true,
       enabled: isValidStage(param) && enabledGetProduct,
+      
      
   });
 };
